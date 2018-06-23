@@ -2,12 +2,12 @@
 <MenuItems>
 
     <MenuItem id="commsUnkillAll">
-        <Name>Enable All WU Devices</Name>
+        <Name>Enable All Dark Sky Devices</Name>
         <CallbackMethod>commsUnkillAll</CallbackMethod>
     </MenuItem>
 
     <MenuItem id="commsKillAll">
-        <Name>Disable All WU Devices</Name>
+        <Name>Disable All Dark Sky Devices</Name>
         <CallbackMethod>commsKillAll</CallbackMethod>
     </MenuItem>
 

@@ -2,7 +2,7 @@
 <PluginConfig>
 
     <Field id="infoLabel00" type="label">
-        <Label>WUnderground 7 Plugin</Label>
+        <Label>Dark Sky Plugin</Label>
     </Field>
 
     <Field id="space000" type="label" fontSize="small">
@@ -10,12 +10,12 @@
     </Field>
 
     <Field id="termsOfService" type="label" fontSize="mini">
-        <Label>Data are provided by Weather Underground, LLC. This plugin and its author are in no way affiliated with Weather Underground.</Label>
+        <Label>Powered by Dark Sky. https://darksky.net/poweredby/ This plugin and its author are in no way affiliated with Dark Sky.</Label>
     </Field>
 
 <!--Hidden Controls-->
 
-    <Field id="launchWUparameters" type="textfield" defaultValue="https://www.wunderground.com/api/" hidden="True">
+    <Field id="launchDSparameters" type="textfield" defaultValue="https://darksky.net" hidden="True">
         <Label/>
     </Field>
 
@@ -30,20 +30,20 @@
 	<Field id="simpleSeparator0" type="separator"/>
 
     <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-        <Label>The plugin requires an API key to retrieve data from Weather Underground. If needed, you can click this button to sign up for an API key:</Label>
+        <Label>The plugin requires an API key to retrieve data from Dark Sky. If needed, you can click this button to sign up for an API key:</Label>
     </Field>
 
-    <Field id="launchWU" type="button">
+    <Field id="launchDS" type="button">
         <Label/>
-        <Title>Sign Up For a Key at Weather Underground</Title>
-        <CallbackMethod>wundergroundSite</CallbackMethod>
+        <Title>Sign Up For a Key at Dark Sky</Title>
+        <CallbackMethod>darkSkySite</CallbackMethod>
     </Field>
 
-    <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Weather Underground API Key (required).">
+    <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Dark Sky API Key (required).">
         <Label>API key:</Label>
     </Field>
 
-    <Field id="callCounter" type="textfield" defaultValue="500" tooltip="Please enter the maximum number of WU calls for your plan. The base developer plan is 500 downloads per day.">
+    <Field id="callCounter" type="textfield" defaultValue="1000" tooltip="Please enter the maximum number of Dark Sky calls for your plan. The base developer plan is 500 downloads per day.">
         <Label>Daily Limit:</Label>
     </Field>
 
@@ -60,7 +60,7 @@
     </Field>
 
     <Field id="downloadInterval" type="menu" defaultValue="900"
-           tooltip="Please select the desired frequency for data downloads. Controls how often the plugin will reach out to Weather Underground, and the daily limit for the number of downloads.">
+           tooltip="Please select the desired frequency for data downloads. Controls how often the plugin will reach out to Dark Sky, and the daily limit for the number of downloads.">
         <Label>Call Interval:</Label>
         <List>
             <Option value="300">5 Minutes</Option>
@@ -74,96 +74,56 @@
         </List>
     </Field>
 
-    <Field id="language" type="menu" defaultValue="EN" tooltip="Please select the desired language. Controls data returned from Weather Underground.">
+    <Field id="language" type="menu" defaultValue="en" tooltip="Please select the desired language. Controls data returned from Dark Sky.">
         <Label>Language:</Label>
         <List>
-            <Option value="F">Afrikaans</Option>
-            <Option value="AL">Albanian</Option>
-            <Option value="AR">Arabic</Option>
-            <Option value="HY">Armenian</Option>
-            <Option value="AZ">Azerbaijani</Option>
-            <Option value="EU">Basque</Option>
-            <Option value="BY">Belarusian</Option>
-            <Option value="BU">Bulgarian</Option>
-            <Option value="LI">British English</Option>
-            <Option value="MY">Burmese</Option>
-            <Option value="CA">Catalan</Option>
-            <Option value="CN">Chinese - Simplified</Option>
-            <Option value="TW">Chinese - Traditional</Option>
-            <Option value="CR">Croatian</Option>
-            <Option value="CZ">Czech</Option>
-            <Option value="DK">Danish</Option>
-            <Option value="DV">Dhivehi</Option>
-            <Option value="NL">Dutch</Option>
-            <Option value="EN">English</Option>
-            <Option value="EO">Esperanto</Option>
-            <Option value="ET">Estonian</Option>
-            <Option value="FA">Farsi</Option>
-            <Option value="FI">Finnish</Option>
-            <Option value="FR">French</Option>
-            <Option value="FC">French Canadian</Option>
-            <Option value="GZ">Galician</Option>
-            <Option value="DL">German</Option>
-            <Option value="KA">Georgian</Option>
-            <Option value="GR">Greek</Option>
-            <Option value="GU">Gujarati</Option>
-            <Option value="HT">Haitian Creole</Option>
-            <Option value="IL">Hebrew</Option>
-            <Option value="HI">Hindi</Option>
-            <Option value="HU">Hungarian</Option>
-            <Option value="IS">Icelandic</Option>
-            <Option value="IO">Ido</Option>
-            <Option value="ID">Indonesian</Option>
-            <Option value="IR">Irish Gaelic</Option>
-            <Option value="IT">Italian</Option>
-            <Option value="JP">Japanese</Option>
-            <Option value="JW">Javanese</Option>
-            <Option value="KM">Khmer</Option>
-            <Option value="KR">Korean</Option>
-            <Option value="KU">Kurdish</Option>
-            <Option value="LA">Latin</Option>
-            <Option value="LV">Latvian</Option>
-            <Option value="LT">Lithuanian</Option>
-            <Option value="ND">Low German</Option>
-            <Option value="MK">Macedonian</Option>
-            <Option value="MT">Maltese</Option>
-            <Option value="GM">Mandinka</Option>
-            <Option value="MI">Maori</Option>
-            <Option value="MR">Marathi</Option>
-            <Option value="MN">Mongolian</Option>
-            <Option value="NO">Norwegian</Option>
-            <Option value="OC">Occitan</Option>
-            <Option value="PS">Pashto</Option>
-            <Option value="GN">Plautdietsch</Option>
-            <Option value="PL">Polish</Option>
-            <Option value="BR">Portuguese</Option>
-            <Option value="PA">Punjabi</Option>
-            <Option value="RO">Romanian</Option>
-            <Option value="RU">Russian</Option>
-            <Option value="SR">Serbian</Option>
-            <Option value="SK">Slovak</Option>
-            <Option value="SL">Slovenian</Option>
-            <Option value="SP">Spanish</Option>
-            <Option value="SI">Swahili</Option>
-            <Option value="SW">Swedish</Option>
-            <Option value="CH">Swiss</Option>
-            <Option value="TL">Tagalog</Option>
-            <Option value="TT">Tatarish</Option>
-            <Option value="TH">Thai</Option>
-            <Option value="TR">Turkish</Option>
-            <Option value="TK">Turkmen</Option>
-            <Option value="UA">Ukrainian</Option>
-            <Option value="UZ">Uzbek</Option>
-            <Option value="VU">Vietnamese</Option>
-            <Option value="CY">Welsh</Option>
-            <Option value="SN">Wolof</Option>
-            <Option value="JI">Yiddish - transliterated</Option>
-            <Option value="YI">Yiddish - unicode</Option>
+            <Option value="ar">Arabic</Option>
+            <Option value="az">Azerbaijani</Option>
+            <Option value="be">Belarusian</Option>
+            <Option value="bg">Bulgarian</Option>
+            <Option value="bs">Bosnian</Option>
+            <Option value="ca">Catalan</Option>
+            <Option value="cs">Czech</Option>
+            <Option value="da">Danish</Option>
+            <Option value="de">German</Option>
+            <Option value="el">Greek</Option>
+            <Option value="en">English</Option>
+            <Option value="es">Spanish</Option>
+            <Option value="et">Estonian</Option>
+            <Option value="fi">Finnish</Option>
+            <Option value="fr">French</Option>
+            <Option value="he">Hebrew</Option>
+            <Option value="hr">Croatian</Option>
+            <Option value="hu">Hungarian</Option>
+            <Option value="id">Indonesian</Option>
+            <Option value="is">Icelandic</Option>
+            <Option value="it">Italian</Option>
+            <Option value="ja">Japanese</Option>
+            <Option value="ka">Georgian</Option>
+            <Option value="ko">Korean</Option>
+            <Option value="kw">Cornish</Option>
+            <Option value="nb">Norwegian Bokmål</Option>
+            <Option value="nl">Dutch</Option>
+            <Option value="no">Norwegian Bokmål (alias for nb)</Option>
+            <Option value="pl">Polish</Option>
+            <Option value="pt">Portuguese</Option>
+            <Option value="ro">Romanian</Option>
+            <Option value="ru">Russian</Option>
+            <Option value="sk">Slovak</Option>
+            <Option value="sl">Slovenian</Option>
+            <Option value="sr">Serbian</Option>
+            <Option value="sv">Swedish</Option>
+            <Option value="tet">Tetum</Option>
+            <Option value="tr">Turkish</Option>
+            <Option value="uk">Ukrainian</Option>
+            <Option value="x-pig-latin">Igpay Atinlay</Option>
+            <Option value="zh">Simplified Chinese</Option>
+            <Option value="zh-tw">Traditional Chinese</Option>
         </List>
     </Field>
 
     <Field id="ignoreEstimated" type="checkbox" defaultValue="false"
-           tooltip="If checked, the plugin will not update weather data if Weather Underground reports that the data are estimated.">
+           tooltip="If checked, the plugin will not update weather data if Dark Sky reports that the data are estimated.">
         <Label/>
         <Description>Skip Update if Data are Estimated</Description>
     </Field>

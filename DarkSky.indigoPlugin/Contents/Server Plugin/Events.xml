@@ -2,13 +2,13 @@
 
 <Events>
 
-    <SupportURL>https://github.com/DaveL17/WUnderground7/wiki</SupportURL>
+    <SupportURL>https://google.com</SupportURL>
     <Event id="weatherAlert">
         <Name>Severe Weather Alert</Name>
             <ConfigUI>
 
                 <Field id="weatherAlertLabel" type="label">
-                    <Label>The Weather Underground Plugin can fire a trigger if a weather location has reported at least one severe weather alert.</Label>
+                    <Label>The Dark Sky Plugin can fire a trigger if a weather location has reported at least one severe weather alert.</Label>
                 </Field>
 
                 <Field id="weatherAlertSpacer" type="label"/>

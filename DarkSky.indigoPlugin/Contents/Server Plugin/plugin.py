@@ -2,28 +2,28 @@
 # -*- coding: utf-8 -*-
 
 """
-WUnderground7 Plugin
+Dark Sky Plugin
 plugin.py
 Author: DaveL17
 Credits:
 Update Checker by: berkinet (with additional features by Travis Cook)
 Regression Testing by: Monstergerm
 
-The WUnderground plugin downloads JSON data from Weather Underground and parses
+The Dark Sky plugin downloads JSON data from Dark Sky and parses
 it into custom device states. Theoretically, the user can create an unlimited
 number of devices representing individual observation locations. The
-WUnderground plugin will update each custom device found in the device
+Dark Sky plugin will update each custom device found in the device
 dictionary incrementally. The user can have independent settings for each
 weather location.
 
-The base Weather Underground developer plan allows for 10 calls per minute and
+The base Dark Sky developer plan allows for 10 calls per minute and
 a total of 500 per day. Setting the plugin for 5 minute refreshes results in
 288 calls per device per day. In other words, two devices (with different
 location settings) at 5 minutes will be an overage. The plugin makes only one
-call per location per cycle. See Weather Underground for more information on
+call per location per cycle. See Dark Sky for more information on
 API call limitations.
 
-The plugin tries to leave WU data unchanged. But in order to be useful, some
+The plugin tries to leave DS data unchanged. But in order to be useful, some
 changes need to be made. The plugin adjusts the raw JSON data in the following
 ways:
 - The barometric pressure symbol is changed to something more human
@@ -32,14 +32,14 @@ ways:
   where necessary.
 - Strips non-numeric values from numeric values for device states where
   appropriate (but retains them for ui.Value)
-- Weather Underground is inconsistent in the data it provides as
+- Dark Sky is inconsistent in the data it provides as
   strings and numerics. Sometimes a numeric value is provided as a
   string and we convert it to a float where useful.
-- Sometimes, WU provides a forecast value that has a level of precision greater
-  than expected. For example, a forecast high of 72.1º. It is unlikely that WU
+- Sometimes, DS provides a forecast value that has a level of precision greater
+  than expected. For example, a forecast high of 72.1º. It is unlikely that DS
   would predict with such precision intentionally, so we round these values to
   the nearest integer.
-- Sometimes, WU provides a value that would break Indigo logic.
+- Sometimes, DS provides a value that would break Indigo logic.
   Conversions made:
   - Replaces anything that is not a rational value (i.e., "--" with "0"
     for precipitation since precipitation can only be zero or a
@@ -59,23 +59,23 @@ ways:
 
  (above: _w_eather, _t_en day, _h_ourly, _a_lmanac)
 
-Weather data copyright Weather Underground and Weather Channel, LLC., (and its
+Weather data copyright Dark Sky and Weather Channel, LLC., (and its
 subsidiaries), or respective data providers. This plugin and its author are in
-no way affiliated with Weather Underground, LLC. For more information about
-data provided see Weather Underground Terms of Service located at:
+no way affiliated with Dark Sky, LLC. For more information about
+data provided see Dark Sky Terms of Service located at:
 http://www.wunderground.com/weather/api/d/terms.html.
 
 For information regarding the use of this plugin, see the license located in
 the plugin package or located on GitHub:
-https://github.com/DaveL17/WUnderground7/blob/master/LICENSE
+https://github.com/DaveL17/Dark Sky/blob/master/LICENSE
 """
 
 # =================================== TO DO ===================================
 
 # New Features
-# TODO: trap instances where WU returns an error exists (i.e., ['response']['error']). If all okay, this will result in a KeyError. (WU 8?)
-# TODO: convert alertStatus state to binary (WU 8?)
-# TODO: migrate to individual refresh cycles for individual devices? Consider that a weather location and a forecast location could be for the same location. (WU 8?)
+# TODO: trap instances where DS returns an error exists (i.e., ['response']['error']). If all okay, this will result in a KeyError. (DS 8?)
+# TODO: convert alertStatus state to binary (DS 8?)
+# TODO: migrate to individual refresh cycles for individual devices? Consider that a weather location and a forecast location could be for the same location. (DS 8?)
 # TODO: If latest data are older than data we already have, the Item list onOffStates are set to "". Should be last temp, icons off.
 # TODO: set the Indigo UI value to max calls (or something) when that happens. Fringe case for sure.
 # TODO: Consider a method that's for "what should the Indigo UI look like?" and combine all the various calls to onOffState and the icons.
@@ -121,35 +121,35 @@ __author__    = Dave.__author__
 __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
-__title__     = "WUnderground7 Plugin for Indigo Home Control"
-__version__   = "7.0.11"
+__title__     = "Dark Sky Plugin for Indigo Home Control"
+__version__   = "0.0.01"
 
 # =============================================================================
 
 kDefaultPluginPrefs = {
     u'alertLogging': "false",           # Write severe weather alerts to the log?
-    u'apiKey': "",                      # WU requires the api key.
-    u'callCounter': "500",              # WU call limit based on UW plan.
+    u'apiKey': "",                      # DS requires the api key.
+    u'callCounter': "1000",             # DS call limit based on UW plan.
     u'dailyCallCounter': "0",           # Number of API calls today.
     u'dailyCallDay': "1970-01-01",      # API call counter date.
     u'dailyCallLimitReached': "false",  # Has the daily call limit been reached?
     u'downloadInterval': "900",         # Frequency of weather updates.
-    u'ignoreEsimated' : False,         # Accept estimated conditions, or not
+    u'ignoreEsimated' : False,          # Accept estimated conditions, or not
     u'itemListTempDecimal': "1",        # Precision for Indigo Item List.
-    u'language': "EN",                  # Language for WU text.
+    u'language': "EN",                  # Language for DS text.
     u'lastSuccessfulPoll': "1970-01-01 00:00:00",  # Last successful plugin cycle
-    u'launchWUparameters' : "https://www.wunderground.com/api/",  # url for launch API button
+    u'launchDSparameters' : "https://www.darksky.net",  # url for launch API button
     u'nextPoll': "",                    # Last successful plugin cycle
     u'noAlertLogging': "false",         # Suppresses "no active alerts" logging.
     u'showDebugLevel': "30",            # Logger level.
-    u'uiDateFormat': "DD-MM-YYYY",     # Preferred date format string.
+    u'uiDateFormat': "DD-MM-YYYY",      # Preferred date format string.
     u'uiHumidityDecimal': "1",          # Precision for Indigo UI display (humidity).
     u'uiPressureTrend': "text",         # Pressure trend symbology
     u'uiTempDecimal': "1",              # Precision for Indigo UI display (temperature).
-    u'uiTimeFormat': "military",       # Preferred time format string.
+    u'uiTimeFormat': "military",        # Preferred time format string.
     u'uiWindDecimal': "1",              # Precision for Indigo UI display (wind).
     u'updaterEmail': "",                # Email to notify of plugin updates.
-    u'updaterEmailsEnabled': "false"  # Notification of plugin updates wanted.
+    u'updaterEmailsEnabled': "false"    # Notification of plugin updates wanted.
 }
 
 
@@ -165,7 +165,7 @@ class Plugin(indigo.PluginBase):
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
-        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/WUnderground7/master/dark_sky_version.html")
+        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Dark Sky/master/dark_sky_version.html")
         self.wuOnline = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
@@ -196,9 +196,9 @@ class Plugin(indigo.PluginBase):
         self.date_format = self.Formatter.dateFormat()
         self.time_format = self.Formatter.timeFormat()
 
-        # Weather Underground Attribution and disclaimer.
+        # Dark Sky Attribution and disclaimer.
         indigo.server.log(u"{0:*^130}".format(""))
-        indigo.server.log(u"{0:*^130}".format("  Data are provided by Weather Underground, LLC. This plugin and its author are in no way affiliated with Weather Underground.  "))
+        indigo.server.log(u"{0:*^130}".format("  Data are provided by Dark Sky, LLC. This plugin and its author are in no way affiliated with Dark Sky.  "))
         indigo.server.log(u"{0:*^130}".format(""))
 
         # Log pluginEnvironment information when plugin is first started
@@ -263,7 +263,7 @@ class Plugin(indigo.PluginBase):
             for dev in indigo.devices.itervalues('self'):
 
                 # For weather device types
-                if dev.model in ['WUnderground Device', 'WUnderground Weather', 'WUnderground Weather Device', 'Weather Underground', 'Weather']:
+                if dev.model == "Dark Sky Weather":
 
                     current_on_off_state = dev.states.get('onOffState', True)
                     current_on_off_state_ui = dev.states.get('onOffState.ui', "")
@@ -303,7 +303,7 @@ class Plugin(indigo.PluginBase):
             display_value = u"Enabled"
 
         # =========================== Set Device Icon to Off ==========================
-        if dev.model in ['WUnderground Device', 'WUnderground Weather', 'WUnderground Weather Device', 'Weather Underground', 'Weather']:
+        if dev.model in ['Dark Sky Device', 'Dark Sky Weather', 'Dark Sky Weather Device', 'Dark Sky', 'Weather']:
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
         else:
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -315,7 +315,7 @@ class Plugin(indigo.PluginBase):
         self.logger.debug(u"Stopping Device: {0}".format(dev.name))
 
         # =========================== Set Device Icon to Off ==========================
-        if dev.model in ['WUnderground Device', 'WUnderground Weather', 'WUnderground Weather Device', 'Weather Underground', 'Weather']:
+        if dev.model in ['Dark Sky Device', 'Dark Sky Weather', 'Dark Sky Weather Device', 'Dark Sky', 'Weather']:
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
         else:
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -376,7 +376,7 @@ class Plugin(indigo.PluginBase):
 
         except self.StopThread as error:
             self.logger.debug(u"StopThread: (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
-            self.logger.debug(u"Stopping WUnderground Plugin thread.")
+            self.logger.debug(u"Stopping Dark Sky Plugin thread.")
 
     def shutdown(self):
 
@@ -428,7 +428,7 @@ class Plugin(indigo.PluginBase):
 
         try:
 
-            # WUnderground Radar Devices
+            # Dark Sky Radar Devices
             if typeID == 'wundergroundRadar':
 
                 if valuesDict['imagename'] == "" or valuesDict['imagename'].isspace():
@@ -686,7 +686,7 @@ class Plugin(indigo.PluginBase):
 
         return True, valuesDict
 
-# WUnderground7 Methods =======================================================
+# Dark Sky Methods =======================================================
     def actionRefreshWeather(self, valuesDict):
         """
         Refresh all weather as a result of an action call
@@ -705,9 +705,9 @@ class Plugin(indigo.PluginBase):
 
     def callCount(self):
         """
-        Maintain count of calls made to the WU API
+        Maintain count of calls made to the DS API
 
-        Maintains a count of daily calls to Weather Underground to help ensure that the
+        Maintains a count of daily calls to Dark Sky to help ensure that the
         plugin doesn't go over a user-defined limit. The limit is set within the plugin
         config dialog.
 
@@ -839,7 +839,7 @@ class Plugin(indigo.PluginBase):
         """
         Dump copy of weather JSON to file
 
-        The dumpTheJSON() method reaches out to Weather Underground, grabs a copy of
+        The dumpTheJSON() method reaches out to Dark Sky, grabs a copy of
         the configured JSON data and saves it out to a file placed in the Indigo Logs
         folder. If a weather data log exists for that day, it will be replaced. With a
         new day, a new log file will be created (file name contains the date.)
@@ -854,7 +854,7 @@ class Plugin(indigo.PluginBase):
             with open(file_name, 'w') as logfile:
 
                 # This works, but PyCharm doesn't like it as Unicode.  Encoding clears the inspection error.
-                logfile.write(u"Weather Underground JSON Data\n".encode('utf-8'))
+                logfile.write(u"Dark Sky JSON Data\n".encode('utf-8'))
                 logfile.write(u"Written at: {0}\n".format(dt.datetime.today().strftime('%Y-%m-%d %H:%M')).encode('utf-8'))
                 logfile.write(u"{0}{1}".format("=" * 72, '\n').encode('utf-8'))
 
@@ -1026,7 +1026,7 @@ class Plugin(indigo.PluginBase):
         """
         Format corrupted and missing data
 
-        Sometimes WU receives corrupted data from personal weather stations. Could be
+        Sometimes DS receives corrupted data from personal weather stations. Could be
         zero, positive value or "--" or "-999.0" or "-9999.0". This method tries to
         "fix" these values for proper display.
 
@@ -1056,7 +1056,7 @@ class Plugin(indigo.PluginBase):
 
         This doesn't actually float everything. Select values are sent here to see if
         they float. If they do, a float is returned. Otherwise, a Unicode string is
-        returned. This is necessary because Weather Underground will send values that
+        returned. This is necessary because Dark Sky will send values that
         won't float even when they're supposed to.
 
         -----
@@ -1171,13 +1171,13 @@ class Plugin(indigo.PluginBase):
             dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
-    def getWUradar(self, dev):
+    def getDSradar(self, dev):
         """
-        Get radar image through WU API
+        Get radar image through DS API
 
-        The getWUradar() method will download a satellite image from Weather
+        The getDSradar() method will download a satellite image from Weather
         Underground. The construction of the image is based upon user preferences
-        defined in the WUnderground Radar device type.
+        defined in the Dark Sky Radar device type.
 
         -----
 
@@ -1307,7 +1307,7 @@ class Plugin(indigo.PluginBase):
 
     def getWeatherData(self, dev):
         """
-        Reach out to Weather Underground and download data for this location
+        Reach out to Dark Sky and download data for this location
 
         Grab the JSON return for the device. A separate call must be made for each
         weather device because the data are location specific.
@@ -1345,14 +1345,14 @@ class Plugin(indigo.PluginBase):
                 # If requests is not installed, try urllib2 instead.
                 except NameError:
                     try:
-                        # Connect to Weather Underground and retrieve data.
+                        # Connect to Dark Sky and retrieve data.
                         socket.setdefaulttimeout(20)
                         f = urllib2.urlopen(url)
                         simplejson_string = f.read()
 
                     except Exception as error:
-                        self.logger.warning(u"Unable to reach Weather Underground. Sleeping until next scheduled poll.")
-                        self.logger.debug(u"Unable to reach Weather Underground after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+                        self.logger.warning(u"Unable to reach Dark Sky. Sleeping until next scheduled poll.")
+                        self.logger.debug(u"Unable to reach Dark Sky after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
                         for dev in indigo.devices.itervalues("self"):
                             dev.updateStateOnServer("onOffState", value=False, uiValue=u" ")
                             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1383,8 +1383,8 @@ class Plugin(indigo.PluginBase):
                 dev.updateStateOnServer('onOffState', value=True)
 
         except Exception as error:
-            self.logger.warning(u"Unable to reach Weather Underground. Sleeping until next scheduled poll.")
-            self.logger.debug(u"Unable to reach Weather Underground after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            self.logger.warning(u"Unable to reach Dark Sky. Sleeping until next scheduled poll.")
+            self.logger.debug(u"Unable to reach Dark Sky after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
             # Unable to fetch the JSON. Mark all devices as 'false'.
             for dev in indigo.devices.itervalues("self"):
@@ -1442,7 +1442,7 @@ class Plugin(indigo.PluginBase):
 
     def nestedLookup(self, obj, keys, default=u"Not available"):
         """
-        Do a nested lookup of the WU JSON
+        Do a nested lookup of the DS JSON
 
         The nestedLookup() method is used to extract the relevant data from the Weather
         Underground JSON return. The JSON is known to be inconsistent in the form of
@@ -1609,7 +1609,7 @@ class Plugin(indigo.PluginBase):
 
                     alert_array.append(alert_tuple)
 
-                    # Per Weather Underground TOS, attribution must be provided for European weather alert source. If appropriate, write it to the log.
+                    # Per Dark Sky TOS, attribution must be provided for European weather alert source. If appropriate, write it to the log.
                     try:
                         # Attempt to clean out HTML tags.
                         tag_re      = re.compile(r'(<!--.*?-->|<[^>]*>)')
@@ -2457,7 +2457,7 @@ class Plugin(indigo.PluginBase):
 
         except Exception as error:
             self.logger.error(u"Problem parsing tide data. (Line: {0}  Error: {1})".format(sys.exc_traceback.tb_lineno, error))
-            self.logger.error(u"Note: Tide information may not be available in your area. Check Weather Underground for more information.")
+            self.logger.error(u"Note: Tide information may not be available in your area. Check Dark Sky for more information.")
 
             tide_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -2582,7 +2582,7 @@ class Plugin(indigo.PluginBase):
             weather_states_list.append({'key': 'neighborhood', 'value': neighborhood, 'uiValue': neighborhood})
 
             # Functional icon name:
-            # Weather Underground's icon value does not account for day and night icon
+            # Dark Sky's icon value does not account for day and night icon
             # names (although the iconURL value does). This segment produces a functional
             # icon name to allow for the proper display of daytime and nighttime condition
             # icons. It also provides a separate value for icon names that do not change
@@ -2829,7 +2829,7 @@ class Plugin(indigo.PluginBase):
         """
         Refresh data for plugin devices
 
-        This method refreshes weather data for all devices based on a WUnderground
+        This method refreshes weather data for all devices based on a Dark Sky
         general cycle, Action Item or Plugin Menu call.
 
         -----
@@ -2857,7 +2857,7 @@ class Plugin(indigo.PluginBase):
                         break
 
                     if not dev:
-                        # There are no WUnderground devices, so go to sleep.
+                        # There are no Dark Sky devices, so go to sleep.
                         self.logger.info(u"There aren't any devices to poll yet. Sleeping.")
 
                     elif not dev.configured:
@@ -2885,7 +2885,7 @@ class Plugin(indigo.PluginBase):
 
                             self.getWeatherData(dev)
 
-                            # If we've successfully downloaded data from Weather Underground, let's unpack it and assign it to the relevant device.
+                            # If we've successfully downloaded data from Dark Sky, let's unpack it and assign it to the relevant device.
                             try:
                                 # If a site location query returns a site unknown (in other words 'querynotfound' result, notify the user).
                                 # Note that if the query is good, the error key won't exist in the dict.
@@ -2930,7 +2930,7 @@ class Plugin(indigo.PluginBase):
                                     ignore_estimated = False
 
                                 # Compare last data epoch to the one we just downloaded. Proceed if the data are newer.
-                                # Note: WUnderground have been known to send data that are 5-6 months old. This flag helps ensure that known data are retained if the new data is not
+                                # Note: Dark Sky have been known to send data that are 5-6 months old. This flag helps ensure that known data are retained if the new data is not
                                 # actually newer that what we already have.
                                 try:
                                     # New devices may not have an epoch value yet.
@@ -2959,27 +2959,27 @@ class Plugin(indigo.PluginBase):
                                 if self.masterWeatherDict != {} and good_time and not ignore_estimated:
 
                                     # Almanac devices.
-                                    if dev.model in ['Almanac', 'WUnderground Almanac']:
+                                    if dev.model in ['Almanac', 'Dark Sky Almanac']:
                                         self.parseAlmanacData(dev)
 
                                     # Astronomy devices.
-                                    elif dev.model in ['Astronomy', 'WUnderground Astronomy']:
+                                    elif dev.model in ['Astronomy', 'Dark Sky Astronomy']:
                                         self.parseAstronomyData(dev)
 
                                     # Hourly Forecast devices.
-                                    elif dev.model in ['WUnderground Hourly Forecast', 'Hourly Forecast']:
+                                    elif dev.model in ['Dark Sky Hourly Forecast', 'Hourly Forecast']:
                                         self.parseHourlyData(dev)
 
                                     # Ten Day Forecast devices.
-                                    elif dev.model in ['Ten Day Forecast', 'WUnderground Ten Day Forecast']:
+                                    elif dev.model in ['Ten Day Forecast', 'Dark Sky Ten Day Forecast']:
                                         self.parseTenDayData(dev)
 
                                     # Tide devices.
-                                    elif dev.model in ['WUnderground Tides', 'Tides']:
+                                    elif dev.model in ['Dark Sky Tides', 'Tides']:
                                         self.parseTidesData(dev)
 
                                     # Weather devices.
-                                    elif dev.model in ['WUnderground Device', 'WUnderground Weather', 'WUnderground Weather Device', 'Weather Underground', 'Weather']:
+                                    elif dev.model in ['Dark Sky Device', 'Dark Sky Weather', 'Dark Sky Weather Device', 'Dark Sky', 'Weather']:
                                         self.parseWeatherData(dev)
                                         self.parseAlertsData(dev)
                                         self.parseForecastData(dev)
@@ -2988,12 +2988,12 @@ class Plugin(indigo.PluginBase):
                                             self.emailForecast(dev)
 
                         # Image Downloader devices.
-                        elif dev.model in ['Satellite Image Downloader', 'WUnderground Satellite Image Downloader']:
+                        elif dev.model in ['Satellite Image Downloader', 'Dark Sky Satellite Image Downloader']:
                             self.getSatelliteImage(dev)
 
-                        # WUnderground Radar devices.
-                        elif dev.model in ['WUnderground Radar']:
-                            self.getWUradar(dev)
+                        # Dark Sky Radar devices.
+                        elif dev.model in ['Dark Sky Radar']:
+                            self.getDSradar(dev)
 
                 self.logger.debug(u"{0} locations polled: {1}".format(len(self.masterWeatherDict.keys()), self.masterWeatherDict.keys()))
 
@@ -3006,13 +3006,13 @@ class Plugin(indigo.PluginBase):
 
         Weather Location Offline:
         The triggerProcessing method will examine the time of the last weather location
-        update and, if the update exceeds the time delta specified in a WUnderground
+        update and, if the update exceeds the time delta specified in a Dark Sky
         Plugin Weather Location Offline trigger, the trigger will be fired. The plugin
         examines the value of the latest "currentObservationEpoch" and *not* the Indigo
         Last Update value.
 
         An additional event that will cause a trigger to be fired is if the weather
-        location temperature is less than -55 (Weather Underground will often set a
+        location temperature is less than -55 (Dark Sky will often set a
         value to a variation of -99 (-55 C) to indicate that a data value is invalid.
 
         Severe Weather Alerts:
@@ -3325,5 +3325,5 @@ class Plugin(indigo.PluginBase):
         :param indigo.Dict valuesDict:
         """
 
-        self.Fogbert.launchWebPage(valuesDict['launchWUparameters'])
+        self.Fogbert.launchWebPage(valuesDict['launchDSparameters'])
 

@@ -4,34 +4,24 @@
 
     <!-- Almanac -->
 
-    <Device id="wundergroundAlmanac" type="custom">
-        <Name>WUnderground Almanac</Name>
+    <Device id="darkSkyAlmanac" type="custom">
+        <Name>Dark Sky Almanac</Name>
 
         <ConfigUI>
 
 
             <Field id="space00" type="label" fontSize="small">
-                <Label>Almanac information available to all Weather Underground plans (Stratus, Cumulus, Anvil)</Label>
+                <Label>Almanac information</Label>
             </Field>
 
-            <Field id="location" type="textfield" defaultValue="autoip"
-                   tooltip="Please enter the desired location information for this device. It must follow the format of the examples below.">
-                <Label>Location:</Label>
+            <Field id="latitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
+                <Label>Latitude:</Label>
             </Field>
 
-            <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-                <Label>Enter the observation location. Locations must follow one of the example formats provided.</Label>
-            </Field>
-
-            <Field id="space03" type="label" fontSize="small" alignWithControl="True">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)
-</Label>
+            <Field id="longitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
+                <Label>Longitude:</Label>
             </Field>
 
             <Field id="temperatureUnits" type="textfield" defaultValue="°" tooltip="Appended to all temperature values. (75°)">
@@ -145,14 +135,14 @@
 
             <State id="estimated">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Estimated Conditions</TriggerLabel>
-                <ControlPageLabel>Wunderground - Estimated Conditions</ControlPageLabel>
+                <TriggerLabel>darkSky - Estimated Conditions</TriggerLabel>
+                <ControlPageLabel>darkSky - Estimated Conditions</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Almanac Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Almanac Device State</ControlPageLabel>
+                <TriggerLabel>darkSky - Almanac Device State</TriggerLabel>
+                <ControlPageLabel>darkSky - Almanac Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -161,32 +151,23 @@
 
     <!-- Astronomy -->
 
-    <Device id="wundergroundAstronomy" type="custom">
-        <Name>WUnderground Astronomy</Name>
+    <Device id="darkSkyAstronomy" type="custom">
+        <Name>Dark Sky Astronomy</Name>
 
         <ConfigUI>
 
             <Field id="space00" type="label" fontSize="small">
-                <Label>Astronomy information available to all Weather Underground plans (Stratus, Cumulus, Anvil)</Label>
+                <Label>Astronomy information</Label>
             </Field>
 
-            <Field id="location" type="textfield" defaultValue="autoip"
-                   tooltip="Please enter the desired location information for this device. It must follow the format of the examples below.">
-                <Label>Location:</Label>
+            <Field id="latitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
+                <Label>Latitude:</Label>
             </Field>
 
-            <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-                <Label>Enter the observation location. Locations must follow one of the example formats provided.</Label>
-            </Field>
-
-            <Field id="space03" type="label" alignWithControl="True" fontSize="small">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)</Label>
+            <Field id="longitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
+                <Label>Longitude:</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
@@ -332,14 +313,14 @@
 
             <State id="estimated">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Estimated Conditions</TriggerLabel>
-                <ControlPageLabel>Wunderground - Estimated Conditions</ControlPageLabel>
+                <TriggerLabel>darkSky - Estimated Conditions</TriggerLabel>
+                <ControlPageLabel>darkSky - Estimated Conditions</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Astronomy Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Astronomy Device State</ControlPageLabel>
+                <TriggerLabel>darkSky - Astronomy Device State</TriggerLabel>
+                <ControlPageLabel>darkSky - Astronomy Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -348,37 +329,27 @@
 
     <!-- Hourly Forecast -->
 
-    <Device id="wundergroundHourly" type="custom">
-        <Name>WUnderground Hourly Forecast</Name>
+    <Device id="darkSkyHourly" type="custom">
+        <Name>Dark Sky Hourly Forecast</Name>
 
         <ConfigUI>
 
             <Field id="space00" type="label" fontSize="small">
-                <Label>NOTE: you must have a cumulus or anvil plan to obtain hourly forecast data.</Label>
+                <Label>Hourly information</Label>
             </Field>
 
-            <Field id="location" type="textfield" defaultValue="autoip"
-                   tooltip="Please enter the desired location information for this device. It must follow the format of the examples below.">
-                <Label>Location:</Label>
+            <Field id="latitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
+                <Label>Latitude:</Label>
             </Field>
 
-            <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-                <Label>Enter the observation location. Locations must follow one of the example formats provided.</Label>
-            </Field>
-
-            <Field id="space03" type="label" alignWithControl="True" fontSize="small">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)</Label>
+            <Field id="longitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
+                <Label>Longitude:</Label>
             </Field>
 
             <Field id="displayValuesLabel" type="label" alignText="Right">
-                <Label>
-Display Values</Label>
+                <Label>Display Values</Label>
             </Field>
 
             <Field id="separator00" type="separator"/>
@@ -2667,290 +2638,16 @@ Display Values</Label>
 
             <State id="estimated">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Estimated Conditions</TriggerLabel>
-                <ControlPageLabel>Wunderground - Estimated Conditions</ControlPageLabel>
+                <TriggerLabel>darkSky - Estimated Conditions</TriggerLabel>
+                <ControlPageLabel>darkSky - Estimated Conditions</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Hourly Forecast Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Hourly Forecast Device State</ControlPageLabel>
+                <TriggerLabel>darkSky - Hourly Forecast Device State</TriggerLabel>
+                <ControlPageLabel>darkSky - Hourly Forecast Device State</ControlPageLabel>
             </State>
 
-        </States>
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
-
-    <!-- Satellite Image Downloader -->
-
-    <Device id="satelliteImageDownloader" type="custom">
-        <Name>WUnderground Satellite Image Downloader</Name>
-
-        <ConfigUI>
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>The image downloader only supports gif, jpg, jpeg, and png extensions. There is no limit to the number of downloader devices you can have.</Label>
-            </Field>
-
-            <Field id="space01" type="label"/>
-
-            <Field id="imageSourceLocation" type="textfield" defaultValue="http://www.url.com/imagefile.png" tooltip="Please enter the URL for the image file you want to download.">
-                <Label>Source Location:</Label>
-            </Field>
-
-            <Field id="sourceExamples" type="label" fontSize="small" alignWithControl="True">
-                <Label>Examples:
-http://www.website.com/imagefile.png
-file:///Users/username/Desktop/imagefile.png
-</Label>
-            </Field>
-
-            <Field id="imageDestinationLocation" type="textfield" defaultValue="/User/username/Desktop"
-                   tooltip="Please enter the location where you would like the image to be saved.">
-                <Label>Destination Location:</Label>
-            </Field>
-
-            <Field id="destinationExamples" type="label" fontSize="small" alignWithControl="True">
-                <Label>Example:
-/Users/username/Desktop/imagefile.png</Label>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="false" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
-            </Field>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="onOffState">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Image Downloader State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Image Downloader State</ControlPageLabel>
-            </State>
-        </States>
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
-
-    <!-- WUnderground Radar Device -->
-
-    <Device id="wundergroundRadar" type="custom">
-        <Name>WUnderground Radar</Name>
-
-        <ConfigUI>
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>The WUnderground Radar device takes advantage of the Weather Underground WUndermaps Layer API to construct custom radar images. The image is built using the settings below and is saved as a static image which can then be placed on an Indigo Control Page.</Label>
-            </Field>
-
-            <Field id="space01" type="label"/>
-
-            <Field id="imagename" type="textfield" defaultValue="WUradar" tooltip="Please enter the name for your image file (do not include an extension).">
-                <Label>Image Name:</Label>
-            </Field>
-
-            <Field id="height" type="textfield" defaultValue="500" tooltip="Please enter the image height in pixels (default: 300).">
-                <Label>Image Height:</Label>
-            </Field>
-
-            <Field id="width" type="textfield" defaultValue="500" tooltip="Please enter the image width in pixels (default: 300).">
-                <Label>Image Width:</Label>
-            </Field>
-
-            <Field id="locationTitle" type="label" alignText="Right">
-                <Label>
-Location</Label>
-            </Field>
-
-            <Field id="locationSeparator" type="separator"/>
-
-            <Field id="typelabel" type="label" fontSize="small">
-                <Label>Location settings control the area covered by the radar image. You can hide the location settings once they are configured. A bounding box requires data for the four sides of the image. A location requires a valid WU location (Click the (?) below for additional information). A radius requires a center point and a radial distance.</Label>
-            </Field>
-
-            <Field id="imagetype" type="menu" defaultValue="radius" tooltip="Please select the desired method for defining the boundaries of the image.">
-                <Label>Type:</Label>
-                <List>
-                    <Option value="boundingbox">Bounding Box</Option>
-                    <Option value="locationbox">Location</Option>
-                    <Option value="radius">Radius*</Option>
-                </List>
-            </Field>
-
-            <Field id="location" type="textfield" defaultValue="autoip" visibleBindingId="imagetype" visibleBindingValue="locationbox"
-                   tooltip="Please enter the location of the radar image.  If using a personal weather station, be sure to begin the location with PWS:(pws_name).">
-                <Label>Location:</Label>
-            </Field>
-
-            <Field id="locationExamples" type="label" alignWithControl="True" fontSize="small" visibleBindingId="imagetype" visibleBindingValue="locationbox">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)</Label>
-            </Field>
-
-            <Field id="minlat" type="textfield" defaultValue="39.0" visibleBindingId="imagetype" visibleBindingValue="boundingbox"
-                   tooltip="Please enter the minimum latitude for the image. This value controls the bottom edge of the image (-90.0 to 90.0).">
-                <Label>Min Lat:</Label>
-            </Field>
-
-            <Field id="maxlat" type="textfield" defaultValue="43.0" visibleBindingId="imagetype" visibleBindingValue="boundingbox"
-                   tooltip="Please enter the maximum latitude for the image. This value controls the top edge of the image (-90.0 to 90.0).">
-                <Label>Max Lat:</Label>
-            </Field>
-
-            <Field id="minlon" type="textfield" defaultValue="-86.5" visibleBindingId="imagetype" visibleBindingValue="boundingbox"
-                   tooltip="Please enter the minimum longitude for the image. This value controls the left edge of the image (-180.0 to 180.0).">
-                <Label>Min Long:</Label>
-            </Field>
-
-            <Field id="maxlon" type="textfield" defaultValue="-90.5" visibleBindingId="imagetype" visibleBindingValue="boundingbox"
-                   tooltip="Please enter the maximum longitude for the image. This value controls the right edge of the image (-180.0 to 180.0).">
-                <Label>Max Long:</Label>
-            </Field>
-
-            <Field id="centerlat" type="textfield" defaultValue="0" visibleBindingId="imagetype" visibleBindingValue="radius"
-                   tooltip="Please enter the center latitude for the image (-90.0 - 90.0).">
-                <Label>Center Lat:</Label>
-            </Field>
-
-            <Field id="centerlon" type="textfield" defaultValue="0" visibleBindingId="imagetype" visibleBindingValue="radius"
-                   tooltip="Please enter the center longitude for the image (-180.0 - 180.0).">
-                <Label>Center Long:</Label>
-            </Field>
-
-            <Field id="getLatLong" type="button" visibleBindingId="imagetype" visibleBindingValue="radius"
-                   tooltip="Click to obtain latitude and longitude from the Indigo server. To cancel the changes, cancel this dialog box (do not save changes).">
-                <Label/>
-                <Title>Get Lat / Long:</Title>
-                <CallbackMethod>getLatLong</CallbackMethod>
-            </Field>
-
-            <Field id="radius" type="textfield" defaultValue="150" visibleBindingId="imagetype" visibleBindingValue="radius"
-                   tooltip="Please select the radius of the image (100 units is close, 1000 units is country).">
-                <Label>Radius:</Label>
-            </Field>
-
-            <Field id="radunits" type="menu" defaultValue="nm" visibleBindingId="imagetype" visibleBindingValue="radius"
-                   tooltip="Please select the radius units for the image.">
-                <Label>Units:</Label>
-                    <List>
-                        <Option value="km">Kilometers</Option>
-                        <Option value="nm">Nautical Miles*</Option>
-                    </List>
-            </Field>
-
-            <Field id="animationTitle" type="label" alignText="Right">
-                <Label>
-Animation</Label>
-            </Field>
-
-            <Field id="animationseparator" type="separator"/>
-
-            <Field id="animationlabel" type="label" fontSize="small">
-                <Label>If an animated radar images is desired, tick the Animated box below. Settings are available for the number of frames and frame rotation delay.</Label>
-            </Field>
-
-            <Field id="feature" type="checkbox" defaultValue="false" tooltip="Please tick if animated radar is desired.">
-                <Label>Animated?</Label>
-            </Field>
-
-            <Field id="num" type="textfield" defaultValue="8" visibleBindingId="feature" visibleBindingValue="true"
-                   tooltip="Please select the number of frames for animated images (1 - 15).">
-                <Label>Frames:</Label>
-            </Field>
-
-            <Field id="frame" type="textfield" defaultValue="0" visibleBindingId="feature" visibleBindingValue="true" hidden="true">
-                <Label>Frame:</Label>
-            </Field>
-
-            <Field id="delay" type="menu" defaultValue="25" visibleBindingId="feature" visibleBindingValue="true"
-                   tooltip="Please select the animation delay (25 - 100 in hundredths of a second).">
-                <Label>Delay:</Label>
-                    <List>
-                        <Option value="25">25</Option>
-                        <Option value="50">50*</Option>
-                        <Option value="75">75</Option>
-                        <Option value="100">100</Option>
-                    </List>
-            </Field>
-
-            <Field id="timestampTitle" type="label" alignText="Right">
-                <Label>
-Timestamp</Label>
-            </Field>
-
-            <Field id="timeseparator" type="separator"/>
-
-            <Field id="timestamplabel" type="label" fontSize="small">
-                <Label>If a time stamp is desired, select the Time Stamp box below. Settings are available for locating the label on the image, given in X and Y pixels. It is possible to set these values such that the label will be added but not be visible.</Label>
-            </Field>
-
-            <Field id="timelabel" type="checkbox" defaultValue="true" tooltip="Please tick if you would like to display a time stamp on the image.">
-                <Label>Time Stamp?</Label>
-            </Field>
-
-            <Field id="timelabelx" type="textfield" defaultValue="10" visibleBindingId="timelabel" visibleBindingValue="true"
-                   tooltip="Please enter the number of pixels to move the time label (from the left edge of the image).">
-                <Label>Time Stamp X:</Label>
-            </Field>
-
-            <Field id="timelabely" type="textfield" defaultValue="20" visibleBindingId="timelabel" visibleBindingValue="true"
-                   tooltip="Please enter the number of pixels to move the time label (from the top edge of the image).">
-                <Label>Time Stamp Y:</Label>
-            </Field>
-
-            <Field id="featuresTitle" type="label" alignText="Right">
-                <Label>
-Features</Label>
-            </Field>
-
-            <Field id="featureseparator" type="separator"/>
-
-            <Field id="newmaps" type="checkbox" defaultValue="true" tooltip="Please untick to display radar data as a transparent overlay.">
-                <Label>Display Map?</Label>
-                <Description>(Map veiw versus transparent background)</Description>
-            </Field>
-
-            <Field id="Mercator" type="checkbox" defaultValue="false" tooltip="Please tick to render the image using Mercator projection.">
-                <Label>Mercator?</Label>
-                <Description>(Mercator projection map)</Description>
-            </Field>
-
-            <Field id="rainsnow" type="checkbox" defaultValue="true" tooltip="Please tick to display a different color palette for rain/mix/snow.">
-                <Label>Rain/Snow?</Label>
-                <Description>(Use different colors for rain/snow)</Description>
-            </Field>
-
-            <Field id="noclutter" type="checkbox" defaultValue="true" tooltip="Please tick if non-precipitation clutter should be removed from the image.">
-                <Label>Remove clutter?</Label>
-                <Description>(Remove non-precipitation noise)</Description>
-            </Field>
-
-            <Field id="smooth" type="checkbox" defaultValue="true" visibleBindingId="feature" visibleBindingValue="true" tooltip="Please tick if smooth colors are desired.">
-                <Label>Smooth Radar Data?</Label>
-                <Description>(Display smoothed radar returns)</Description>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="false" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True"/>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="onOffState">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - WUnderground Radar State</TriggerLabel>
-                <ControlPageLabel>Wunderground - WUnderground Radar State</ControlPageLabel>
-            </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
 
@@ -2958,13 +2655,13 @@ Features</Label>
 
     <!-- Ten Day Forecast -->
 
-    <Device id="wundergroundTenDay" type="custom">
-        <Name>WUnderground Ten Day Forecast</Name>
+    <Device id="darkSkyTenDay" type="custom">
+        <Name>Dark Sky Daily Forecast</Name>
 
         <ConfigUI>
 
             <Field id="space00" type="label" fontSize="small">
-                <Label>NOTE: you must have a cumulus or anvil plan to obtain 10-day forecast data.</Label>
+                <Label>Daily Information</Label>
             </Field>
 
             <Field id="location" type="textfield" defaultValue="autoip">
@@ -4034,14 +3731,14 @@ Display Units</Label>
 
             <State id="estimated">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Estimated Conditions</TriggerLabel>
-                <ControlPageLabel>Wunderground - Estimated Conditions</ControlPageLabel>
+                <TriggerLabel>darkSky - Estimated Conditions</TriggerLabel>
+                <ControlPageLabel>darkSky - Estimated Conditions</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - 10-day Forecast Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - 10-day Forecast Device State</ControlPageLabel>
+                <TriggerLabel>darkSky - 10-day Forecast Device State</TriggerLabel>
+                <ControlPageLabel>darkSky - 10-day Forecast Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -4050,696 +3747,25 @@ Display Units</Label>
 
     <!-- Tide Forecast -->
 
-    <Device id="wundergroundTides" type="custom">
-        <Name>WUnderground Tides</Name>
-
-        <ConfigUI>
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>NOTE: you must have a cumulus or anvil plan to obtain tide data.
-</Label>
-            </Field>
-
-            <Field id="location" type="textfield" defaultValue="autoip"
-                   tooltip="Please enter the desired location information for this device. It must follow the format of the examples below.">
-                <Label>Location:</Label>
-            </Field>
-
-            <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-                <Label>Enter the observation location. Locations must follow one of the example formats provided.</Label>
-            </Field>
-
-            <Field id="space03" type="label" fontSize="small" alignWithControl="True">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)</Label>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
-                <Label/>
-            </Field>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="currentObservation">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
-            </State>
-
-            <State id="currentObservation24hr">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
-            </State>
-
-            <State id="currentObservationEpoch">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
-            </State>
-
-            <State id="tideSite">
-                <ValueType>string</ValueType>
-                <TriggerLabel>Tide Site</TriggerLabel>
-                <ControlPageLabel>Tide Site</ControlPageLabel>
-            </State>
-
-            <State id="minHeight">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Minimum Height</TriggerLabel>
-                <ControlPageLabel>Minimum Height</ControlPageLabel>
-            </State>
-
-            <State id="maxHeight">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Maximum Height</TriggerLabel>
-                <ControlPageLabel>Maximum Height</ControlPageLabel>
-            </State>
-
-            <State id="p1_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (1)</TriggerLabel>
-                <ControlPageLabel>Date (1)</ControlPageLabel>
-            </State>
-
-            <State id="p2_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (2)</TriggerLabel>
-                <ControlPageLabel>Date (2)</ControlPageLabel>
-            </State>
-
-            <State id="p3_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (3)</TriggerLabel>
-                <ControlPageLabel>Date (3)</ControlPageLabel>
-            </State>
-
-            <State id="p4_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (4)</TriggerLabel>
-                <ControlPageLabel>Date (4)</ControlPageLabel>
-            </State>
-
-            <State id="p5_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (5)</TriggerLabel>
-                <ControlPageLabel>Date (5)</ControlPageLabel>
-            </State>
-
-            <State id="p6_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (6)</TriggerLabel>
-                <ControlPageLabel>Date (6)</ControlPageLabel>
-            </State>
-
-            <State id="p7_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (7)</TriggerLabel>
-                <ControlPageLabel>Date (7)</ControlPageLabel>
-            </State>
-
-            <State id="p8_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (8)</TriggerLabel>
-                <ControlPageLabel>Date (8)</ControlPageLabel>
-            </State>
-
-            <State id="p9_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (9)</TriggerLabel>
-                <ControlPageLabel>Date (9)</ControlPageLabel>
-            </State>
-
-            <State id="p10_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (10)</TriggerLabel>
-                <ControlPageLabel>Date (10)</ControlPageLabel>
-            </State>
-
-            <State id="p11_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (11)</TriggerLabel>
-                <ControlPageLabel>Date (11)</ControlPageLabel>
-            </State>
-
-            <State id="p12_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (12)</TriggerLabel>
-                <ControlPageLabel>Date (12)</ControlPageLabel>
-            </State>
-
-            <State id="p13_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (13)</TriggerLabel>
-                <ControlPageLabel>Date (13)</ControlPageLabel>
-            </State>
-
-            <State id="p14_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (14)</TriggerLabel>
-                <ControlPageLabel>Date (14)</ControlPageLabel>
-            </State>
-
-            <State id="p15_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (15)</TriggerLabel>
-                <ControlPageLabel>Date (15)</ControlPageLabel>
-            </State>
-
-            <State id="p16_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (16)</TriggerLabel>
-                <ControlPageLabel>Date (16)</ControlPageLabel>
-            </State>
-
-            <State id="p17_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (17)</TriggerLabel>
-                <ControlPageLabel>Date (17)</ControlPageLabel>
-            </State>
-
-            <State id="p18_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (18)</TriggerLabel>
-                <ControlPageLabel>Date (18)</ControlPageLabel>
-            </State>
-
-            <State id="p19_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (19)</TriggerLabel>
-                <ControlPageLabel>Date (19)</ControlPageLabel>
-            </State>
-
-            <State id="p20_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (20)</TriggerLabel>
-                <ControlPageLabel>Date (20)</ControlPageLabel>
-            </State>
-
-            <State id="p21_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (21)</TriggerLabel>
-                <ControlPageLabel>Date (21)</ControlPageLabel>
-            </State>
-
-            <State id="p22_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (22)</TriggerLabel>
-                <ControlPageLabel>Date (22)</ControlPageLabel>
-            </State>
-
-            <State id="p23_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (23)</TriggerLabel>
-                <ControlPageLabel>Date (23)</ControlPageLabel>
-            </State>
-
-            <State id="p24_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (24)</TriggerLabel>
-                <ControlPageLabel>Date (24)</ControlPageLabel>
-            </State>
-
-            <State id="p25_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (25)</TriggerLabel>
-                <ControlPageLabel>Date (25)</ControlPageLabel>
-            </State>
-
-            <State id="p26_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (26)</TriggerLabel>
-                <ControlPageLabel>Date (26)</ControlPageLabel>
-            </State>
-
-            <State id="p27_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (27)</TriggerLabel>
-                <ControlPageLabel>Date (27)</ControlPageLabel>
-            </State>
-
-            <State id="p28_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (28)</TriggerLabel>
-                <ControlPageLabel>Date (28)</ControlPageLabel>
-            </State>
-
-            <State id="p29_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (29)</TriggerLabel>
-                <ControlPageLabel>Date (29)</ControlPageLabel>
-            </State>
-
-            <State id="p30_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (30)</TriggerLabel>
-                <ControlPageLabel>Date (30)</ControlPageLabel>
-            </State>
-
-            <State id="p31_pretty">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Date (31)</TriggerLabel>
-                <ControlPageLabel>Date (31)</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="p1_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (1)</TriggerLabel>
-                <ControlPageLabel>Height (1)</ControlPageLabel>
-            </State>
-
-            <State id="p2_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (2)</TriggerLabel>
-                <ControlPageLabel>Height (2)</ControlPageLabel>
-            </State>
-
-            <State id="p3_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (3)</TriggerLabel>
-                <ControlPageLabel>Height (3)</ControlPageLabel>
-            </State>
-
-            <State id="p4_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (4)</TriggerLabel>
-                <ControlPageLabel>Height (4)</ControlPageLabel>
-            </State>
-
-            <State id="p5_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (5)</TriggerLabel>
-                <ControlPageLabel>Height (5)</ControlPageLabel>
-            </State>
-
-            <State id="p6_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (6)</TriggerLabel>
-                <ControlPageLabel>Height (6)</ControlPageLabel>
-            </State>
-
-            <State id="p7_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (7)</TriggerLabel>
-                <ControlPageLabel>Height (7)</ControlPageLabel>
-            </State>
-
-            <State id="p8_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (8)</TriggerLabel>
-                <ControlPageLabel>Height (8)</ControlPageLabel>
-            </State>
-
-            <State id="p9_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (9)</TriggerLabel>
-                <ControlPageLabel>Height (9)</ControlPageLabel>
-            </State>
-
-            <State id="p10_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (10)</TriggerLabel>
-                <ControlPageLabel>Height (10)</ControlPageLabel>
-            </State>
-
-            <State id="p11_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (11)</TriggerLabel>
-                <ControlPageLabel>Height (11)</ControlPageLabel>
-            </State>
-
-            <State id="p12_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (12)</TriggerLabel>
-                <ControlPageLabel>Height (12)</ControlPageLabel>
-            </State>
-
-            <State id="p13_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (13)</TriggerLabel>
-                <ControlPageLabel>Height (13)</ControlPageLabel>
-            </State>
-
-            <State id="p14_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (14)</TriggerLabel>
-                <ControlPageLabel>Height (14)</ControlPageLabel>
-            </State>
-
-            <State id="p15_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (15)</TriggerLabel>
-                <ControlPageLabel>Height (15)</ControlPageLabel>
-            </State>
-
-            <State id="p16_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (16)</TriggerLabel>
-                <ControlPageLabel>Height (16)</ControlPageLabel>
-            </State>
-
-            <State id="p17_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (17)</TriggerLabel>
-                <ControlPageLabel>Height (17)</ControlPageLabel>
-            </State>
-
-            <State id="p18_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (18)</TriggerLabel>
-                <ControlPageLabel>Height (18)</ControlPageLabel>
-            </State>
-
-            <State id="p19_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (19)</TriggerLabel>
-                <ControlPageLabel>Height (19)</ControlPageLabel>
-            </State>
-
-            <State id="p20_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (20)</TriggerLabel>
-                <ControlPageLabel>Height (20)</ControlPageLabel>
-            </State>
-
-            <State id="p21_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (21)</TriggerLabel>
-                <ControlPageLabel>Height (21)</ControlPageLabel>
-            </State>
-
-            <State id="p22_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (22)</TriggerLabel>
-                <ControlPageLabel>Height (22)</ControlPageLabel>
-            </State>
-
-            <State id="p23_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (23)</TriggerLabel>
-                <ControlPageLabel>Height (23)</ControlPageLabel>
-            </State>
-
-            <State id="p24_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (24)</TriggerLabel>
-                <ControlPageLabel>Height (24)</ControlPageLabel>
-            </State>
-
-            <State id="p25_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (25)</TriggerLabel>
-                <ControlPageLabel>Height (25)</ControlPageLabel>
-            </State>
-
-            <State id="p26_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (26)</TriggerLabel>
-                <ControlPageLabel>Height (26)</ControlPageLabel>
-            </State>
-
-            <State id="p27_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (27)</TriggerLabel>
-                <ControlPageLabel>Height (27)</ControlPageLabel>
-            </State>
-
-            <State id="p28_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (28)</TriggerLabel>
-                <ControlPageLabel>Height (28)</ControlPageLabel>
-            </State>
-
-            <State id="p29_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (29)</TriggerLabel>
-                <ControlPageLabel>Height (29)</ControlPageLabel>
-            </State>
-
-            <State id="p30_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (30)</TriggerLabel>
-                <ControlPageLabel>Height (30)</ControlPageLabel>
-            </State>
-
-            <State id="p31_height">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Height (31)</TriggerLabel>
-                <ControlPageLabel>Height (31)</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="p1_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (1)</TriggerLabel>
-                <ControlPageLabel>Type (1)</ControlPageLabel>
-            </State>
-
-            <State id="p2_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (2)</TriggerLabel>
-                <ControlPageLabel>Type (2)</ControlPageLabel>
-            </State>
-
-            <State id="p3_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (3)</TriggerLabel>
-                <ControlPageLabel>Type (3)</ControlPageLabel>
-            </State>
-
-            <State id="p4_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (4)</TriggerLabel>
-                <ControlPageLabel>Type (4)</ControlPageLabel>
-            </State>
-
-            <State id="p5_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (5)</TriggerLabel>
-                <ControlPageLabel>Type (5)</ControlPageLabel>
-            </State>
-
-            <State id="p6_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (6)</TriggerLabel>
-                <ControlPageLabel>Type (6)</ControlPageLabel>
-            </State>
-
-            <State id="p7_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (7)</TriggerLabel>
-                <ControlPageLabel>Type (7)</ControlPageLabel>
-            </State>
-
-            <State id="p8_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (8)</TriggerLabel>
-                <ControlPageLabel>Type (8)</ControlPageLabel>
-            </State>
-
-            <State id="p9_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (9)</TriggerLabel>
-                <ControlPageLabel>Type (9)</ControlPageLabel>
-            </State>
-
-            <State id="p10_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (10)</TriggerLabel>
-                <ControlPageLabel>Type (10)</ControlPageLabel>
-            </State>
-
-            <State id="p11_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (11)</TriggerLabel>
-                <ControlPageLabel>Type (11)</ControlPageLabel>
-            </State>
-
-            <State id="p12_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (12)</TriggerLabel>
-                <ControlPageLabel>Type (12)</ControlPageLabel>
-            </State>
-
-            <State id="p13_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (13)</TriggerLabel>
-                <ControlPageLabel>Type (13)</ControlPageLabel>
-            </State>
-
-            <State id="p14_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (14)</TriggerLabel>
-                <ControlPageLabel>Type (14)</ControlPageLabel>
-            </State>
-
-            <State id="p15_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (15)</TriggerLabel>
-                <ControlPageLabel>Type (15)</ControlPageLabel>
-            </State>
-
-            <State id="p16_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (16)</TriggerLabel>
-                <ControlPageLabel>Type (16)</ControlPageLabel>
-            </State>
-
-            <State id="p17_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (17)</TriggerLabel>
-                <ControlPageLabel>Type (17)</ControlPageLabel>
-            </State>
-
-            <State id="p18_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (18)</TriggerLabel>
-                <ControlPageLabel>Type (18)</ControlPageLabel>
-            </State>
-
-            <State id="p19_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (19)</TriggerLabel>
-                <ControlPageLabel>Type (19)</ControlPageLabel>
-            </State>
-
-            <State id="p20_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (20)</TriggerLabel>
-                <ControlPageLabel>Type (20)</ControlPageLabel>
-            </State>
-
-            <State id="p21_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (21)</TriggerLabel>
-                <ControlPageLabel>Type (21)</ControlPageLabel>
-            </State>
-
-            <State id="p22_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (22)</TriggerLabel>
-                <ControlPageLabel>Type (22)</ControlPageLabel>
-            </State>
-
-            <State id="p23_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (23)</TriggerLabel>
-                <ControlPageLabel>Type (23)</ControlPageLabel>
-            </State>
-
-            <State id="p24_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (24)</TriggerLabel>
-                <ControlPageLabel>Type (24)</ControlPageLabel>
-            </State>
-
-            <State id="p25_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (25)</TriggerLabel>
-                <ControlPageLabel>Type (25)</ControlPageLabel>
-            </State>
-
-            <State id="p26_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (26)</TriggerLabel>
-                <ControlPageLabel>Type (26)</ControlPageLabel>
-            </State>
-
-            <State id="p27_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (27)</TriggerLabel>
-                <ControlPageLabel>Type (27)</ControlPageLabel>
-            </State>
-
-            <State id="p28_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (28)</TriggerLabel>
-                <ControlPageLabel>Type (28)</ControlPageLabel>
-            </State>
-
-            <State id="p29_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (29)</TriggerLabel>
-                <ControlPageLabel>Type (29)</ControlPageLabel>
-            </State>
-
-            <State id="p30_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (30)</TriggerLabel>
-                <ControlPageLabel>Type (30)</ControlPageLabel>
-            </State>
-
-            <State id="p31_type">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Type (31)</TriggerLabel>
-                <ControlPageLabel>Type (31)</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="estimated">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Weather Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Weather Device State</ControlPageLabel>
-            </State>
-
-            <State id="onOffState">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Device State</TriggerLabel>
-                <ControlPageLabel>Device State</ControlPageLabel>
-            </State>
-
-        </States>
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
 
     <!-- Weather Device -->
-    <Device id="wunderground" type="custom">
-        <Name>WUnderground Weather</Name>
+    <Device id="darkSkyWeather" type="custom">
+        <Name>Dark Sky Weather</Name>
 
         <ConfigUI>
 
-            <Field id="location" type="textfield" defaultValue="autoip"
-                   tooltip="Please enter the desired location information for this device. It must follow the format of the examples below.">
-                <Label>Location:</Label>
+            <Field id="latitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
+                <Label>Latitude:</Label>
             </Field>
 
-            <Field id="space00" type="label" fontSize="small" alignWithControl="True">
-                <Label>Enter the observation location. Locations must follow one of the example formats provided.</Label>
-            </Field>
-
-            <Field id="space02" type="label" fontSize="small" alignWithControl="True">
-                <Label>Examples:
-  - Automatic IP detection (autoip)
-  - City (i.e., CA/San_Francisco, Canada/Toronto)
-  - Latitude/Longitude (i.e., 48.86,2.29 or -33.86,151.22)
-  - ICAO Airport Station (i.e., KORD, CYYZ)
-  - Personal Weather Station (i.e., pws:KMNCHASK10)
-  - US ZIP (i.e., 12345)</Label>
+            <Field id="longitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
+                <Label>Longitude:</Label>
             </Field>
 
             <Field id="displayValuesTitle" type="label" alignText="Right">
-                <Label>
-Display Values</Label>
+                <Label>Display Values</Label>
             </Field>
 
             <Field id="separator00" type="separator"/>
@@ -4823,7 +3849,7 @@ Email Summary</Label>
 
             <Field id="space12" type="label" fontSize="small">
                 <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
-plugin updates within the WUnderground plugin settings dialog.</Label>
+plugin updates within the darkSky plugin settings dialog.</Label>
             </Field>
 
             <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
@@ -5565,32 +4591,32 @@ plugin updates within the WUnderground plugin settings dialog.</Label>
 
             <State id="locationCity">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Wunderground - Location</TriggerLabel>
-                <ControlPageLabel>Wunderground - Location</ControlPageLabel>
+                <TriggerLabel>darkSky - Location</TriggerLabel>
+                <ControlPageLabel>darkSky - Location</ControlPageLabel>
             </State>
 
             <State id="estimated">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Estimated Conditions</TriggerLabel>
-                <ControlPageLabel>Wunderground - Estimated Conditions</ControlPageLabel>
+                <TriggerLabel>darkSky - Estimated Conditions</TriggerLabel>
+                <ControlPageLabel>darkSky - Estimated Conditions</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Weather Device State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Weather Device State</ControlPageLabel>
+                <TriggerLabel>darkSky - Weather Device State</TriggerLabel>
+                <ControlPageLabel>darkSky - Weather Device State</ControlPageLabel>
             </State>
 
             <State id="stationID">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Wunderground - Station ID</TriggerLabel>
-                <ControlPageLabel>Wunderground - Station ID</ControlPageLabel>
+                <TriggerLabel>darkSky - Station ID</TriggerLabel>
+                <ControlPageLabel>darkSky - Station ID</ControlPageLabel>
             </State>
 
             <State id="weatherSummaryEmailSent">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Weather Summary Email Sent</TriggerLabel>
-                <ControlPageLabel>Wunderground - Weather Summary Email Sent</ControlPageLabel>
+                <TriggerLabel>darkSky - Weather Summary Email Sent</TriggerLabel>
+                <ControlPageLabel>darkSky - Weather Summary Email Sent</ControlPageLabel>
             </State>
 
         </States>
