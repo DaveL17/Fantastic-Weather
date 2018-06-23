@@ -1,0 +1,6 @@
+WUnderground 7 Plugin - Developed by: DaveL17
+
+Note: Dark Sky requires Indigo 7
+
+v0.0.1
+-

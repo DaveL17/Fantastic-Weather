@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Actions>
+    <SupportURL>https://github.com/DaveL17/WUnderground7/wiki</SupportURL>
+    <Action id="refreshWeatherData">
+        <Name>Refresh Weather Data</Name>
+        <CallbackMethod>actionRefreshWeather</CallbackMethod>
+    </Action>
+</Actions>
