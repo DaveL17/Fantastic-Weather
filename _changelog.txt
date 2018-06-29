@@ -1,4 +1,4 @@
-WUnderground 7 Plugin - Developed by: DaveL17
+Dark Sky Plugin - Developed by: DaveL17
 
 Note: Dark Sky requires Indigo 7
 
