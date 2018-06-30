@@ -4,8 +4,8 @@
 
     <!-- Almanac -->
 
-    <Device id="darkSkyAlmanac" type="custom">
-        <Name>Dark Sky Almanac</Name>
+    <Device id="Almanac" type="custom">
+        <Name>Almanac</Name>
 
         <ConfigUI>
 
@@ -129,8 +129,8 @@
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>darkSky - Almanac Device State</TriggerLabel>
-                <ControlPageLabel>darkSky - Almanac Device State</ControlPageLabel>
+                <TriggerLabel>Almanac Device State</TriggerLabel>
+                <ControlPageLabel>Almanac Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -139,8 +139,8 @@
 
     <!-- Astronomy -->
 
-    <Device id="darkSkyAstronomy" type="custom">
-        <Name>Dark Sky Astronomy</Name>
+    <Device id="Astronomy" type="custom">
+        <Name>Astronomy</Name>
 
         <ConfigUI>
 
@@ -205,8 +205,8 @@
 
             <State id="onOffState">
                 <ValueType>Boolean</ValueType>
-                <TriggerLabel>darkSky - Astronomy Device State</TriggerLabel>
-                <ControlPageLabel>darkSky - Astronomy Device State</ControlPageLabel>
+                <TriggerLabel>Astronomy Device State</TriggerLabel>
+                <ControlPageLabel>Astronomy Device State</ControlPageLabel>
             </State>
         </States>
 
@@ -216,8 +216,8 @@
 
     <!-- Hourly Forecast -->
 
-    <Device id="darkSkyHourly" type="custom">
-        <Name>Dark Sky Hourly Forecast</Name>
+    <Device id="Hourly" type="custom">
+        <Name>Hourly Forecast</Name>
 
         <ConfigUI>
 
@@ -2808,8 +2808,8 @@
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>darkSky - Hourly Forecast Device State</TriggerLabel>
-                <ControlPageLabel>darkSky - Hourly Forecast Device State</ControlPageLabel>
+                <TriggerLabel>Hourly Device State</TriggerLabel>
+                <ControlPageLabel>Hourly Device State</ControlPageLabel>
             </State>
 
         </States>
@@ -2820,8 +2820,8 @@
 
     <!-- Daily Forecast -->
 
-    <Device id="darkSkyDaily" type="custom">
-        <Name>Dark Sky Daily Forecast</Name>
+    <Device id="Daily" type="custom">
+        <Name>Daily Forecast</Name>
 
         <ConfigUI>
 
@@ -2878,7 +2878,7 @@ Display Units</Label>
 
             <Field id="space12" type="label" fontSize="small">
                 <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
-plugin updates within the darkSky plugin settings dialog.</Label>
+plugin updates within the plugin settings dialog.</Label>
             </Field>
 
             <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
@@ -3860,8 +3860,8 @@ plugin updates within the darkSky plugin settings dialog.</Label>
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>darkSky - Daily Forecast Device State</TriggerLabel>
-                <ControlPageLabel>darkSky - Daily Forecast Device State</ControlPageLabel>
+                <TriggerLabel>Daily Device State</TriggerLabel>
+                <ControlPageLabel>Daily Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -3869,8 +3869,8 @@ plugin updates within the darkSky plugin settings dialog.</Label>
     </Device>
 
     <!-- Weather Device -->
-    <Device id="darkSkyWeather" type="custom">
-        <Name>Dark Sky Weather</Name>
+    <Device id="Weather" type="custom">
+        <Name>Weather</Name>
 
         <ConfigUI>
 
@@ -4474,8 +4474,8 @@ file:///Users/username/Desktop/imagefile.png
 
             <State id="onOffState">
                 <ValueType>boolean</ValueType>
-                <TriggerLabel>Wunderground - Image Downloader State</TriggerLabel>
-                <ControlPageLabel>Wunderground - Image Downloader State</ControlPageLabel>
+                <TriggerLabel>Image Downloader Device State</TriggerLabel>
+                <ControlPageLabel>Image Downloader Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>

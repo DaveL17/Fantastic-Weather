@@ -2,7 +2,7 @@
 <PluginConfig>
 
     <Field id="infoLabel00" type="label">
-        <Label>Dark Sky Plugin</Label>
+        <Label>Fantastically Useful Weather Utility</Label>
     </Field>
 
     <Field id="space000" type="label" fontSize="small">
@@ -17,7 +17,7 @@ https://darksky.net/poweredby/</Label>
 
 <!--Hidden Controls-->
 
-    <Field id="launchDSparameters" type="textfield" defaultValue="https://darksky.net" hidden="True">
+    <Field id="launchparameters" type="textfield" defaultValue="https://darksky.net" hidden="True">
         <Label/>
     </Field>
 

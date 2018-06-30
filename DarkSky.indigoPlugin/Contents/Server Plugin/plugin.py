@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Dark Sky Plugin
+Fantastically Useful Weather Utility
 plugin.py
 Author: DaveL17
 Credits:
 Update Checker by: berkinet (with additional features by Travis Cook)
 Regression Testing by: Monstergerm
 
-The Dark Sky plugin downloads JSON data from Dark Sky and parses
+The Fantastically Useful Weather Utility plugin downloads JSON data from Dark Sky and parses
 it into custom device states. Theoretically, the user can create an unlimited
 number of devices representing individual observation locations. The
-Dark Sky plugin will update each custom device found in the device
+Fantastically Useful Weather Utility plugin will update each custom device found in the device
 dictionary incrementally.
 
 The base Dark Sky developer plan allows for 1000 per day. See Dark Sky for
@@ -61,7 +61,6 @@ https://github.com/DaveL17/Dark Sky/blob/master/LICENSE
 # TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
 # TODO: device validation to ensure that lat/long is valid (-90 to 90) and (-180 to 180)
 # TODO: plugin update notifications
-# TODO: severe weather alert notifications
 # TODO: limit no comm messages to one per cycle
 # TODO: trace & verify value/uiValue
 
@@ -98,7 +97,7 @@ __author__    = Dave.__author__
 __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
-__title__     = "Dark Sky Plugin for Indigo Home Control"
+__title__     = "Fantastically Useful Weather Utility"
 __version__   = "0.0.01"
 
 # =============================================================================
@@ -115,7 +114,7 @@ kDefaultPluginPrefs = {
     u'itemListTempDecimal': "1",        # Precision for Indigo Item List.
     u'language': "en",                  # Language for DS text.
     u'lastSuccessfulPoll': "1970-01-01 00:00:00",  # Last successful plugin cycle
-    u'launchDSparameters': "https://www.darksky.net",  # url for launch API button
+    u'launchparameters': "https://www.darksky.net",  # url for launch API button
     u'nextPoll': "",                    # Last successful plugin cycle
     u'noAlertLogging': False,           # Suppresses "no active alerts" logging.
     u'showDebugLevel': "30",            # Logger level.
@@ -142,7 +141,7 @@ class Plugin(indigo.PluginBase):
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
-        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Dark Sky/master/dark_sky_version.html")
+        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastically Useful Weather Utility/master/dark_sky_version.html")
         self.wuOnline = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
@@ -173,9 +172,9 @@ class Plugin(indigo.PluginBase):
         self.date_format = self.Formatter.dateFormat()
         self.time_format = self.Formatter.timeFormat()
 
-        # Dark Sky Attribution and disclaimer.
+        # Fantastically Useful Weather Utility Attribution and disclaimer.
         indigo.server.log(u"{0:*^130}".format(""))
-        indigo.server.log(u"{0:*^130}".format(" Powered by Dark Sky. This plugin and its author are in no way affiliated with Dark Sky. "))
+        indigo.server.log(u"{0:*^130}".format(" Powered by Fantastically Useful Weather Utility. This plugin and its author are in no way affiliated with Fantastically Useful Weather Utility. "))
         indigo.server.log(u"{0:*^130}".format(""))
 
         # Log pluginEnvironment information when plugin is first started
@@ -240,7 +239,7 @@ class Plugin(indigo.PluginBase):
             for dev in indigo.devices.itervalues('self'):
 
                 # For weather device types
-                if dev.deviceTypeId == "darkSkyWeather":
+                if dev.deviceTypeId == 'Weather':
 
                     current_on_off_state = dev.states.get('onOffState', True)
                     current_on_off_state_ui = dev.states.get('onOffState.ui', "")
@@ -281,7 +280,7 @@ class Plugin(indigo.PluginBase):
             display_value = u"Enabled"
 
         # =========================== Set Device Icon to Off ==========================
-        if dev.model in ['Dark Sky Device', 'Dark Sky Weather', 'Dark Sky Weather Device', 'Dark Sky', 'Weather']:
+        if dev.deviceTypeId == 'Weather':
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
         else:
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -293,7 +292,7 @@ class Plugin(indigo.PluginBase):
         self.logger.debug(u"Stopping Device: {0}".format(dev.name))
 
         # =========================== Set Device Icon to Off ==========================
-        if dev.deviceTypeId == 'darkSkyWeather':
+        if dev.deviceTypeId == 'Weather':
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
         else:
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -307,7 +306,7 @@ class Plugin(indigo.PluginBase):
         # =========================== Populate Default Value ==========================
         # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
         # populate the control with the default value when a new device is created.
-        if typeId == 'darkSkyDaily' and 'weatherSummaryEmailTime' not in valuesDict.keys():
+        if typeId == 'Daily':
             valuesDict['weatherSummaryEmailTime'] = "01:00"
 
         return valuesDict
@@ -354,7 +353,7 @@ class Plugin(indigo.PluginBase):
 
         except self.StopThread as error:
             self.logger.debug(u"StopThread: (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
-            self.logger.debug(u"Stopping Dark Sky Plugin thread.")
+            self.logger.debug(u"Stopping Fantastically Useful Weather Utility thread.")
 
     def shutdown(self):
 
@@ -383,9 +382,22 @@ class Plugin(indigo.PluginBase):
 
     def validateDeviceConfigUi(self, valuesDict, typeID, devId):
 
-        self.logger.debug(u"validateDeviceConfigUi called.")
-
         error_msg_dict = indigo.Dict()
+
+        if valuesDict['isWeatherDevice']:
+
+            # ================================= Latitude ==================================
+            if not -90 <= float(valuesDict['latitude']) <= 90:
+                error_msg_dict['latitude'] = u"The latitude value must be between -90 and 90."
+                error_msg_dict['showAlertText'] = u"Latitude Range Error\n\nThe latitude value must be between -90 and 90"
+                return False, valuesDict, error_msg_dict
+
+            # ================================= Longitude =================================
+            if not -180 <= float(valuesDict['longitude']) <= 180:
+                error_msg_dict['longitude'] = u"The longitude value must be between -90 and 90."
+                error_msg_dict['showAlertText'] = u"Latitude Range Error\n\nThe latitude value must be between -180 and 180"
+                return False, valuesDict, error_msg_dict
+
         return True
 
     def validateEventConfigUi(self, valuesDict, typeId, eventId):
@@ -477,7 +489,7 @@ class Plugin(indigo.PluginBase):
 
         return True, valuesDict
 
-# Dark Sky Methods =======================================================
+# Fantastically Useful Weather Utility Methods ================================
     def actionRefreshWeather(self, valuesDict):
         """
         Refresh all weather as a result of an action call
@@ -554,7 +566,7 @@ class Plugin(indigo.PluginBase):
         -----
         """
 
-        file_name = '{0}/{1} Dark Sky Plugin.txt'.format(indigo.server.getLogsFolderPath(), dt.datetime.today().date())
+        file_name = '{0}/{1} FUWU Plugin.txt'.format(indigo.server.getLogsFolderPath(), dt.datetime.today().date())
 
         try:
 
@@ -589,6 +601,9 @@ class Plugin(indigo.PluginBase):
         try:
             summary_wanted = dev.pluginProps.get('weatherSummaryEmail', '')
             summary_sent   = dev.states.get('weatherSummaryEmailSent', False)
+            email_body = u""
+            location   = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+            forecast_day = self.masterWeatherDict[location]['daily']['data'][0]
 
             # Get the desired summary email time and convert it for test.
             summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
@@ -610,11 +625,6 @@ class Plugin(indigo.PluginBase):
             # If an email summary is wanted but not yet sent and we have reached the desired time of day.
             if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour:
 
-                email_body = u""
-                location   = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-
-                forecast_day = self.masterWeatherDict[location]['daily']['data'][0]
-
                 cloud_cover = self.nestedLookup(forecast_day, keys=('cloudCover',))
                 forecast_time = self.nestedLookup(forecast_day, keys=('time',))
                 forecast_day_name = time.strftime('%A', time.localtime(float(forecast_time)))
@@ -635,13 +645,12 @@ class Plugin(indigo.PluginBase):
                 email_body += u"{0}\n".format(dev.name)
                 email_body += u"{0:-<40}\n\n".format('')
                 email_body += u"{0}:\n".format(forecast_day_name)
-                email_body += u"{0}\n".format(summary)
-                email_body += u"Today:\n"
-                email_body += u"{0:-<40}\n\n".format('')
+                email_body += u"{0:-<40}\n".format('')
+                email_body += u"{0}\n\n".format(summary)
                 email_body += u"High: {0}\n".format(temperature_high)
                 email_body += u"Low: {0}\n".format(temperature_low)
                 email_body += u"{0} chance of {1}\n".format(precip_probability, precip_type)
-                email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(wind_bearing, wind_speed, wind_gust)
+                email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(uiFormatWindName(wind_bearing), wind_speed, wind_gust)
                 email_body += u"Clouds: {0}\n".format(cloud_cover)
                 email_body += u"Humidity: {0}\n".format(humidity)
                 email_body += u"Ozone: {0}\n".format(ozone)
@@ -1669,8 +1678,8 @@ class Plugin(indigo.PluginBase):
         """
         Refresh data for plugin devices
 
-        This method refreshes weather data for all devices based on a Dark Sky
-        general cycle, Action Item or Plugin Menu call.
+        This method refreshes weather data for all devices based on a general
+        cycle, Action Item or Plugin Menu call.
 
         -----
         """
@@ -1689,7 +1698,7 @@ class Plugin(indigo.PluginBase):
                     break
 
                 if not dev:
-                    # There are no Dark Sky devices, so go to sleep.
+                    # There are no FUWU devices, so go to sleep.
                     self.logger.info(u"There aren't any devices to poll yet. Sleeping.")
 
                 elif not dev.configured:
@@ -1739,24 +1748,24 @@ class Plugin(indigo.PluginBase):
                         if self.masterWeatherDict != {} and good_time:
 
                             # Almanac devices.
-                            if dev.deviceTypeId == 'darkSkyAlmanac':
+                            if dev.deviceTypeId == 'Almanac':
                                 # self.parseAlmanacData(dev)
                                 pass
 
                             # Astronomy devices.
-                            elif dev.deviceTypeId == 'darkSkyAstronomy':
+                            elif dev.deviceTypeId == 'Astronomy':
                                 self.parseAstronomyData(dev)
 
                             # Hourly Forecast devices.
-                            elif dev.deviceTypeId == 'darkSkyHourly':
+                            elif dev.deviceTypeId == 'Hourly':
                                 self.parseHourlyForecast(dev)
 
                             # Ten Day Forecast devices.
-                            elif dev.deviceTypeId == 'darkSkyDaily':
+                            elif dev.deviceTypeId == 'Daily':
                                 self.parseDailyForecast(dev)
 
                             # Weather devices.
-                            elif dev.deviceTypeId == 'darkSkyWeather':
+                            elif dev.deviceTypeId == 'Weather':
                                 self.parseWeatherData(dev)
                                 self.parseAlertsData(dev)
 
@@ -1778,7 +1787,7 @@ class Plugin(indigo.PluginBase):
 
         Weather Location Offline:
         The triggerProcessing method will examine the time of the last weather location
-        update and, if the update exceeds the time delta specified in a Dark Sky
+        update and, if the update exceeds the time delta specified in a Fantastically Useful Weather Utility
         Plugin Weather Location Offline trigger, the trigger will be fired. The plugin
         examines the value of the latest "currentObservationEpoch" and *not* the Indigo
         Last Update value.
@@ -1986,6 +1995,39 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}".format(val)
 
+    def uiFormatWindName(self, dev, state_name, val):
+        """
+        Format wind data for Indigo UI
+
+        Adjusts the decimal precision of certain wind values for display in control
+        pages, etc.
+
+        -----
+
+        :param indigo.Device dev:
+        :param str state_name:
+        :param val:
+        """
+
+        if val in range(0, 22):
+            return u"North"
+        elif val in range(22, 68):
+            return u"Northeast"
+        elif val in range(68, 113):
+            return u"East"
+        elif val in range(113, 158):
+            return u"Southeast"
+        elif val in range(158, 203):
+            return u"South"
+        elif val in range(203, 248):
+            return u"Southwest"
+        elif val in range(248, 293):
+            return u"West"
+        elif val in range(293, 338):
+            return u"Northwest"
+        elif val in range(338, 361):
+            return u"North"
+
     def darkSkySite(self, valuesDict):
         """
         Launch a web browser to register for API
@@ -1998,5 +2040,5 @@ class Plugin(indigo.PluginBase):
         :param indigo.Dict valuesDict:
         """
 
-        self.Fogbert.launchWebPage(valuesDict['launchDSparameters'])
+        self.Fogbert.launchWebPage(valuesDict['launchparameters'])
 

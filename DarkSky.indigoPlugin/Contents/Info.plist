@@ -9,11 +9,11 @@
 	<key>IwsApiVersion</key>
 	<string>1.0.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Dark Sky</string>
+	<string>Fantastic Weather</string>
 	<key>CFBundleName</key>
-	<string>Dark Sky</string>
+	<string>Fantastic Weather</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.fogbert.indigoplugin.darksky</string>
+	<string>com.fogbert.indigoplugin.fantasticwWeather</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.0</string>
 	<key>CFBundleURLTypes</key>
