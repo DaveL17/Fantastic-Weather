@@ -3931,6 +3931,32 @@ plugin updates within the darkSky plugin settings dialog.</Label>
                 <Label>If severe weather alert logging is enabled, checking this box will suppress alerts for this device only.</Label>
             </Field>
 
+            <Field id="weatherSummaryLabel" type="label" alignText="Right">
+                <Label>
+Email Summary</Label>
+            </Field>
+
+            <Field id="weatherSummarySeparator" type="separator"/>
+
+            <Field id="space12" type="label" fontSize="small">
+                <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
+plugin updates within the WUnderground plugin settings dialog.</Label>
+            </Field>
+
+            <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
+                <Label/>
+                <Description>Receive Email Summary</Description>
+            </Field>
+
+            <Field id="weatherSummaryEmailTime" type="menu" defaultValue="01:00" tooltip="Select the time that you would like the weather summary to be sent. It is recommended to set this value to 01:00 or later.">
+                <Label>Send Time:</Label>
+                <List class="self" filter="" method="generatorTime" dynamicReload="true"/>
+            </Field>
+
+            <Field id="weatherSummaryEmailSent" type="checkbox" defaultValue="false" hidden="true">
+                <Label>Receive Email Summary:</Label>
+            </Field>
+
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
 
             <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
