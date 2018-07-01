@@ -105,7 +105,7 @@ __version__   = "0.0.01"
 kDefaultPluginPrefs = {
     u'alertLogging': False,             # Write severe weather alerts to the log?
     u'apiKey': "",                      # DS requires the api key.
-    u'callCounter': "1000",             # DS call limit based on UW plan.
+    u'callCounter': "999",              # DS call limit based on UW plan.
     u'dailyCallCounter': "0",           # Number of API calls today.
     u'dailyCallDay': "1970-01-01",      # API call counter date.
     u'dailyCallLimitReached': False,    # Has the daily call limit been reached?
@@ -142,7 +142,7 @@ class Plugin(indigo.PluginBase):
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
         self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastically Useful Weather Utility/master/fantastic_weather_version.html")
-        self.wuOnline = True
+        self.ds_online = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
         # ========================== API Poll Values ==========================
@@ -925,10 +925,10 @@ class Plugin(indigo.PluginBase):
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
-            self.wuOnline = False
+            self.ds_online = False
 
         # We could have come here from several different places. Return to whence we came to further process the weather data.
-        self.wuOnline = True
+        self.ds_online = True
         return self.masterWeatherDict
 
     def listOfDevices(self, filter, valuesDict, targetId, triggerId):
@@ -1702,7 +1702,7 @@ class Plugin(indigo.PluginBase):
         """
 
         self.download_interval   = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
-        self.wuOnline = True
+        self.ds_online = True
 
         # Check to see if the daily call limit has been reached.
         try:
@@ -1711,7 +1711,7 @@ class Plugin(indigo.PluginBase):
 
             for dev in indigo.devices.itervalues("self"):
 
-                if not self.wuOnline:
+                if not self.ds_online:
                     break
 
                 if not dev:

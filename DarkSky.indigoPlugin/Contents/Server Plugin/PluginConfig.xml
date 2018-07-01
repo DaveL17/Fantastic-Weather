@@ -45,7 +45,7 @@ https://darksky.net/poweredby/</Label>
         <Label>API key:</Label>
     </Field>
 
-    <Field id="callCounter" type="textfield" defaultValue="1000" tooltip="Please enter the maximum number of Dark Sky calls for your plan. The base developer plan is 500 downloads per day.">
+    <Field id="callCounter" type="textfield" defaultValue="999" tooltip="Please enter the maximum number of Dark Sky calls for your plan. The base developer plan is 500 downloads per day.">
         <Label>Daily Limit:</Label>
     </Field>
 
@@ -57,7 +57,7 @@ https://darksky.net/poweredby/</Label>
         <Label>Next Scheduled Poll:</Label>
     </Field>
 
-    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of API calls today so far.">
+    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight UTC">
         <Label>API Calls Today:</Label>
     </Field>
 
