@@ -141,7 +141,7 @@ class Plugin(indigo.PluginBase):
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
-        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastically Useful Weather Utility/master/dark_sky_version.html")
+        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastically Useful Weather Utility/master/fantastic_weather_version.html")
         self.wuOnline = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
@@ -554,6 +554,20 @@ class Plugin(indigo.PluginBase):
             except Exception as error:
                 self.logger.error(u"Exception when trying to unkill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
+    def darkSkySite(self, valuesDict):
+        """
+        Launch a web browser to register for API
+
+        Launch a web browser session with the valuesDict parm containing the target
+        URL.
+
+        -----
+
+        :param indigo.Dict valuesDict:
+        """
+
+        self.Fogbert.launchWebPage(valuesDict['launchparameters'])
+
     def dumpTheJSON(self):
         """
         Dump copy of weather JSON to file
@@ -953,7 +967,7 @@ class Plugin(indigo.PluginBase):
         for key, value in valuesDict.iteritems():
             self.logger.debug(u"{0}: {1}".format(key, value))
 
-        return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.darkSkyWeather')]
+        return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]
 
     def nestedLookup(self, obj, keys, default=u"Not available"):
         """
@@ -2027,18 +2041,3 @@ class Plugin(indigo.PluginBase):
             return u"Northwest"
         elif val in range(338, 361):
             return u"North"
-
-    def darkSkySite(self, valuesDict):
-        """
-        Launch a web browser to register for API
-
-        Launch a web browser session with the valuesDict parm containing the target
-        URL.
-
-        -----
-
-        :param indigo.Dict valuesDict:
-        """
-
-        self.Fogbert.launchWebPage(valuesDict['launchparameters'])
-
