@@ -612,12 +612,14 @@ class Plugin(indigo.PluginBase):
         :param indigo.Device dev:
         """
 
+        email_body = u""
+
         try:
+            location = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+
+            forecast_day   = self.masterWeatherDict[location]['daily']['data'][0]
             summary_wanted = dev.pluginProps.get('weatherSummaryEmail', '')
             summary_sent   = dev.states.get('weatherSummaryEmailSent', False)
-            email_body = u""
-            location   = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-            forecast_day = self.masterWeatherDict[location]['daily']['data'][0]
 
             # Get the desired summary email time and convert it for test.
             summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
@@ -639,22 +641,23 @@ class Plugin(indigo.PluginBase):
             # If an email summary is wanted but not yet sent and we have reached the desired time of day.
             if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour:
 
-                cloud_cover = self.nestedLookup(forecast_day, keys=('cloudCover',))
-                forecast_time = self.nestedLookup(forecast_day, keys=('time',))
-                forecast_day_name = time.strftime('%A', time.localtime(float(forecast_time)))
-                humidity = self.nestedLookup(forecast_day, keys=('humidity',))
-                ozone = self.nestedLookup(forecast_day, keys=('ozone',))
+                cloud_cover        = self.nestedLookup(forecast_day, keys=('cloudCover',))
+                forecast_time      = self.nestedLookup(forecast_day, keys=('time',))
+                forecast_day_name  = time.strftime('%A', time.localtime(float(forecast_time)))
+                humidity           = self.nestedLookup(forecast_day, keys=('humidity',))
+                ozone              = self.nestedLookup(forecast_day, keys=('ozone',))
                 precip_probability = self.nestedLookup(forecast_day, keys=('precipProbability',))
-                precip_type = self.nestedLookup(forecast_day, keys=('precipType',))
-                pressure = self.nestedLookup(forecast_day, keys=('pressure',))
-                summary = self.nestedLookup(forecast_day, keys=('summary',))
-                temperature_high = self.nestedLookup(forecast_day, keys=('temperatureHigh',))
-                temperature_low = self.nestedLookup(forecast_day, keys=('temperatureLow',))
-                uv_index = self.nestedLookup(forecast_day, keys=('uvIndex',))
-                visibility = self.nestedLookup(forecast_day, keys=('visibility',))
-                wind_bearing = self.nestedLookup(forecast_day, keys=('windBearing',))
-                wind_gust = self.nestedLookup(forecast_day, keys=('windGust',))
-                wind_speed = self.nestedLookup(forecast_day, keys=('windSpeed',))
+                precip_type        = self.nestedLookup(forecast_day, keys=('precipType',))
+                pressure           = self.nestedLookup(forecast_day, keys=('pressure',))
+                summary            = self.nestedLookup(forecast_day, keys=('summary',))
+                temperature_high   = self.nestedLookup(forecast_day, keys=('temperatureHigh',))
+                temperature_low    = self.nestedLookup(forecast_day, keys=('temperatureLow',))
+                uv_index           = self.nestedLookup(forecast_day, keys=('uvIndex',))
+                visibility         = self.nestedLookup(forecast_day, keys=('visibility',))
+                wind_bearing       = self.nestedLookup(forecast_day, keys=('windBearing',))
+                wind_gust          = self.nestedLookup(forecast_day, keys=('windGust',))
+                wind_name          = self.uiFormatWindName('wind_bearing', wind_bearing)
+                wind_speed         = self.nestedLookup(forecast_day, keys=('windSpeed',))
 
                 email_body += u"{0}\n".format(dev.name)
                 email_body += u"{0:-<40}\n\n".format('')
@@ -664,7 +667,7 @@ class Plugin(indigo.PluginBase):
                 email_body += u"High: {0}\n".format(temperature_high)
                 email_body += u"Low: {0}\n".format(temperature_low)
                 email_body += u"{0} chance of {1}\n".format(precip_probability, precip_type)
-                email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(uiFormatWindName(wind_bearing), wind_speed, wind_gust)
+                email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(wind_name, wind_speed, wind_gust)
                 email_body += u"Clouds: {0}\n".format(cloud_cover)
                 email_body += u"Humidity: {0}\n".format(humidity)
                 email_body += u"Ozone: {0}\n".format(ozone)
@@ -1082,9 +1085,9 @@ class Plugin(indigo.PluginBase):
         alerts_states_list = []
 
         try:
-            alert_logging     = self.pluginPrefs.get('alertLogging', True)
-            alerts_suppressed = dev.pluginProps.get('suppressWeatherAlerts', False)
-            no_alert_logging  = self.pluginPrefs.get('noAlertLogging', False)
+            alert_logging     = self.pluginPrefs.get('alertLogging', True)  # Whether to log alerts
+            alerts_suppressed = dev.pluginProps.get('suppressWeatherAlerts', False)  # Suppress alert messages for device
+            no_alert_logging  = self.pluginPrefs.get('noAlertLogging', False)  # Suppress 'No Alert' messages
 
             location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
@@ -1100,7 +1103,7 @@ class Plugin(indigo.PluginBase):
                 alerts_states_list.append({'key': 'alertStatus', 'value': "false", 'uiValue': u"False"})
 
                 if alert_logging and not no_alert_logging and not alerts_suppressed:
-                    self.logger.info(u"There are no severe weather alerts.")
+                    self.logger.info(u"{0} There are no severe weather alerts.".format(dev.name))
 
             # ============================ At Least One Alert =============================
             else:
@@ -1123,15 +1126,15 @@ class Plugin(indigo.PluginBase):
                 if len(alert_array) == 1:
                     # If user has enabled alert logging, write alert message to the Indigo log.
                     if alert_logging and not alerts_suppressed:
-                        self.logger.info(u"There is 1 severe weather alert.")
+                        self.logger.info(u"{0}: There is 1 severe weather alert.".format(dev.name))
                 else:
                     # If user has enabled alert logging, write alert message to the Indigo log.
                     if alert_logging and not alerts_suppressed and 0 < len(alert_array) <= 5:
-                        self.logger.info(u"There are {0} severe weather alerts.".format(len(alert_array)))
+                        self.logger.info(u"{0}: There are {1} severe weather alerts.".format(dev.name, len(alert_array)))
 
                     # If user has enabled alert logging, write alert message to the Indigo log.
                     if alert_logging and not alerts_suppressed and len(alert_array) > 5:
-                        self.logger.info(u"The plugin only retains information for the first 5 alerts.")
+                        self.logger.info(u"{0}: The plugin only retains information for the first 5 alerts.".format(dev.name))
 
                 alert_counter = 1
                 for alert in range(len(alert_array)):
@@ -2009,7 +2012,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}".format(val)
 
-    def uiFormatWindName(self, dev, state_name, val):
+    def uiFormatWindName(self, state_name, val):
         """
         Format wind data for Indigo UI
 
