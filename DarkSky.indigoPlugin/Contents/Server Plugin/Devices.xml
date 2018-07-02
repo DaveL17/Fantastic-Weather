@@ -2,141 +2,6 @@
 
 <Devices>
 
-    <!-- Almanac -->
-
-    <Device id="Almanac" type="custom">
-        <Name>Almanac</Name>
-
-        <ConfigUI>
-
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>Almanac information</Label>
-            </Field>
-
-            <Field id="latitude" type="textfield" defaultValue="0"
-                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
-                <Label>Latitude:</Label>
-            </Field>
-
-            <Field id="longitude" type="textfield" defaultValue="0"
-                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
-                <Label>Longitude:</Label>
-            </Field>
-
-            <Field id="temperatureUnits" type="textfield" defaultValue="°" tooltip="Appended to all temperature values. (75°)">
-                <Label>Temperature:</Label>
-            </Field>
-
-            <Field id="space07" type="label" fontSize="small" alignWithControl="True">
-                <Label>Controls how values will be displayed on control pages, etc.</Label>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
-            </Field>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="currentObservation">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
-            </State>
-
-            <State id="currentObservation24hr">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
-            </State>
-
-            <State id="currentObservationEpoch">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
-            </State>
-
-            <State id="tempHighNormalF">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Average High Temperature (F)</TriggerLabel>
-                <ControlPageLabel>Average High Temperature (F)</ControlPageLabel>
-            </State>
-
-            <State id="tempHighNormalC">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Average High Temperature (C)</TriggerLabel>
-                <ControlPageLabel>Average High Temperature (C)</ControlPageLabel>
-            </State>
-
-            <State id="tempHighRecordF">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Record High Temperature (F)</TriggerLabel>
-                <ControlPageLabel>Record High Temperature (F)</ControlPageLabel>
-            </State>
-
-            <State id="tempHighRecordC">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Record High Temperature (C)</TriggerLabel>
-                <ControlPageLabel>Record High Temperature (C)</ControlPageLabel>
-            </State>
-
-            <State id="tempHighRecordYear">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Record High Temperature Year</TriggerLabel>
-                <ControlPageLabel>Record High Temperature Year</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="tempLowNormalF">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Average Low Temperature (F)</TriggerLabel>
-                <ControlPageLabel>Average Low Temperature (F)</ControlPageLabel>
-            </State>
-
-            <State id="tempLowNormalC">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Average Low Temperature (C)</TriggerLabel>
-                <ControlPageLabel>Average Low Temperature (C)</ControlPageLabel>
-            </State>
-
-            <State id="tempLowRecordF">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Record Low Temperature (F)</TriggerLabel>
-                <ControlPageLabel>Record Low Temperature (F)</ControlPageLabel>
-            </State>
-
-            <State id="tempLowRecordC">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Record Low Temperature (C)</TriggerLabel>
-                <ControlPageLabel>Record Low Temperature (C)</ControlPageLabel>
-            </State>
-
-            <State id="tempLowRecordYear">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Record Low Temperature Year</TriggerLabel>
-                <ControlPageLabel>Record Low Temperature Year</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="onOffState">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Almanac Device State</TriggerLabel>
-                <ControlPageLabel>Almanac Device State</ControlPageLabel>
-            </State>
-        </States>
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
-
     <!-- Astronomy -->
 
     <Device id="Astronomy" type="custom">
@@ -156,6 +21,21 @@
             <Field id="longitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
                 <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="displayUnitsLabel" type="label" alignText="Right">
+                <Label>
+Display Units</Label>
+            </Field>
+
+            <Field id="separator01" type="separator"/>
+
+            <Field id="percentageUnits" type="textfield" defaultValue="%" tooltip="Appended to all probability and percentage values. (80%)">
+                <Label>Percentage:</Label>
+            </Field>
+
+            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+                <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
@@ -214,6 +94,1072 @@
 
     </Device>
 
+    <!-- Daily Forecast -->
+
+    <Device id="Daily" type="custom">
+        <Name>Daily Forecast</Name>
+
+        <ConfigUI>
+
+            <Field id="space00" type="label" fontSize="small">
+                <Label>Daily Information</Label>
+            </Field>
+
+            <Field id="latitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
+                <Label>Latitude:</Label>
+            </Field>
+
+            <Field id="longitude" type="textfield" defaultValue="0"
+                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
+                <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="displayUnitsLabel" type="label" alignText="Right">
+                <Label>
+Display Units</Label>
+            </Field>
+
+            <Field id="separator01" type="separator"/>
+
+            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mph.)">
+                <Label>Distance:</Label>
+            </Field>
+
+            <Field id="indexUnits" type="textfield" defaultValue=" " tooltip="Appended to all index values. (ozone, UV, etc.)">
+                <Label>Index:</Label>
+            </Field>
+
+            <Field id="percentageUnits" type="textfield" defaultValue="%" tooltip="Appended to all probability and percentage values. (80%)">
+                <Label>Percentage:</Label>
+            </Field>
+
+            <Field id="pressureUnits" type="textfield" defaultValue=" mb" tooltip="Appended to all pressure values. (30.05 mb)">
+                <Label>Pressure:</Label>
+            </Field>
+
+            <Field id="rainAmountUnits" type="textfield" defaultValue=" in." tooltip="Appended to all rain volume units.(Values reported in either in. or mm.)">
+                <Label>Rain:</Label>
+            </Field>
+
+            <Field id="temperatureUnits" type="textfield" defaultValue="°" tooltip="Appended to all temperature values. (75°)">
+                <Label>Temperature:</Label>
+            </Field>
+
+            <Field id="windUnits" type="textfield" defaultValue=" mph" tooltip="Appended to all wind values. (5 mph)">
+                <Label>Wind:</Label>
+            </Field>
+
+            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+                <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
+            </Field>
+
+            <Field id="weatherSummaryLabel" type="label" alignText="Right">
+                <Label>Email Summary</Label>
+            </Field>
+
+            <Field id="weatherSummarySeparator" type="separator"/>
+
+            <Field id="space12" type="label" fontSize="small">
+                <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
+plugin updates within the plugin settings dialog.</Label>
+            </Field>
+
+            <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
+                <Label/>
+                <Description>Receive Email Summary</Description>
+            </Field>
+
+            <Field id="weatherSummaryEmailTime" type="menu" defaultValue="01:00" tooltip="Select the time that you would like the weather summary to be sent. It is recommended to set this value to 01:00 or later.">
+                <Label>Send Time:</Label>
+                <List class="self" filter="" method="generatorTime" dynamicReload="true"/>
+            </Field>
+
+            <Field id="weatherSummaryEmailSent" type="checkbox" defaultValue="false" hidden="true">
+                <Label>Receive Email Summary:</Label>
+            </Field>
+
+            <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
+
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            </Field>
+
+        </ConfigUI>
+
+        <States>
+
+            <State id="d01_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 1</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 2</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 3</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 4</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 5</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 6</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 7</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 8</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 1</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 2</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 3</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 4</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 5</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 6</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 7</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_pressure">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Barometric Pressure - Day 8</TriggerLabel>
+                <ControlPageLabel>Barometric Pressure - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 1</TriggerLabel>
+                <ControlPageLabel>Date - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 2</TriggerLabel>
+                <ControlPageLabel>Date - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 3</TriggerLabel>
+                <ControlPageLabel>Date - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 4</TriggerLabel>
+                <ControlPageLabel>Date - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 5</TriggerLabel>
+                <ControlPageLabel>Date - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 6</TriggerLabel>
+                <ControlPageLabel>Date - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 7</TriggerLabel>
+                <ControlPageLabel>Date - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_date">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Date - Day 8</TriggerLabel>
+                <ControlPageLabel>Date - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 1</TriggerLabel>
+                <ControlPageLabel>Day - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 2</TriggerLabel>
+                <ControlPageLabel>Day - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 3</TriggerLabel>
+                <ControlPageLabel>Day - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 4</TriggerLabel>
+                <ControlPageLabel>Day - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 5</TriggerLabel>
+                <ControlPageLabel>Day - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 6</TriggerLabel>
+                <ControlPageLabel>Day - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 7</TriggerLabel>
+                <ControlPageLabel>Day - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_day">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Day - Day 8</TriggerLabel>
+                <ControlPageLabel>Day - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 1</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 2</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 3</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 4</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 5</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 6</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 7</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_humidity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Humidity - Day 8</TriggerLabel>
+                <ControlPageLabel>Humidity - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 1</TriggerLabel>
+                <ControlPageLabel>Icon - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 2</TriggerLabel>
+                <ControlPageLabel>Icon - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 3</TriggerLabel>
+                <ControlPageLabel>Icon - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 4</TriggerLabel>
+                <ControlPageLabel>Icon - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 5</TriggerLabel>
+                <ControlPageLabel>Icon - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 6</TriggerLabel>
+                <ControlPageLabel>Icon - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 7</TriggerLabel>
+                <ControlPageLabel>Icon - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_icon">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Icon - Day 8</TriggerLabel>
+                <ControlPageLabel>Icon - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 1</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 2</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 3</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 4</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 5</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 6</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 7</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_ozone">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Ozone - Day 8</TriggerLabel>
+                <ControlPageLabel>Ozone - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Day 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_precipIntensity">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Intensity) - Day 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Intensity) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>OzoPrecipitation (Type)ne - Day 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Day 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 1</TriggerLabel>
+                <ControlPageLabel>Summary - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 2</TriggerLabel>
+                <ControlPageLabel>Summary - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 3</TriggerLabel>
+                <ControlPageLabel>Summary - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 4</TriggerLabel>
+                <ControlPageLabel>Summary - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 5</TriggerLabel>
+                <ControlPageLabel>Summary - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 6</TriggerLabel>
+                <ControlPageLabel>Summary - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 7</TriggerLabel>
+                <ControlPageLabel>Summary - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary - Day 8</TriggerLabel>
+                <ControlPageLabel>Summary - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 1</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 2</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 3</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 4</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 5</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 6</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 7</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_temperatureHigh">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (High) - Day 8</TriggerLabel>
+                <ControlPageLabel>Temperature (High) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 1</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 2</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 3</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 4</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 5</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 6</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 7</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_temperatureLow">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Temperature (Low) - Day 8</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 1</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 2</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 3</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 4</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 5</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 6</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 7</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_uvIndex">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>UV (Index) - Day 8</TriggerLabel>
+                <ControlPageLabel>UV (Index) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 1</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 2</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 3</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 4</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 5</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 6</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 7</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_visibility">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Visibility - Day 8</TriggerLabel>
+                <ControlPageLabel>Visibility - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_windBearing">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Wind (Bearing) - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind (Bearing) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_windGust">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Gust) - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind (Gust) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_windSpeed">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Wind (Speed) - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind (Speed) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="currentObservation">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
+            </State>
+
+            <State id="currentObservation24hr">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
+            </State>
+
+            <State id="currentObservationEpoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
+            </State>
+
+            <State id="onOffState">
+                <ValueType>Boolean</ValueType>
+                <TriggerLabel>Daily Device State</TriggerLabel>
+                <ControlPageLabel>Daily Device State</ControlPageLabel>
+            </State>
+
+            <State id="weatherSummaryEmailSent">
+                <ValueType>Boolean</ValueType>
+                <TriggerLabel>Weather Summary Email Sent</TriggerLabel>
+                <ControlPageLabel>Weather Summary Email Sent</ControlPageLabel>
+            </State>
+
+        </States>
+
+        <UiDisplayStateId>onOffState</UiDisplayStateId>
+
+    </Device>
+
     <!-- Hourly Forecast -->
 
     <Device id="Hourly" type="custom">
@@ -241,8 +1187,16 @@
 
             <Field id="separator01" type="separator"/>
 
-            <Field id="space07" type="label" fontSize="small">
-                <Label>Controls how values will be displayed on control pages, etc.</Label>
+            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mph.)">
+                <Label>Distance:</Label>
+            </Field>
+
+            <Field id="indexUnits" type="textfield" defaultValue=" " tooltip="Appended to all index values. (ozone, UV, etc.)">
+                <Label>Index:</Label>
+            </Field>
+
+            <Field id="pressureUnits" type="textfield" defaultValue=" mb" tooltip="Appended to all pressure values. (30.05 mb)">
+                <Label>Pressure:</Label>
             </Field>
 
             <Field id="percentageUnits" type="textfield" defaultValue="%" tooltip="Appended to all probability and percentage values. (80%)">
@@ -262,7 +1216,7 @@
             </Field>
 
             <Field id="space08" type="label" fontSize="small" alignWithControl="True">
-                <Label>These settings are independent of the Weather Units settings above. They do not affect the underlying value of the data point.</Label>
+                <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
@@ -2807,1063 +3761,13 @@
             </State>
 
             <State id="onOffState">
-                <ValueType>boolean</ValueType>
+                <ValueType>Boolean</ValueType>
                 <TriggerLabel>Hourly Device State</TriggerLabel>
                 <ControlPageLabel>Hourly Device State</ControlPageLabel>
             </State>
 
         </States>
 
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
-
-    <!-- Daily Forecast -->
-
-    <Device id="Daily" type="custom">
-        <Name>Daily Forecast</Name>
-
-        <ConfigUI>
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>Daily Information</Label>
-            </Field>
-
-            <Field id="latitude" type="textfield" defaultValue="0"
-                   tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
-                <Label>Latitude:</Label>
-            </Field>
-
-            <Field id="longitude" type="textfield" defaultValue="0"
-                   tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
-                <Label>Longitude:</Label>
-            </Field>
-
-            <Field id="displayUnitsLabel" type="label" alignText="Right">
-                <Label>
-Display Units</Label>
-            </Field>
-
-            <Field id="separator01" type="separator"/>
-
-            <Field id="space07" type="label" fontSize="small">
-                <Label>Controls how values will be displayed on control pages, etc.</Label>
-            </Field>
-
-            <Field id="percentageUnits" type="textfield" defaultValue="%" tooltip="Appended to all probability and percentage values. (80%)">
-                <Label>Percentage:</Label>
-            </Field>
-
-            <Field id="rainAmountUnits" type="textfield" defaultValue=" in." tooltip="Appended to all rain volume units.(Values reported in either in. or mm.)">
-                <Label>Rain:</Label>
-            </Field>
-
-            <Field id="temperatureUnits" type="textfield" defaultValue="°" tooltip="Appended to all temperature values. (75°)">
-                <Label>Temperature:</Label>
-            </Field>
-
-            <Field id="windUnits" type="textfield" defaultValue=" mph" tooltip="Appended to all wind values. (5 mph)">
-                <Label>Wind:</Label>
-            </Field>
-
-            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
-                <Label>These settings do not affect the underlying value of the data point.</Label>
-            </Field>
-
-            <Field id="weatherSummaryLabel" type="label" alignText="Right">
-                <Label>Email Summary</Label>
-            </Field>
-
-            <Field id="weatherSummarySeparator" type="separator"/>
-
-            <Field id="space12" type="label" fontSize="small">
-                <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
-plugin updates within the plugin settings dialog.</Label>
-            </Field>
-
-            <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
-                <Label/>
-                <Description>Receive Email Summary</Description>
-            </Field>
-
-            <Field id="weatherSummaryEmailTime" type="menu" defaultValue="01:00" tooltip="Select the time that you would like the weather summary to be sent. It is recommended to set this value to 01:00 or later.">
-                <Label>Send Time:</Label>
-                <List class="self" filter="" method="generatorTime" dynamicReload="true"/>
-            </Field>
-
-            <Field id="weatherSummaryEmailSent" type="checkbox" defaultValue="false" hidden="true">
-                <Label>Receive Email Summary:</Label>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
-            </Field>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="d01_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 1</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 2</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 3</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 4</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 5</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 6</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 7</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 8</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 1</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 2</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 3</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 4</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 5</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 6</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 7</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_pressure">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Barometric Pressure - Day 8</TriggerLabel>
-                <ControlPageLabel>Barometric Pressure - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 1</TriggerLabel>
-                <ControlPageLabel>Date - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 2</TriggerLabel>
-                <ControlPageLabel>Date - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 3</TriggerLabel>
-                <ControlPageLabel>Date - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 4</TriggerLabel>
-                <ControlPageLabel>Date - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 5</TriggerLabel>
-                <ControlPageLabel>Date - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 6</TriggerLabel>
-                <ControlPageLabel>Date - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 7</TriggerLabel>
-                <ControlPageLabel>Date - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_date">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Day 8</TriggerLabel>
-                <ControlPageLabel>Date - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 1</TriggerLabel>
-                <ControlPageLabel>Day - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 2</TriggerLabel>
-                <ControlPageLabel>Day - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 3</TriggerLabel>
-                <ControlPageLabel>Day - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 4</TriggerLabel>
-                <ControlPageLabel>Day - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 5</TriggerLabel>
-                <ControlPageLabel>Day - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 6</TriggerLabel>
-                <ControlPageLabel>Day - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 7</TriggerLabel>
-                <ControlPageLabel>Day - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_day">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Day - Day 8</TriggerLabel>
-                <ControlPageLabel>Day - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 1</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 2</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 3</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 4</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 5</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 6</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 7</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_humidity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Humidity - Day 8</TriggerLabel>
-                <ControlPageLabel>Humidity - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 1</TriggerLabel>
-                <ControlPageLabel>Icon - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 2</TriggerLabel>
-                <ControlPageLabel>Icon - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 3</TriggerLabel>
-                <ControlPageLabel>Icon - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 4</TriggerLabel>
-                <ControlPageLabel>Icon - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 5</TriggerLabel>
-                <ControlPageLabel>Icon - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 6</TriggerLabel>
-                <ControlPageLabel>Icon - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 7</TriggerLabel>
-                <ControlPageLabel>Icon - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_icon">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Icon - Day 8</TriggerLabel>
-                <ControlPageLabel>Icon - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 1</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 2</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 3</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 4</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 5</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 6</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 7</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_ozone">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Ozone - Day 8</TriggerLabel>
-                <ControlPageLabel>Ozone - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 1</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 2</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 3</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 4</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 5</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 6</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 7</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Day 8</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 1</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 2</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 3</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 4</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 5</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 6</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 7</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_precipIntensity">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Intensity) - Day 8</TriggerLabel>
-                <ControlPageLabel>Precipitation (Intensity) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 1</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 2</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 3</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 4</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 5</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 6</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Type)ne - Day 7</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Day 8</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 1</TriggerLabel>
-                <ControlPageLabel>Summary - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 2</TriggerLabel>
-                <ControlPageLabel>Summary - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 3</TriggerLabel>
-                <ControlPageLabel>Summary - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 4</TriggerLabel>
-                <ControlPageLabel>Summary - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 5</TriggerLabel>
-                <ControlPageLabel>Summary - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 6</TriggerLabel>
-                <ControlPageLabel>Summary - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 7</TriggerLabel>
-                <ControlPageLabel>Summary - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_summary">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Summary - Day 8</TriggerLabel>
-                <ControlPageLabel>Summary - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 1</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 2</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 3</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 4</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 5</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 6</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 7</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_temperatureHigh">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (High) - Day 8</TriggerLabel>
-                <ControlPageLabel>Temperature (High) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 1</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 2</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 3</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 4</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 5</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 6</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 7</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_temperatureLow">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Temperature (Low) - Day 8</TriggerLabel>
-                <ControlPageLabel>Temperature (Low) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 1</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 2</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 3</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 4</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 5</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 6</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 7</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_uvIndex">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>UV (Index) - Day 8</TriggerLabel>
-                <ControlPageLabel>UV (Index) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 1</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 2</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 3</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 4</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 5</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 6</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 7</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_visibility">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Visibility - Day 8</TriggerLabel>
-                <ControlPageLabel>Visibility - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_windBearing">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_windGust">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="d01_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_windSpeed">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="currentObservation">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
-            </State>
-
-            <State id="currentObservation24hr">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
-            </State>
-
-            <State id="currentObservationEpoch">
-                <ValueType>Integer</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
-            </State>
-
-            <State id="onOffState">
-                <ValueType>boolean</ValueType>
-                <TriggerLabel>Daily Device State</TriggerLabel>
-                <ControlPageLabel>Daily Device State</ControlPageLabel>
-            </State>
-        </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
 
     </Device>
@@ -3884,29 +3788,25 @@ plugin updates within the plugin settings dialog.</Label>
                 <Label>Longitude:</Label>
             </Field>
 
-            <Field id="displayValuesTitle" type="label" alignText="Right">
-                <Label>Display Values</Label>
-            </Field>
-
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>
             </Field>
 
             <Field id="separator01" type="separator"/>
 
-            <Field id="space06" type="label" fontSize="small">
-                <Label>Controls how values will be displayed on control pages, etc. These settings are independent of the Weather Units settings above. They do not affect the underlying value of the data point.</Label>
-            </Field>
-
             <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (5 mi.)">
                 <Label>Distance:</Label>
+            </Field>
+
+            <Field id="indexUnits" type="textfield" defaultValue=" " tooltip="Appended to all index values. (ozone, UV, etc.)">
+                <Label>Index:</Label>
             </Field>
 
             <Field id="percentageUnits" type="textfield" defaultValue="%" tooltip="Appended to all probability and percentage values. (80%)">
                 <Label>Percentage:</Label>
             </Field>
 
-            <Field id="pressureUnits" type="textfield" defaultValue=" in." tooltip="Appended to all pressure values. (30.05 in.)">
+            <Field id="pressureUnits" type="textfield" defaultValue=" mb" tooltip="Appended to all pressure values. (30.05 mb)">
                 <Label>Pressure:</Label>
             </Field>
 
@@ -3922,6 +3822,10 @@ plugin updates within the plugin settings dialog.</Label>
                 <Label>Wind:</Label>
             </Field>
 
+            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+                <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
+            </Field>
+
             <Field id="suppressWeatherAlerts" type="checkbox" defaultValue="false" tooltip="Check to suppress severe weather alerts for this device only.">
                 <Label/>
                 <Description>Suppress Severe Weather Alerts:</Description>
@@ -3929,32 +3833,6 @@ plugin updates within the plugin settings dialog.</Label>
 
             <Field id="space11" type="label" fontSize="small" alignWithControl="True">
                 <Label>If severe weather alert logging is enabled, checking this box will suppress alerts for this device only.</Label>
-            </Field>
-
-            <Field id="weatherSummaryLabel" type="label" alignText="Right">
-                <Label>
-Email Summary</Label>
-            </Field>
-
-            <Field id="weatherSummarySeparator" type="separator"/>
-
-            <Field id="space12" type="label" fontSize="small">
-                <Label>If enabled, the plugin will send one email each day with a summary of select weather information. In order to receive the summary, you must enable notifications of
-plugin updates within the WUnderground plugin settings dialog.</Label>
-            </Field>
-
-            <Field id="weatherSummaryEmail" type="checkbox" defaultValue="false" tooltip="Check to enable daily weather summary email messages.">
-                <Label/>
-                <Description>Receive Email Summary</Description>
-            </Field>
-
-            <Field id="weatherSummaryEmailTime" type="menu" defaultValue="01:00" tooltip="Select the time that you would like the weather summary to be sent. It is recommended to set this value to 01:00 or later.">
-                <Label>Send Time:</Label>
-                <List class="self" filter="" method="generatorTime" dynamicReload="true"/>
-            </Field>
-
-            <Field id="weatherSummaryEmailSent" type="checkbox" defaultValue="false" hidden="true">
-                <Label>Receive Email Summary:</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
@@ -4177,7 +4055,7 @@ plugin updates within the WUnderground plugin settings dialog.</Label>
             </State>
 
             <State id="alertStatus">
-                <ValueType>String</ValueType>
+                <ValueType>Boolean</ValueType>
                 <TriggerLabel>Alert - Status</TriggerLabel>
                 <ControlPageLabel>Alert - Status</ControlPageLabel>
             </State>
@@ -4473,7 +4351,7 @@ file:///Users/username/Desktop/imagefile.png
         <States>
 
             <State id="onOffState">
-                <ValueType>boolean</ValueType>
+                <ValueType>Boolean</ValueType>
                 <TriggerLabel>Image Downloader Device State</TriggerLabel>
                 <ControlPageLabel>Image Downloader Device State</ControlPageLabel>
             </State>

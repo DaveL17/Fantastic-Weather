@@ -17,7 +17,7 @@ https://darksky.net/poweredby/</Label>
 
 <!--Hidden Controls-->
 
-    <Field id="launchparameters" type="textfield" defaultValue="https://darksky.net" hidden="True">
+    <Field id="launchParameters" type="textfield" defaultValue="https://darksky.net" hidden="True">
         <Label/>
     </Field>
 
@@ -32,7 +32,7 @@ https://darksky.net/poweredby/</Label>
 	<Field id="simpleSeparator0" type="separator"/>
 
     <Field id="space01" type="label" fontSize="small" alignWithControl="True">
-        <Label>The plugin requires an API key to retrieve data from Dark Sky. If needed, you can click this button to sign up for an API key:</Label>
+        <Label>The plugin requires an API key to retrieve data from Dark Sky. Click the button below to sign up for an API key (clicking the button will launch a web browser on the Indigo server machine):</Label>
     </Field>
 
     <Field id="launchDS" type="button">
@@ -57,7 +57,7 @@ https://darksky.net/poweredby/</Label>
         <Label>Next Scheduled Poll:</Label>
     </Field>
 
-    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight UTC">
+    <Field id="dailyCallCounter" type="textfield" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight UTC">
         <Label>API Calls Today:</Label>
     </Field>
 
@@ -124,10 +124,15 @@ https://darksky.net/poweredby/</Label>
         </List>
     </Field>
 
-    <Field id="ignoreEstimated" type="checkbox" defaultValue="false"
-           tooltip="If checked, the plugin will not update weather data if Dark Sky reports that the data are estimated.">
-        <Label/>
-        <Description>Skip Update if Data are Estimated</Description>
+    <Field id="units" type="menu" defaultValue="auto" tooltip="Please select the desired data units. See wiki for more information.">
+        <Label>Units:</Label>
+        <List>
+            <Option value="auto">Automatic</Option>
+            <Option value="ca">Canadian (CA)</Option>
+            <Option value="si">Metric (SI)</Option>
+            <Option value="uk2">UK</Option>
+            <Option value="us">Standard (US)</Option>
+        </List>
     </Field>
 
     <Field id="valueDisplayHeaderSpace" type="label" fontSize="mini"/>
@@ -138,10 +143,6 @@ https://darksky.net/poweredby/</Label>
 
     <Field id="separator02a" type="separator"/>
 
-    <Field id="space03" type="label" fontSize="small" alignWithControl="True">
-        <Label>Controls how the plugin displays certain values. With the exception of changes to the Temperature Item List preference, changes will be applied during the next scheduled poll.</Label>
-    </Field>
-
     <Field id="uiDateFormat" type="menu" defaultValue="YYYY-MM-DD" tooltip="Please select the desired display format for date values.">
         <Label>Date UI Value:</Label>
         <List>
@@ -151,8 +152,24 @@ https://darksky.net/poweredby/</Label>
         </List>
     </Field>
 
-    <Field id="uiHumidityDecimal" type="menu" defaultValue="1" tooltip="Please select the desired number of decimal places to display for humidity values in control pages.">
-        <Label>Humidity UI Value:</Label>
+    <Field id="uiDistanceDecimal" type="menu" defaultValue="0" tooltip="Please select the desired number of decimal places to display for distance values in control pages.">
+        <Label>Distance UI Value:</Label>
+        <List>
+            <Option value="0">0 decimal places</Option>
+            <Option value="1">1 decimal place</Option>
+        </List>
+    </Field>
+
+    <Field id="uiIndexDecimal" type="menu" defaultValue="0" tooltip="Please select the desired number of decimal places to display for index values in control pages.">
+        <Label>Index UI Value:</Label>
+        <List>
+            <Option value="0">0 decimal places</Option>
+            <Option value="1">1 decimal place</Option>
+        </List>
+    </Field>
+
+    <Field id="uiPercentageDecimal" type="menu" defaultValue="1" tooltip="Please select the desired number of decimal places to display for percentage values in control pages.">
+        <Label>Percentage UI Value:</Label>
         <List>
             <Option value="0">0 decimal places</Option>
             <Option value="1">1 decimal place</Option>
@@ -191,6 +208,10 @@ https://darksky.net/poweredby/</Label>
             <Option value="0">0 decimal places</Option>
             <Option value="1">1 decimal place</Option>
         </List>
+    </Field>
+
+    <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+        <Label>Controls how the plugin displays certain values. With the exception of changes to the Temperature Item List preference, changes will be applied during the next scheduled poll.</Label>
     </Field>
 
     <Field id="alertLoggingHeaderSpace" type="label" fontSize="mini"/>
