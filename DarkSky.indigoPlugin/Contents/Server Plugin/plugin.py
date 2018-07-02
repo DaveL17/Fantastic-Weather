@@ -43,6 +43,8 @@ https://github.com/DaveL17/Dark Sky/blob/master/LICENSE
 # =================================== TO DO ===================================
 
 # TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
+# TODO: Add button to devices to use the server's location for lat/long.
+# TODO: Construct a current conditions, forecast long string to augment DS?
 
 # ================================== IMPORTS ==================================
 
@@ -1434,21 +1436,11 @@ class Plugin(indigo.PluginBase):
 
         # Reload the date and time preferences in case they've changed.
 
-        self.date_format = self.Formatter.dateFormat()
-        self.time_format = self.Formatter.timeFormat()
-
         weather_states_list = []
 
         try:
 
-            config_distance_units    = dev.pluginProps.get('distanceUnits', '')
-            config_percentage_units  = dev.pluginProps.get('percentageUnits', '')
-            config_pressure_units    = dev.pluginProps.get('pressureUnits', '')
-            config_rain_units        = dev.pluginProps.get('rainUnits', '')
-            config_temperature_units = dev.pluginProps.get('temperatureUnits', '')
-            config_wind_units        = dev.pluginProps.get('windUnits', '')
-            location                 = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-
+            location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
 
             apparent_temperature = self.nestedLookup(weather_data, keys=('currently', 'apparentTemperature',))
@@ -1608,6 +1600,8 @@ class Plugin(indigo.PluginBase):
 
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.ds_online         = True
+        self.date_format       = self.Formatter.dateFormat()
+        self.time_format       = self.Formatter.timeFormat()
 
         # Check to see if the daily call limit has been reached.
         try:

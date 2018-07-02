@@ -31,7 +31,7 @@ https://darksky.net/poweredby/</Label>
 
 	<Field id="simpleSeparator0" type="separator"/>
 
-    <Field id="space01" type="label" fontSize="small" alignWithControl="True">
+    <Field id="space01" type="label" fontSize="small">
         <Label>The plugin requires an API key to retrieve data from Dark Sky. Click the button below to sign up for an API key (clicking the button will launch a web browser on the Indigo server machine):</Label>
     </Field>
 
@@ -57,7 +57,7 @@ https://darksky.net/poweredby/</Label>
         <Label>Next Scheduled Poll:</Label>
     </Field>
 
-    <Field id="dailyCallCounter" type="textfield" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight UTC">
+    <Field id="dailyCallCounter" type="textfield" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight (UTC).">
         <Label>API Calls Today:</Label>
     </Field>
 
