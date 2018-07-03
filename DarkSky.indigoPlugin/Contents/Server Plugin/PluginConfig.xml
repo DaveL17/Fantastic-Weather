@@ -38,7 +38,7 @@ https://darksky.net/poweredby/</Label>
     <Field id="launchDS" type="button">
         <Label/>
         <Title>Sign Up For a Key at Dark Sky</Title>
-        <CallbackMethod>darkSkySite</CallbackMethod>
+        <CallbackMethod>dark_sky_site</CallbackMethod>
     </Field>
 
     <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Dark Sky API Key (required).">

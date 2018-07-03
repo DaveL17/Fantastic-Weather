@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <MenuItems>
 
-    <MenuItem id="commsUnkillAll">
+    <MenuItem id="comms_unkill_all">
         <Name>Enable All Dark Sky Devices</Name>
-        <CallbackMethod>commsUnkillAll</CallbackMethod>
+        <CallbackMethod>comms_unkill_all</CallbackMethod>
     </MenuItem>
 
-    <MenuItem id="commsKillAll">
+    <MenuItem id="comms_kill_all">
         <Name>Disable All Dark Sky Devices</Name>
-        <CallbackMethod>commsKillAll</CallbackMethod>
+        <CallbackMethod>comms_kill_all</CallbackMethod>
     </MenuItem>
 
     <MenuItem id="titleSeparator" type="separator"/>
 
     <MenuItem id="checkForUpdates">
         <Name>Check for Plugin Updates</Name>
-        <CallbackMethod>checkVersionNow</CallbackMethod>
+        <CallbackMethod>check_version_now</CallbackMethod>
     </MenuItem>
 
-    <MenuItem id="refreshWeatherData">
+    <MenuItem id="refresh_weather_data">
         <Name>Refresh Data Now</Name>
-        <CallbackMethod>refreshWeatherData</CallbackMethod>
+        <CallbackMethod>refresh_weather_data</CallbackMethod>
     </MenuItem>
 
     <MenuItem id="dumpTheXML">
         <Name>Write Weather Data to File</Name>
-        <CallbackMethod>dumpTheJSON</CallbackMethod>
+        <CallbackMethod>dump_the_json</CallbackMethod>
     </MenuItem>
 
 </MenuItems>

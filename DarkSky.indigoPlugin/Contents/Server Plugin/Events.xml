@@ -13,9 +13,9 @@
 
                 <Field id="weatherAlertSpacer" type="label"/>
 
-                <Field id="listOfDevices" type="menu" tooltip="Please select a weather location to monitor.">
+                <Field id="list_of_devices" type="menu" tooltip="Please select a weather location to monitor.">
                     <Label>Location:</Label>
-                    <List class="self" filter="self" method="listOfWeatherDevices" dynamicReload="true"/>
+                    <List class="self" filter="self" method="list_of_weather_devices" dynamicReload="true"/>
                 </Field>
 
             </ConfigUI>
@@ -35,9 +35,9 @@
                     <Label>Minutes:</Label>
                 </Field>
 
-                <Field id="listOfDevices" type="menu" tooltip="Please select a weather location to monitor.">
+                <Field id="list_of_devices" type="menu" tooltip="Please select a weather location to monitor.">
                     <Label>Location:</Label>
-                    <List class="self" filter="self" method="listOfDevices" dynamicReload="true"/>
+                    <List class="self" filter="self" method="list_of_devices" dynamicReload="true"/>
                 </Field>
 
             </ConfigUI>

@@ -172,7 +172,7 @@ plugin updates within the plugin settings dialog.</Label>
 
             <Field id="weatherSummaryEmailTime" type="menu" defaultValue="01:00" tooltip="Select the time that you would like the weather summary to be sent. It is recommended to set this value to 01:00 or later.">
                 <Label>Send Time:</Label>
-                <List class="self" filter="" method="generatorTime" dynamicReload="true"/>
+                <List class="self" filter="" method="generator_time" dynamicReload="true"/>
             </Field>
 
             <Field id="weatherSummaryEmailSent" type="checkbox" defaultValue="false" hidden="true">
