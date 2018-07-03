@@ -270,11 +270,20 @@ class Plugin(indigo.PluginBase):
 
         self.logger.debug(u"getDeviceConfigUiValues called.")
 
-        # =========================== Populate Default Value ==========================
-        # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
-        # populate the control with the default value when a new device is created.
+        # ========================== Populate Default Values ==========================
         if typeId == 'Daily':
-            valuesDict['weatherSummaryEmailTime'] = "01:00"
+            # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
+            # populate the control with the default value when a new device is created.
+            if 'weatherSummaryEmailTime' not in valuesDict.keys():
+                valuesDict['weatherSummaryEmailTime'] = "01:00"
+
+        if typeId != 'satelliteImageDownloader':
+            # If new device, lat/long will be zero. so let's start with the lat/long of
+            # the Indigo server.
+            if 'latitude' not in valuesDict.keys():
+                lat_long = indigo.server.getLatitudeAndLongitude()
+                valuesDict['latitude'] = lat_long[0]
+                valuesDict['longitude'] = lat_long[1]
 
         return valuesDict
 
