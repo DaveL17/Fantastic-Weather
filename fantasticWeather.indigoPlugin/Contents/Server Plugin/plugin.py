@@ -37,14 +37,16 @@ http://www.darksky.net
 
 For information regarding the use of this plugin, see the license located in
 the plugin package or located on GitHub:
-https://github.com/DaveL17/Dark Sky/blob/master/LICENSE
+https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 """
 
 # =================================== TO DO ===================================
 
 # TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
-# TODO: Add button to devices to use the server's location for lat/long.
 # TODO: Construct a current conditions, forecast long string to augment DS?
+# TODO: Check location offline trigger - it may be firing on every refresh.
+# TODO: Consider temperature for item list UI for daily (day's high) and hourly (hour's high)
+# TODO: Regular refresh does not show units on Indigo UI
 
 # ================================== IMPORTS ==================================
 
@@ -80,33 +82,33 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.0.01"
+__version__   = "0.1.01"
 
 # =============================================================================
 
 kDefaultPluginPrefs = {
-    u'alertLogging': False,             # Write severe weather alerts to the log?
-    u'apiKey': "",                      # DS requires the api key.
-    u'callCounter': "999",              # DS call limit based on UW plan.
-    u'dailyCallCounter': "0",           # Number of API calls today.
-    u'dailyCallDay': "1970-01-01",      # API call counter date.
-    u'dailyCallLimitReached': False,    # Has the daily call limit been reached?
-    u'downloadInterval': "900",         # Frequency of weather updates.
-    u'itemListTempDecimal': "1",        # Precision for Indigo Item List.
-    u'language': "en",                  # Language for DS text.
+    u'alertLogging': False,           # Write severe weather alerts to the log?
+    u'apiKey': "",                    # DS requires the api key.
+    u'callCounter': "999",            # DS call limit based on UW plan.
+    u'dailyCallCounter': "0",         # Number of API calls today.
+    u'dailyCallDay': "1970-01-01",    # API call counter date.
+    u'dailyCallLimitReached': False,  # Has the daily call limit been reached?
+    u'downloadInterval': "900",       # Frequency of weather updates.
+    u'itemListTempDecimal': "1",      # Precision for Indigo Item List.
+    u'language': "en",                # Language for DS text.
     u'lastSuccessfulPoll': "1970-01-01 00:00:00",  # Last successful plugin cycle
     u'launchParameters': "https://www.darksky.net",  # url for launch API button
-    u'nextPoll': "",                    # Last successful plugin cycle
-    u'noAlertLogging': False,           # Suppresses "no active alerts" logging.
-    u'showDebugLevel': "30",            # Logger level.
-    u'uiDateFormat': "YYYY-MM-DD",      # Preferred date format string.
-    u'uiPercentageDecimal': "1",        # Precision for Indigo UI display (humidity).
-    u'uiPressureTrend': "text",         # Pressure trend symbology
-    u'uiTempDecimal': "1",              # Precision for Indigo UI display (temperature).
-    u'uiTimeFormat': "military",        # Preferred time format string.
-    u'uiWindDecimal': "1",              # Precision for Indigo UI display (wind).
-    u'updaterEmail': "",                # Email to notify of plugin updates.
-    u'updaterEmailsEnabled': False      # Notification of plugin updates wanted.
+    u'nextPoll': "",                  # Last successful plugin cycle
+    u'noAlertLogging': False,         # Suppresses "no active alerts" logging.
+    u'showDebugLevel': "30",          # Logger level.
+    u'uiDateFormat': "YYYY-MM-DD",    # Preferred date format string.
+    u'uiPercentageDecimal': "1",      # Precision for Indigo UI display (humidity).
+    u'uiPressureTrend': "text",       # Pressure trend symbology
+    u'uiTempDecimal': "1",            # Precision for Indigo UI display (temperature).
+    u'uiTimeFormat': "military",      # Preferred time format string.
+    u'uiWindDecimal': "1",            # Precision for Indigo UI display (wind).
+    u'updaterEmail': "",              # Email to notify of plugin updates.
+    u'updaterEmailsEnabled': False    # Notification of plugin updates wanted.
 }
 
 
@@ -119,12 +121,12 @@ class Plugin(indigo.PluginBase):
         self.pluginIsInitializing = True
         self.pluginIsShuttingDown = False
 
-        self.comm_error = False
+        self.comm_error        = False
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
-        self.updater = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastic-Weather/master/fantastic_weather_version.html")
-        self.ds_online = True
+        self.updater           = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastic-Weather/master/fantastic_weather_version.html")
+        self.ds_online         = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
         # ========================== API Poll Values ==========================
@@ -171,8 +173,7 @@ class Plugin(indigo.PluginBase):
         self.plugin_file_handler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d\t%(levelname)-10s\t%(name)s.%(funcName)-28s %(msg)s', datefmt='%Y-%m-%d %H:%M:%S'))
         self.indigo_log_handler.setLevel(int(debug_level))
 
-        # =============================================================================
-
+        # ============================= Remote Debugging ==============================
         # try:
         #     pydevd.settrace('localhost', port=5678, stdoutToServer=True, stderrToServer=True, suspend=False)
         # except:
@@ -270,7 +271,6 @@ class Plugin(indigo.PluginBase):
 
         self.logger.debug(u"getDeviceConfigUiValues called.")
 
-        # ========================== Populate Default Values ==========================
         if typeId == 'Daily':
             # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
             # populate the control with the default value when a new device is created.
@@ -301,7 +301,8 @@ class Plugin(indigo.PluginBase):
             while True:
 
                 # Load the download interval in case it's changed
-                self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
+                refresh_time           = self.pluginPrefs.get('downloadInterval', '900')
+                self.download_interval = dt.timedelta(seconds=int(refresh_time))
 
                 # If the next poll attempt hasn't been changed to tomorrow, let's update it
                 if self.next_poll_attempt == "1970-01-01 00:00:00" or not self.next_poll_attempt.day > dt.datetime.now().day:
@@ -324,7 +325,7 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug(u"[  Plugin execution time: {0} seconds  ]".format(plugin_cycle_time.strftime('%S.%f')))
                     self.logger.debug(u"{0:{1}^40}".format(' Plugin Cycle Complete ', '='))
 
-                # Wait 60 seconds before trying again.
+                # Wait 30 seconds before trying again.
                 self.sleep(30)
 
         except self.StopThread as error:
@@ -386,17 +387,17 @@ class Plugin(indigo.PluginBase):
         # Weather Site Offline trigger
         if typeId == 'weatherSiteOffline':
 
-            self.masterTriggerDict = {trigger.pluginProps['list_of_devices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
+            self.masterTriggerDict = {trigger.pluginProps['listOfDevices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
 
             # ======================== Validate Trigger Unique ========================
             # Limit weather location offline triggers to one per device
             if dev_id in self.masterTriggerDict.keys() and eventId != self.masterTriggerDict[dev_id][1]:
                 existing_trigger_id = int(self.masterTriggerDict[dev_id][1])
-                error_msg_dict['list_of_devices'] = u"Please select a weather device without an existing offline trigger."
+                error_msg_dict['listOfDevices'] = u"Please select a weather device without an existing offline trigger."
                 error_msg_dict['showAlertText'] = u"There is an existing weather offline trigger for this location." \
                                                   u"\n\n[{0}]\n\n" \
                                                   u"You must select a location that does not have an existing trigger.".format(indigo.triggers[existing_trigger_id].name)
-                valuesDict['list_of_devices'] = ''
+                valuesDict['listOfDevices'] = ''
                 return False, valuesDict, error_msg_dict
 
             # ============================ Validate Timer =============================
@@ -542,7 +543,7 @@ class Plugin(indigo.PluginBase):
         :param indigo.Dict valuesDict:
         """
 
-        self.Fogbert.launchWebPage(valuesDict['launchParameters'])
+        self.browserOpen(valuesDict['launchParameters'])
 
     def dump_the_json(self):
         """
@@ -901,8 +902,9 @@ class Plugin(indigo.PluginBase):
         """
         Generate list of devices for severe weather alert trigger
 
-        list_of_devices returns a list of plugin devices limited to weather devices only
-        (not forecast devices, etc.) when severe weather alert trigger is fired.
+        list_of_weather_devices returns a list of plugin devices limited to weather
+        devices only (not forecast devices, etc.) when severe weather alert trigger is
+        fired.
 
         -----
 
@@ -1041,6 +1043,8 @@ class Plugin(indigo.PluginBase):
                     if alerts_logging and not alerts_suppressed:
                         self.logger.info(u"\n{0}".format(alert_array[alert][0]))
 
+                alerts_states_list.append({'key': 'alertCount', 'value': len(alert_array)})
+
             dev.updateStatesOnServer(alerts_states_list)
 
         except Exception as error:
@@ -1128,6 +1132,18 @@ class Plugin(indigo.PluginBase):
             weather_data  = self.masterWeatherDict[location]
             forecast_data = weather_data['hourly']['data']
 
+            # ============================= Observation Epoch =============================
+            current_observation_epoch = int(self.nested_lookup(weather_data, keys=('currently', 'time')))
+            hourly_forecast_states_list.append({'key': 'currentObservationEpoch', 'value': current_observation_epoch})
+
+            # ============================= Observation Time ==============================
+            current_observation_time = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(current_observation_epoch)))
+            hourly_forecast_states_list.append({'key': 'currentObservation', 'value': current_observation_time})
+
+            # ============================= Observation 24hr ==============================
+            current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(current_observation_epoch))
+            hourly_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
+
             fore_counter = 1
             for observation in forecast_data:
 
@@ -1156,21 +1172,9 @@ class Plugin(indigo.PluginBase):
                     else:
                         fore_counter_text = fore_counter
 
-                    # ============================= Observation Epoch =============================
-                    current_observation_epoch = int(self.nested_lookup(weather_data, keys=('currently', 'time')))
-                    hourly_forecast_states_list.append({'key': 'currentObservationEpoch', 'value': current_observation_epoch})
-
-                    # ============================= Observation Time ==============================
-                    current_observation_time = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(current_observation_epoch)))
-                    hourly_forecast_states_list.append({'key': 'currentObservation', 'value': current_observation_time})
-
-                    # ============================= Observation 24hr ==============================
-                    current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(current_observation_epoch))
-                    hourly_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
-
                     # =============================== Forecast Date ===============================
-                    forecast_date = time.strftime('%Y-%m-%d', time.localtime(float(forecast_time)))
-                    hourly_forecast_states_list.append({'key': u"h{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                    forecast_date = time.strftime('%H:%M', time.localtime(float(forecast_time)))
+                    hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
 
                     # =============================== Forecast Day ================================
                     weekday = time.strftime('%A', time.localtime(float(forecast_time)))
@@ -1198,6 +1202,10 @@ class Plugin(indigo.PluginBase):
 
                     # =================================== Icon ====================================
                     hourly_forecast_states_list.append({'key': u"h{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon)})
+
+                    # TODO: This code is temporary and can be safely removed.
+                    if icon not in self.pluginPrefs['hourlyIconNames']:
+                        self.pluginPrefs['hourlyIconNames'] += u"{0}, ".format(icon)
 
                     # =================================== Ozone ===================================
                     ozone, ozone_ui = self.fix_corrupted_data(state_name="h{0}_ozone".format(fore_counter_text), val=ozone)
@@ -1275,6 +1283,18 @@ class Plugin(indigo.PluginBase):
             weather_data = self.masterWeatherDict[location]
             forecast_day = self.masterWeatherDict[location]['daily']['data']
 
+            # ============================= Observation Epoch =============================
+            current_observation_epoch = self.nested_lookup(weather_data, keys=('currently', 'time'))
+            daily_forecast_states_list.append({'key': 'currentObservationEpoch', 'value': current_observation_epoch, 'uiValue': current_observation_epoch})
+
+            # ============================= Observation Time ==============================
+            current_observation_time = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(current_observation_epoch)))
+            daily_forecast_states_list.append({'key': 'currentObservation', 'value': current_observation_time, 'uiValue': current_observation_time})
+
+            # ============================= Observation 24hr ==============================
+            current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(float(current_observation_epoch)))
+            daily_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
+
             forecast_counter = 1
             for observation in forecast_day:
                 cloud_cover        = self.nested_lookup(observation, keys=('cloudCover',))
@@ -1305,25 +1325,13 @@ class Plugin(indigo.PluginBase):
                     else:
                         fore_counter_text = forecast_counter
 
-                    # ============================= Observation Epoch =============================
-                    current_observation_epoch = self.nested_lookup(weather_data, keys=('currently', 'time'))
-                    daily_forecast_states_list.append({'key': 'currentObservationEpoch', 'value': current_observation_epoch, 'uiValue': current_observation_epoch})
-
-                    # ============================= Observation Time ==============================
-                    current_observation_time = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(current_observation_epoch)))
-                    daily_forecast_states_list.append({'key': 'currentObservation', 'value': current_observation_time, 'uiValue': current_observation_time})
-
-                    # ============================= Observation 24hr ==============================
-                    current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(float(current_observation_epoch)))
-                    daily_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
-
                     # ================================ Cloud Cover ================================
                     cloud_cover, cloud_cover_ui = self.fix_corrupted_data(state_name="d{0}_cloudCover".format(fore_counter_text), val=cloud_cover * 100)
                     cloud_cover_ui = self.ui_format_percentage(dev=dev, state_name="d{0}_cloudCover".format(fore_counter_text), val=cloud_cover_ui)
                     daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text), 'value': cloud_cover, 'uiValue': cloud_cover_ui})
 
                     # =============================== Forecast Date ===============================
-                    forecast_date = time.strftime('%Y-%m-%d', time.localtime(float(forecast_time)))
+                    forecast_date = time.strftime('%Y-%m-%d %H:%M', time.localtime(float(forecast_time)))
                     daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
 
                     # =============================== Forecast Day ================================
@@ -1337,6 +1345,10 @@ class Plugin(indigo.PluginBase):
 
                     # =================================== Icon ====================================
                     daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon)})
+
+                    # TODO: This code is temporary and can be safely removed.
+                    if icon not in self.pluginPrefs['dailyIconNames']:
+                        self.pluginPrefs['dailyIconNames'] += u"{0}, ".format(icon)
 
                     # =================================== Ozone ===================================
                     ozone, ozone_ui = self.fix_corrupted_data(state_name="d{0}_ozone".format(fore_counter_text), val=ozone)
@@ -1367,7 +1379,7 @@ class Plugin(indigo.PluginBase):
                     # ============================= Temperature High ==============================
                     temperature_high, temperature_high_ui = self.fix_corrupted_data(state_name="d{0}_temperatureHigh".format(fore_counter_text), val=temperature_high)
                     temperature_high_ui = self.ui_format_temperature(dev, state_name="d{0}_temperatureHigh".format(fore_counter_text), val=temperature_high_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_temperatureHigh".format(fore_counter_text), 'value': temperature_high_ui, 'uiValue': temperature_high_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_temperatureHigh".format(fore_counter_text), 'value': temperature_high, 'uiValue': temperature_high_ui})
 
                     # ============================== Temperature Low ==============================
                     temperature_low, temperature_low_ui = self.fix_corrupted_data(state_name="d{0}_temperatureLow".format(fore_counter_text), val=temperature_low)
@@ -1451,6 +1463,19 @@ class Plugin(indigo.PluginBase):
             wind_gust            = self.nested_lookup(weather_data, keys=('currently', 'windGust',))
             wind_speed           = self.nested_lookup(weather_data, keys=('currently', 'windSpeed',))
 
+            # ================================ Time Epoch =================================
+            # (Int) Epoch time of the data.
+            weather_states_list.append({'key': 'currentObservationEpoch', 'value': int(epoch)})
+
+            # =================================== Time ====================================
+            # (string: "Last Updated on MONTH DD, HH:MM AM/PM TZ")
+            time_long = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(epoch)))
+            weather_states_list.append({'key': 'currentObservation', 'value': time_long})
+
+            # ================================ Time 24 Hour ===============================
+            time_24 = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(epoch))
+            weather_states_list.append({'key': 'currentObservation24hr', 'value': time_24})
+
             # ============================= Apparent Temperature ==========================
             apparent_temperature, apparent_temperature_ui = self.fix_corrupted_data(state_name='apparentTemperature', val=apparent_temperature)
             apparent_temperature_ui = self.ui_format_temperature(dev, state_name='apparentTemperature', val=apparent_temperature_ui)
@@ -1478,6 +1503,10 @@ class Plugin(indigo.PluginBase):
             # =================================== Icon ====================================
             # (string: clear-day, clear-night, rain, snow, sleet, wind, fog, cloudy, partly-cloudy-day, or partly-cloudy-night...)
             weather_states_list.append({'key': 'icon', 'value': unicode(icon)})
+
+            # TODO: This code is temporary and can be safely removed.
+            if icon not in self.pluginPrefs['weatherIconNames']:
+                self.pluginPrefs['weatherIconNames'] += u"{0}, ".format(icon)
 
             # =========================== Nearest Storm Bearing ===========================
             storm_bearing, storm_bearing_ui = self.fix_corrupted_data(state_name='nearestStormBearing', val=storm_bearing)
@@ -1523,19 +1552,6 @@ class Plugin(indigo.PluginBase):
             temperature_ui = self.ui_format_temperature(dev=dev, state_name="temperature", val=temperature_ui)
             weather_states_list.append({'key': 'temperature', 'value': temperature, 'uiValue': temperature_ui})
             weather_states_list.append({'key': 'temperatureIcon', 'value': round(temperature)})
-
-            # ================================ Time Epoch =================================
-            # (Int) Epoch time of the data.
-            weather_states_list.append({'key': 'currentObservationEpoch', 'value': int(epoch)})
-
-            # =================================== Time ====================================
-            # (string: "Last Updated on MONTH DD, HH:MM AM/PM TZ")
-            time_long = u"Last updated on {0}".format(time.strftime('%b %d, %H:%M %p %z', time.localtime(epoch)))
-            weather_states_list.append({'key': 'currentObservation', 'value': time_long})
-
-            # ================================ Time 24 Hour ===============================
-            time_24 = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(epoch))
-            weather_states_list.append({'key': 'currentObservation24hr', 'value': time_24})
 
             # ==================================== UV =====================================
             uv, uv_ui = self.fix_corrupted_data(state_name='uv', val=uv)

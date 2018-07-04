@@ -21,6 +21,22 @@ https://darksky.net/poweredby/</Label>
         <Label/>
     </Field>
 
+    <Field id="iconNamesLabel" type="label" fontSize="mini">
+        <Label>The following three fields are for development purposes and will ultimately be hidden (or deleted). They are used to capture the possible icon names from the API.</Label>
+    </Field>
+
+    <Field id="dailyIconNames" type="textfield">
+        <Label>Daily Icon Names:</Label>
+    </Field>
+
+    <Field id="hourlyIconNames" type="textfield">
+        <Label>Hourly Icon Names:</Label>
+    </Field>
+
+    <Field id="weatherIconNames" type="textfield">
+        <Label>Weather Icon Names:</Label>
+    </Field>
+
 <!-- End Hidden Controls -->
 
     <Field id="space00" type="label" fontSize="mini"/>
