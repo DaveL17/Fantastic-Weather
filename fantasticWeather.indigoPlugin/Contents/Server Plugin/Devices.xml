@@ -970,50 +970,102 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="d01_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 1</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 1</ControlPageLabel>
             </State>
 
             <State id="d02_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 2</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 2</ControlPageLabel>
             </State>
 
             <State id="d03_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 3</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 3</ControlPageLabel>
             </State>
 
             <State id="d04_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 4</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 4</ControlPageLabel>
             </State>
 
             <State id="d05_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 5</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 5</ControlPageLabel>
             </State>
 
             <State id="d06_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 6</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 6</ControlPageLabel>
             </State>
 
             <State id="d07_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 7</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 7</ControlPageLabel>
             </State>
 
             <State id="d08_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Day 8</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -1022,50 +1074,50 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="d01_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 1</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 1</ControlPageLabel>
             </State>
 
             <State id="d02_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 2</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 2</ControlPageLabel>
             </State>
 
             <State id="d03_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 3</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 3</ControlPageLabel>
             </State>
 
             <State id="d04_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 4</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 4</ControlPageLabel>
             </State>
 
             <State id="d05_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 5</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 5</ControlPageLabel>
             </State>
 
             <State id="d06_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 6</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 6</ControlPageLabel>
             </State>
 
             <State id="d07_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 7</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 7</ControlPageLabel>
             </State>
 
             <State id="d08_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Day 8</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -1074,50 +1126,50 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="d01_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 1</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 1</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 1</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 1</ControlPageLabel>
             </State>
 
             <State id="d02_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 2</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 2</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 2</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 2</ControlPageLabel>
             </State>
 
             <State id="d03_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 3</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 3</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 3</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 3</ControlPageLabel>
             </State>
 
             <State id="d04_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 4</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 4</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 4</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 4</ControlPageLabel>
             </State>
 
             <State id="d05_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 5</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 5</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 5</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 5</ControlPageLabel>
             </State>
 
             <State id="d06_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 6</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 6</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 6</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 6</ControlPageLabel>
             </State>
 
             <State id="d07_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 7</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 7</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 7</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 7</ControlPageLabel>
             </State>
 
             <State id="d08_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Day 8</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Day 8</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Day 8</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -3300,146 +3352,294 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="h01_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 1</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 1</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 1</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 1</ControlPageLabel>
             </State>
 
             <State id="h02_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 2</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 2</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 2</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 2</ControlPageLabel>
             </State>
 
             <State id="h03_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 3</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 3</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 3</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 3</ControlPageLabel>
             </State>
 
             <State id="h04_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 4</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 4</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 4</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 4</ControlPageLabel>
             </State>
 
             <State id="h05_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 5</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 5</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 5</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 5</ControlPageLabel>
             </State>
 
             <State id="h06_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 6</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 6</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 6</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 6</ControlPageLabel>
             </State>
 
             <State id="h07_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 7</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 7</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 7</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 7</ControlPageLabel>
             </State>
 
             <State id="h08_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 8</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 8</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 8</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 8</ControlPageLabel>
             </State>
 
             <State id="h09_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 9</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 9</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 9</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 9</ControlPageLabel>
             </State>
 
             <State id="h10_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 10</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 10</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 10</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 10</ControlPageLabel>
             </State>
 
             <State id="h11_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 11</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 11</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 11</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 11</ControlPageLabel>
             </State>
 
             <State id="h12_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 12</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 12</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 12</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 12</ControlPageLabel>
             </State>
 
             <State id="h13_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 13</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 13</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 13</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 13</ControlPageLabel>
             </State>
 
             <State id="h14_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 14</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 14</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 14</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 14</ControlPageLabel>
             </State>
 
             <State id="h15_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 15</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 15</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 15</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 15</ControlPageLabel>
             </State>
 
             <State id="h16_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 16</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 16</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 16</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 16</ControlPageLabel>
             </State>
 
             <State id="h17_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 17</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 17</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 17</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 17</ControlPageLabel>
             </State>
 
             <State id="h18_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 18</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 18</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 18</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 18</ControlPageLabel>
             </State>
 
             <State id="h19_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 19</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 19</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 19</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 19</ControlPageLabel>
             </State>
 
             <State id="h20_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 20</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 20</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 20</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 20</ControlPageLabel>
             </State>
 
             <State id="h21_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 21</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 21</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 21</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 21</ControlPageLabel>
             </State>
 
             <State id="h22_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 22</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 22</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 22</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 22</ControlPageLabel>
             </State>
 
             <State id="h23_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 23</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 23</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 23</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 23</ControlPageLabel>
             </State>
 
             <State id="h24_windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Wind (Bearing) - Hour 24</TriggerLabel>
-                <ControlPageLabel>Wind (Bearing) - Hour 24</ControlPageLabel>
+                <TriggerLabel>Wind Bearing (Degrees) - Hour 24</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Degrees) - Hour 24</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="h01_windBearingName">
+                <ValueType>string</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 1</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 1</ControlPageLabel>
+            </State>
+
+            <State id="h02_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 2</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 2</ControlPageLabel>
+            </State>
+
+            <State id="h03_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 3</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 3</ControlPageLabel>
+            </State>
+
+            <State id="h04_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 4</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 4</ControlPageLabel>
+            </State>
+
+            <State id="h05_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 5</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 5</ControlPageLabel>
+            </State>
+
+            <State id="h06_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 6</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 6</ControlPageLabel>
+            </State>
+
+            <State id="h07_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 7</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 7</ControlPageLabel>
+            </State>
+
+            <State id="h08_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 8</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 8</ControlPageLabel>
+            </State>
+
+            <State id="h09_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 9</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 9</ControlPageLabel>
+            </State>
+
+            <State id="h10_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 10</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 10</ControlPageLabel>
+            </State>
+
+            <State id="h11_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 11</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 11</ControlPageLabel>
+            </State>
+
+            <State id="h12_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 12</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 12</ControlPageLabel>
+            </State>
+
+            <State id="h13_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 13</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 13</ControlPageLabel>
+            </State>
+
+            <State id="h14_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 14</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 14</ControlPageLabel>
+            </State>
+
+            <State id="h15_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 15</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 15</ControlPageLabel>
+            </State>
+
+            <State id="h16_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 16</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 16</ControlPageLabel>
+            </State>
+
+            <State id="h17_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 17</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 17</ControlPageLabel>
+            </State>
+
+            <State id="h18_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 18</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 18</ControlPageLabel>
+            </State>
+
+            <State id="h19_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 19</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 19</ControlPageLabel>
+            </State>
+
+            <State id="h20_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 20</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 20</ControlPageLabel>
+            </State>
+
+            <State id="h21_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 21</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 21</ControlPageLabel>
+            </State>
+
+            <State id="h22_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 22</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 22</ControlPageLabel>
+            </State>
+
+            <State id="h23_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 23</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 23</ControlPageLabel>
+            </State>
+
+            <State id="h24_windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Wind Bearing (Name) - Hour 24</TriggerLabel>
+                <ControlPageLabel>Wind Bearing (Name) - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -3448,146 +3648,146 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="h01_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 1</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 1</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 1</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 1</ControlPageLabel>
             </State>
 
             <State id="h02_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 2</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 2</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 2</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 2</ControlPageLabel>
             </State>
 
             <State id="h03_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 3</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 3</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 3</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 3</ControlPageLabel>
             </State>
 
             <State id="h04_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 4</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 4</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 4</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 4</ControlPageLabel>
             </State>
 
             <State id="h05_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 5</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 5</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 5</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 5</ControlPageLabel>
             </State>
 
             <State id="h06_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 6</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 6</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 6</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 6</ControlPageLabel>
             </State>
 
             <State id="h07_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 7</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 7</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 7</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 7</ControlPageLabel>
             </State>
 
             <State id="h08_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 8</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 8</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 8</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 8</ControlPageLabel>
             </State>
 
             <State id="h09_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 9</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 9</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 9</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 9</ControlPageLabel>
             </State>
 
             <State id="h10_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 10</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 10</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 10</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 10</ControlPageLabel>
             </State>
 
             <State id="h11_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 11</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 11</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 11</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 11</ControlPageLabel>
             </State>
 
             <State id="h12_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 12</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 12</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 12</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 12</ControlPageLabel>
             </State>
 
             <State id="h13_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 13</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 13</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 13</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 13</ControlPageLabel>
             </State>
 
             <State id="h14_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 14</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 14</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 14</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 14</ControlPageLabel>
             </State>
 
             <State id="h15_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 15</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 15</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 15</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 15</ControlPageLabel>
             </State>
 
             <State id="h16_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 16</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 16</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 16</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 16</ControlPageLabel>
             </State>
 
             <State id="h17_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 17</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 17</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 17</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 17</ControlPageLabel>
             </State>
 
             <State id="h18_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 18</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 18</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 18</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 18</ControlPageLabel>
             </State>
 
             <State id="h19_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 19</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 19</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 19</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 19</ControlPageLabel>
             </State>
 
             <State id="h20_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 20</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 20</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 20</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 20</ControlPageLabel>
             </State>
 
             <State id="h21_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 21</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 21</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 21</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 21</ControlPageLabel>
             </State>
 
             <State id="h22_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 22</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 22</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 22</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 22</ControlPageLabel>
             </State>
 
             <State id="h23_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 23</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 23</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 23</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 23</ControlPageLabel>
             </State>
 
             <State id="h24_windGust">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Gust) - Hour 24</TriggerLabel>
-                <ControlPageLabel>Wind (Gust) - Hour 24</ControlPageLabel>
+                <TriggerLabel>Wind Gust - Hour 24</TriggerLabel>
+                <ControlPageLabel>Wind Gust - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -3596,146 +3796,146 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="h01_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 1</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 1</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 1</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 1</ControlPageLabel>
             </State>
 
             <State id="h02_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 2</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 2</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 2</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 2</ControlPageLabel>
             </State>
 
             <State id="h03_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 3</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 3</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 3</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 3</ControlPageLabel>
             </State>
 
             <State id="h04_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 4</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 4</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 4</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 4</ControlPageLabel>
             </State>
 
             <State id="h05_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 5</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 5</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 5</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 5</ControlPageLabel>
             </State>
 
             <State id="h06_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 6</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 6</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 6</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 6</ControlPageLabel>
             </State>
 
             <State id="h07_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 7</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 7</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 7</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 7</ControlPageLabel>
             </State>
 
             <State id="h08_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 8</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 8</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 8</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 8</ControlPageLabel>
             </State>
 
             <State id="h09_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 9</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 9</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 9</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 9</ControlPageLabel>
             </State>
 
             <State id="h10_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 10</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 10</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 10</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 10</ControlPageLabel>
             </State>
 
             <State id="h11_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 11</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 11</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 11</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 11</ControlPageLabel>
             </State>
 
             <State id="h12_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 12</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 12</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 12</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 12</ControlPageLabel>
             </State>
 
             <State id="h13_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 13</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 13</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 13</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 13</ControlPageLabel>
             </State>
 
             <State id="h14_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 14</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 14</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 14</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 14</ControlPageLabel>
             </State>
 
             <State id="h15_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 15</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 15</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 15</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 15</ControlPageLabel>
             </State>
 
             <State id="h16_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 16</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 16</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 16</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 16</ControlPageLabel>
             </State>
 
             <State id="h17_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 17</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 17</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 17</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 17</ControlPageLabel>
             </State>
 
             <State id="h18_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 18</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 18</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 18</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 18</ControlPageLabel>
             </State>
 
             <State id="h19_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 19</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 19</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 19</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 19</ControlPageLabel>
             </State>
 
             <State id="h20_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 20</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 20</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 20</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 20</ControlPageLabel>
             </State>
 
             <State id="h21_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 21</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 21</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 21</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 21</ControlPageLabel>
             </State>
 
             <State id="h22_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 22</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 22</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 22</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 22</ControlPageLabel>
             </State>
 
             <State id="h23_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 23</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 23</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 23</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 23</ControlPageLabel>
             </State>
 
             <State id="h24_windSpeed">
                 <ValueType>Float</ValueType>
-                <TriggerLabel>Wind (Speed) - Hour 24</TriggerLabel>
-                <ControlPageLabel>Wind (Speed) - Hour 24</ControlPageLabel>
+                <TriggerLabel>Wind Speed - Hour 24</TriggerLabel>
+                <ControlPageLabel>Wind Speed - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -4240,8 +4440,14 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="windBearing">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Current Conditions - Wind Bearing</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Wind Bearing</ControlPageLabel>
+                <TriggerLabel>Current Conditions - Wind Bearing (degrees)</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Wind Bearing (degrees)</ControlPageLabel>
+            </State>
+
+            <State id="windBearingName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Current Conditions - Wind Bearing (Name)</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Wind Bearing (Name)</ControlPageLabel>
             </State>
 
             <State id="windBearingIcon">

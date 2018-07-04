@@ -46,7 +46,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 # TODO: Construct a current conditions, forecast long string to augment DS?
 # TODO: Check location offline trigger - it may be firing on every refresh.
 # TODO: Consider temperature for item list UI for daily (day's high) and hourly (hour's high)
-# TODO: Regular refresh does not show units on Indigo UI
+# TODO: Wind string (Southeast at 4 mph)
 
 # ================================== IMPORTS ==================================
 
@@ -636,10 +636,10 @@ class Plugin(indigo.PluginBase):
                 wind_name          = self.ui_format_wind_name(state_name='wind_bearing', val=wind_bearing)
                 wind_speed         = self.nested_lookup(forecast_day, keys=('windSpeed',))
 
-                email_body += u"{0}\n".format(dev.name)
-                email_body += u"{0:-<40}\n\n".format('')
+                email_body += u"Indigo Fantastic Weather Device: {0}\n".format(dev.name)
+                email_body += u"{0:-<60}\n\n".format('')
                 email_body += u"{0}:\n".format(forecast_day_name)
-                email_body += u"{0:-<40}\n".format('')
+                email_body += u"{0:-<60}\n".format('')
                 email_body += u"{0}\n\n".format(summary)
                 email_body += u"High: {0}\n".format(temperature_high)
                 email_body += u"Low: {0}\n".format(temperature_low)
@@ -1237,6 +1237,10 @@ class Plugin(indigo.PluginBase):
                     wind_bearing, wind_bearing_ui = self.fix_corrupted_data(state_name="h{0}_windBearing".format(fore_counter_text), val=wind_bearing)
                     hourly_forecast_states_list.append({'key': u"h{0}_windBearing".format(fore_counter_text), 'value': wind_bearing, 'uiValue': int(float(wind_bearing_ui))})
 
+                    # ============================= Wind Bearing Name =============================
+                    wind_bearing_name = self.ui_format_wind_name(state_name="h{0}_windBearingName".format(fore_counter_text), val=wind_bearing)
+                    hourly_forecast_states_list.append({'key': u"h{0}_windBearingName".format(fore_counter_text), 'value': wind_bearing_name})
+
                     # ================================= Wind Gust =================================
                     wind_gust, wind_gust_ui = self.fix_corrupted_data(state_name="h{0}_windGust".format(fore_counter_text), val=wind_gust)
                     wind_gust_ui = self.ui_format_wind(dev=dev, state_name="h{0}_windGust".format(fore_counter_text), val=wind_gust_ui)
@@ -1331,7 +1335,7 @@ class Plugin(indigo.PluginBase):
                     daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text), 'value': cloud_cover, 'uiValue': cloud_cover_ui})
 
                     # =============================== Forecast Date ===============================
-                    forecast_date = time.strftime('%Y-%m-%d %H:%M', time.localtime(float(forecast_time)))
+                    forecast_date = time.strftime('%Y-%m-%d', time.localtime(float(forecast_time)))
                     daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
 
                     # =============================== Forecast Day ================================
@@ -1400,6 +1404,10 @@ class Plugin(indigo.PluginBase):
                     wind_bearing, wind_bearing_ui = self.fix_corrupted_data(state_name="d{0}_windBearing".format(fore_counter_text), val=wind_bearing)
                     daily_forecast_states_list.append({'key': u"d{0}_windBearing".format(fore_counter_text), 'value': wind_bearing, 'uiValue': int(float(wind_bearing_ui))})
 
+                    # ============================= Wind Bearing Name =============================
+                    wind_bearing_name = self.ui_format_wind_name(state_name="d{0}_windBearingName".format(fore_counter_text), val=wind_bearing)
+                    daily_forecast_states_list.append({'key': u"d{0}_windBearingName".format(fore_counter_text), 'value': wind_bearing_name})
+
                     # ================================= Wind Gust =================================
                     wind_gust, wind_gust_ui = self.fix_corrupted_data(state_name="d{0}_windGust".format(fore_counter_text), val=wind_gust)
                     wind_gust_ui = self.ui_format_wind(dev, state_name="d{0}_windGust".format(fore_counter_text), val=wind_gust_ui)
@@ -1422,11 +1430,11 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
             dev.updateStatesOnServer(daily_forecast_states_list)
 
-    def parse_weather_data(self, dev):
+    def parse_current_weather_data(self, dev):
         """
         Parse weather data to devices
 
-        The parse_weather_data() method takes weather data and parses it to Weather
+        The parse_current_weather_data() method takes weather data and parses it to Weather
         Device states. See Dark Sky API for value meaning.
 
         -----
@@ -1570,6 +1578,10 @@ class Plugin(indigo.PluginBase):
             weather_states_list.append({'key': 'windBearing', 'value': current_wind_bearing, 'uiValue': int(float(current_wind_bearing_ui))})
             weather_states_list.append({'key': 'windBearingIcon', 'value': round(current_wind_bearing)})
 
+            # ============================= Wind Bearing Name =============================
+            wind_bearing_name = self.ui_format_wind_name(state_name='windBearingName', val=current_wind_bearing)
+            weather_states_list.append({'key': 'windBearingName', 'value': wind_bearing_name})
+
             # ================================= Wind Gust =================================
             current_wind_gust, current_wind_gust_ui = self.fix_corrupted_data(state_name='current_wind_gust', val=wind_gust)
             current_wind_gust_ui = self.ui_format_wind(dev=dev, state_name="current_wind_gust", val=current_wind_gust_ui)
@@ -1686,7 +1698,7 @@ class Plugin(indigo.PluginBase):
 
                             # Weather devices.
                             elif dev.deviceTypeId == 'Weather':
-                                self.parse_weather_data(dev=dev)
+                                self.parse_current_weather_data(dev=dev)
                                 self.parse_alerts_data(dev=dev)
 
                     # Image Downloader devices.
