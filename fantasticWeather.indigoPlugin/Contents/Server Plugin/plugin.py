@@ -43,9 +43,8 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 # =================================== TO DO ===================================
 
 # TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
-# TODO: Construct a current conditions, forecast long string to augment DS?
-# TODO: Check location offline trigger - it may be firing on every refresh.
 # TODO: Consider temperature for item list UI for daily (day's high) and hourly (hour's high)
+# TODO: Construct a current conditions, forecast long string to augment DS?
 # TODO: Wind string (Southeast at 4 mph)
 
 # ================================== IMPORTS ==================================

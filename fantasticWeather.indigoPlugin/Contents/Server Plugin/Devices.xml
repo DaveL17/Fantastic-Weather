@@ -73,20 +73,20 @@ Display Units</Label>
 
             <State id="currentObservationEpoch">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Astronomy - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Astronomy - Observation Time (Epoch)</ControlPageLabel>
+                <TriggerLabel>Observation Time (Epoch)</TriggerLabel>
+                <ControlPageLabel>Observation Time (Epoch)</ControlPageLabel>
             </State>
 
             <State id="currentObservation24hr">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Astronomy - Observation Time (24 hr)</TriggerLabel>
-                <ControlPageLabel>Astronomy - Observation Time (24 hr)</ControlPageLabel>
+                <TriggerLabel>Observation Time (24 hr)</TriggerLabel>
+                <ControlPageLabel>Observation Time (24 hr)</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>Boolean</ValueType>
-                <TriggerLabel>Astronomy Device State</TriggerLabel>
-                <ControlPageLabel>Astronomy Device State</ControlPageLabel>
+                <TriggerLabel>Device State</TriggerLabel>
+                <ControlPageLabel>Device State</ControlPageLabel>
             </State>
         </States>
 
@@ -188,58 +188,6 @@ plugin updates within the plugin settings dialog.</Label>
 
         <States>
 
-            <State id="d01_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 1</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 1</ControlPageLabel>
-            </State>
-
-            <State id="d02_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 2</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 2</ControlPageLabel>
-            </State>
-
-            <State id="d03_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 3</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 3</ControlPageLabel>
-            </State>
-
-            <State id="d04_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 4</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 4</ControlPageLabel>
-            </State>
-
-            <State id="d05_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 5</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 5</ControlPageLabel>
-            </State>
-
-            <State id="d06_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 6</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 6</ControlPageLabel>
-            </State>
-
-            <State id="d07_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 7</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 7</ControlPageLabel>
-            </State>
-
-            <State id="d08_cloudCover">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Cloud Cover - Day 8</TriggerLabel>
-                <ControlPageLabel>Cloud Cover - Day 8</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
             <State id="d01_pressure">
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Barometric Pressure - Day 1</TriggerLabel>
@@ -286,6 +234,58 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Barometric Pressure - Day 8</TriggerLabel>
                 <ControlPageLabel>Barometric Pressure - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 1</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 2</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 3</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 4</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 5</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 6</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 7</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_cloudCover">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Cloud Cover - Day 8</TriggerLabel>
+                <ControlPageLabel>Cloud Cover - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -1178,26 +1178,26 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="currentObservation">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
+                <TriggerLabel>Observation Time</TriggerLabel>
+                <ControlPageLabel>Observation Time</ControlPageLabel>
             </State>
 
             <State id="currentObservation24hr">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
+                <TriggerLabel>Current Observation Time (24 Hour)</TriggerLabel>
+                <ControlPageLabel>Observation Time (24 Hour)</ControlPageLabel>
             </State>
 
             <State id="currentObservationEpoch">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
+                <TriggerLabel>Observation Time (Epoch)</TriggerLabel>
+                <ControlPageLabel>Observation Time (Epoch)</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>Boolean</ValueType>
-                <TriggerLabel>Daily Device State</TriggerLabel>
-                <ControlPageLabel>Daily Device State</ControlPageLabel>
+                <TriggerLabel>Device State</TriggerLabel>
+                <ControlPageLabel>Device State</ControlPageLabel>
             </State>
 
             <State id="weatherSummaryEmailSent">
@@ -2314,148 +2314,148 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Separator</ValueType>
             </State>
 
-            <State id="h01_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 1</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 1</ControlPageLabel>
+            <State id="h01_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 1</ControlPageLabel>
             </State>
 
-            <State id="h02_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 2</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 2</ControlPageLabel>
+            <State id="h02_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 2</ControlPageLabel>
             </State>
 
-            <State id="h03_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 3</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 3</ControlPageLabel>
+            <State id="h03_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 3</ControlPageLabel>
             </State>
 
-            <State id="h04_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 4</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 4</ControlPageLabel>
+            <State id="h04_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 4</ControlPageLabel>
             </State>
 
-            <State id="h05_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 5</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 5</ControlPageLabel>
+            <State id="h05_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 5</ControlPageLabel>
             </State>
 
-            <State id="h06_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 6</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 6</ControlPageLabel>
+            <State id="h06_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 6</ControlPageLabel>
             </State>
 
-            <State id="h07_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Type)ne - Hour 7</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 7</ControlPageLabel>
+            <State id="h07_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 7</ControlPageLabel>
             </State>
 
-            <State id="h08_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 8</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 8</ControlPageLabel>
+            <State id="h08_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 8</ControlPageLabel>
             </State>
 
-            <State id="h09_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 9</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - HoUr 9</ControlPageLabel>
+            <State id="h09_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 9</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 9</ControlPageLabel>
             </State>
 
-            <State id="h10_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 10</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 10</ControlPageLabel>
+            <State id="h10_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 10</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 10</ControlPageLabel>
             </State>
 
-            <State id="h11_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 11</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 11</ControlPageLabel>
+            <State id="h11_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 11</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 11</ControlPageLabel>
             </State>
 
-            <State id="h12_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 12</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 12</ControlPageLabel>
+            <State id="h12_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 12</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 12</ControlPageLabel>
             </State>
 
-            <State id="h13_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 13</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 13</ControlPageLabel>
+            <State id="h13_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 13</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 13</ControlPageLabel>
             </State>
 
-            <State id="h14_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 14</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 14</ControlPageLabel>
+            <State id="h14_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 14</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 14</ControlPageLabel>
             </State>
 
-            <State id="h15_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Type)ne - Hour 15</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 15</ControlPageLabel>
+            <State id="h15_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 15</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 15</ControlPageLabel>
             </State>
 
-            <State id="h16_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 16</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 16</ControlPageLabel>
+            <State id="h16_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 16</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 16</ControlPageLabel>
             </State>
 
-            <State id="h17_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 17</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 17</ControlPageLabel>
+            <State id="h17_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 17</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 17</ControlPageLabel>
             </State>
 
-            <State id="h18_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 18</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 18</ControlPageLabel>
+            <State id="h18_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 18</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 18</ControlPageLabel>
             </State>
 
-            <State id="h19_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 19</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 19</ControlPageLabel>
+            <State id="h19_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 19</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 19</ControlPageLabel>
             </State>
 
-            <State id="h20_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 20</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 20</ControlPageLabel>
+            <State id="h20_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 20</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 20</ControlPageLabel>
             </State>
 
-            <State id="h21_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 21</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 21</ControlPageLabel>
+            <State id="h21_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 21</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 21</ControlPageLabel>
             </State>
 
-            <State id="h22_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 22</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 22</ControlPageLabel>
+            <State id="h22_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 22</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 22</ControlPageLabel>
             </State>
 
-            <State id="h23_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Type)ne - Hour 23</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 23</ControlPageLabel>
+            <State id="h23_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 23</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 23</ControlPageLabel>
             </State>
 
-            <State id="h24_precipType">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Precipitation (Type) - Hour 24</TriggerLabel>
-                <ControlPageLabel>Precipitation (Type) - Hour 24</ControlPageLabel>
+            <State id="h24_precipChance">
+                <ValueType>Float</ValueType>
+                <TriggerLabel>Precipitation (Chance) - Hour 24</TriggerLabel>
+                <ControlPageLabel>Precipitation (Chance) - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -2604,154 +2604,6 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Precipitation (Intensity) - Hour 24</TriggerLabel>
                 <ControlPageLabel>Precipitation (Intensity) - Hour 24</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="h01_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 1</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 1</ControlPageLabel>
-            </State>
-
-            <State id="h02_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 2</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 2</ControlPageLabel>
-            </State>
-
-            <State id="h03_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 3</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 3</ControlPageLabel>
-            </State>
-
-            <State id="h04_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 4</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 4</ControlPageLabel>
-            </State>
-
-            <State id="h05_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 5</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 5</ControlPageLabel>
-            </State>
-
-            <State id="h06_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 6</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 6</ControlPageLabel>
-            </State>
-
-            <State id="h07_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 7</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 7</ControlPageLabel>
-            </State>
-
-            <State id="h08_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 8</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 8</ControlPageLabel>
-            </State>
-
-            <State id="h09_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 9</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 9</ControlPageLabel>
-            </State>
-
-            <State id="h10_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 10</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 10</ControlPageLabel>
-            </State>
-
-            <State id="h11_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 11</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 11</ControlPageLabel>
-            </State>
-
-            <State id="h12_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 12</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 12</ControlPageLabel>
-            </State>
-
-            <State id="h13_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 13</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 13</ControlPageLabel>
-            </State>
-
-            <State id="h14_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 14</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 14</ControlPageLabel>
-            </State>
-
-            <State id="h15_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 15</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 15</ControlPageLabel>
-            </State>
-
-            <State id="h16_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 16</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 16</ControlPageLabel>
-            </State>
-
-            <State id="h17_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 17</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 17</ControlPageLabel>
-            </State>
-
-            <State id="h18_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 18</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 18</ControlPageLabel>
-            </State>
-
-            <State id="h19_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 19</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 19</ControlPageLabel>
-            </State>
-
-            <State id="h20_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 20</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 20</ControlPageLabel>
-            </State>
-
-            <State id="h21_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 21</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 21</ControlPageLabel>
-            </State>
-
-            <State id="h22_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 22</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 22</ControlPageLabel>
-            </State>
-
-            <State id="h23_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 23</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 23</ControlPageLabel>
-            </State>
-
-            <State id="h24_precipChance">
-                <ValueType>Float</ValueType>
-                <TriggerLabel>Precipitation (Chance) - Hour 24</TriggerLabel>
-                <ControlPageLabel>Precipitation (Chance) - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -3944,26 +3796,26 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="currentObservation">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time</ControlPageLabel>
+                <TriggerLabel>Observation Time</TriggerLabel>
+                <ControlPageLabel>Observation Time</ControlPageLabel>
             </State>
 
             <State id="currentObservation24hr">
                 <ValueType>String</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (24 Hour)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (24 Hour)</ControlPageLabel>
+                <TriggerLabel>Current Observation Time (24 Hour)</TriggerLabel>
+                <ControlPageLabel>Observation Time (24 Hour)</ControlPageLabel>
             </State>
 
             <State id="currentObservationEpoch">
                 <ValueType>Integer</ValueType>
-                <TriggerLabel>Current Conditions - Observation Time (Epoch)</TriggerLabel>
-                <ControlPageLabel>Current Conditions - Observation Time (Epoch)</ControlPageLabel>
+                <TriggerLabel>Observation Time (Epoch)</TriggerLabel>
+                <ControlPageLabel>Observation Time (Epoch)</ControlPageLabel>
             </State>
 
             <State id="onOffState">
                 <ValueType>Boolean</ValueType>
-                <TriggerLabel>Hourly Device State</TriggerLabel>
-                <ControlPageLabel>Hourly Device State</ControlPageLabel>
+                <TriggerLabel>Device State</TriggerLabel>
+                <ControlPageLabel>Device State</ControlPageLabel>
             </State>
 
         </States>
@@ -4254,16 +4106,16 @@ plugin updates within the plugin settings dialog.</Label>
                 <ControlPageLabel>Alert - URI 5</ControlPageLabel>
             </State>
 
-            <State id="alertStatus">
-                <ValueType>Boolean</ValueType>
-                <TriggerLabel>Alert - Status</TriggerLabel>
-                <ControlPageLabel>Alert - Status</ControlPageLabel>
-            </State>
-
             <State id="alertCount">
                 <ValueType>Integer</ValueType>
                 <TriggerLabel>Alert - Count</TriggerLabel>
                 <ControlPageLabel>Alert - Count</ControlPageLabel>
+            </State>
+
+            <State id="alertStatus">
+                <ValueType>Boolean</ValueType>
+                <TriggerLabel>Alert - Status</TriggerLabel>
+                <ControlPageLabel>Alert - Status</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -4564,8 +4416,8 @@ file:///Users/username/Desktop/imagefile.png
 
             <State id="onOffState">
                 <ValueType>Boolean</ValueType>
-                <TriggerLabel>Image Downloader Device State</TriggerLabel>
-                <ControlPageLabel>Image Downloader Device State</ControlPageLabel>
+                <TriggerLabel>Device State</TriggerLabel>
+                <ControlPageLabel>Device State</ControlPageLabel>
             </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
