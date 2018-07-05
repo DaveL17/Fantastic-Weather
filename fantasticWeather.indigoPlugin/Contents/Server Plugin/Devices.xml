@@ -2610,6 +2610,154 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Separator</ValueType>
             </State>
 
+            <State id="h01_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 1</ControlPageLabel>
+            </State>
+
+            <State id="h02_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 2</ControlPageLabel>
+            </State>
+
+            <State id="h03_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 3</ControlPageLabel>
+            </State>
+
+            <State id="h04_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 4</ControlPageLabel>
+            </State>
+
+            <State id="h05_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 5</ControlPageLabel>
+            </State>
+
+            <State id="h06_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 6</ControlPageLabel>
+            </State>
+
+            <State id="h07_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 7</ControlPageLabel>
+            </State>
+
+            <State id="h08_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 8</ControlPageLabel>
+            </State>
+
+            <State id="h09_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 9</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 9</ControlPageLabel>
+            </State>
+
+            <State id="h10_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 10</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 10</ControlPageLabel>
+            </State>
+
+            <State id="h11_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 11</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 11</ControlPageLabel>
+            </State>
+
+            <State id="h12_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 12</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 12</ControlPageLabel>
+            </State>
+
+            <State id="h13_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 13</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 13</ControlPageLabel>
+            </State>
+
+            <State id="h14_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 14</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 14</ControlPageLabel>
+            </State>
+
+            <State id="h15_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 15</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 15</ControlPageLabel>
+            </State>
+
+            <State id="h16_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 16</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 16</ControlPageLabel>
+            </State>
+
+            <State id="h17_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 17</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 17</ControlPageLabel>
+            </State>
+
+            <State id="h18_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 18</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 18</ControlPageLabel>
+            </State>
+
+            <State id="h19_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 19</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 19</ControlPageLabel>
+            </State>
+
+            <State id="h20_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 20</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 20</ControlPageLabel>
+            </State>
+
+            <State id="h21_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 21</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 21</ControlPageLabel>
+            </State>
+
+            <State id="h22_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 22</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 22</ControlPageLabel>
+            </State>
+
+            <State id="h23_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 23</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 23</ControlPageLabel>
+            </State>
+
+            <State id="h24_precipType">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Type) - Hour 24</TriggerLabel>
+                <ControlPageLabel>Precipitation (Type) - Hour 24</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
             <State id="h01_summary">
                 <ValueType>String</ValueType>
                 <TriggerLabel>Summary - Hour 1</TriggerLabel>
