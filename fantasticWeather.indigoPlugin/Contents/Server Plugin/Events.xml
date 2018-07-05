@@ -2,7 +2,7 @@
 
 <Events>
 
-    <SupportURL>https://google.com</SupportURL>
+    <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki</SupportURL>
     <Event id="weatherAlert">
         <Name>Severe Weather Alert</Name>
             <ConfigUI>
