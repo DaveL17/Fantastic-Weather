@@ -9,7 +9,7 @@
 
         <ConfigUI>
 
-            <Field id="space00" type="label" fontSize="small">
+            <Field id="space00" type="label">
                 <Label>Astronomy information</Label>
             </Field>
 
@@ -21,6 +21,10 @@
             <Field id="longitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
                 <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+                <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
@@ -101,7 +105,7 @@ Display Units</Label>
 
         <ConfigUI>
 
-            <Field id="space00" type="label" fontSize="small">
+            <Field id="space00" type="label">
                 <Label>Daily Information</Label>
             </Field>
 
@@ -113,6 +117,10 @@ Display Units</Label>
             <Field id="longitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
                 <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+                <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
@@ -1219,7 +1227,7 @@ plugin updates within the plugin settings dialog.</Label>
 
         <ConfigUI>
 
-            <Field id="space00" type="label" fontSize="small">
+            <Field id="space00" type="label">
                 <Label>Hourly information</Label>
             </Field>
 
@@ -1231,6 +1239,10 @@ plugin updates within the plugin settings dialog.</Label>
             <Field id="longitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
                 <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+                <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
@@ -3972,11 +3984,68 @@ plugin updates within the plugin settings dialog.</Label>
 
     </Device>
 
+    <!-- Satellite Image Downloader -->
+
+    <Device id="satelliteImageDownloader" type="custom">
+        <Name>Satellite Image Downloader</Name>
+
+        <ConfigUI>
+
+            <Field id="space00" type="label" fontSize="small">
+                <Label>The image downloader only supports gif, jpg, jpeg, and png extensions. There is no limit to the number of downloader devices you can have.</Label>
+            </Field>
+
+            <Field id="space01" type="label"/>
+
+            <Field id="imageSourceLocation" type="textfield" defaultValue="http://www.url.com/imagefile.png" tooltip="Please enter the URL for the image file you want to download.">
+                <Label>Source Location:</Label>
+            </Field>
+
+            <Field id="sourceExamples" type="label" fontSize="small" alignWithControl="True">
+                <Label>Examples:
+http://www.website.com/imagefile.png
+file:///Users/username/Desktop/imagefile.png
+</Label>
+            </Field>
+
+            <Field id="imageDestinationLocation" type="textfield" defaultValue="/User/username/Desktop"
+                   tooltip="Please enter the location where you would like the image to be saved.">
+                <Label>Destination Location:</Label>
+            </Field>
+
+            <Field id="destinationExamples" type="label" fontSize="small" alignWithControl="True">
+                <Label>Example:
+/Users/username/Desktop/imagefile.png</Label>
+            </Field>
+
+            <Field id="isWeatherDevice" type="checkbox" defaultValue="false" hidden="true"/>
+
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            </Field>
+
+        </ConfigUI>
+
+        <States>
+
+            <State id="onOffState">
+                <ValueType>Boolean</ValueType>
+                <TriggerLabel>Device State</TriggerLabel>
+                <ControlPageLabel>Device State</ControlPageLabel>
+            </State>
+        </States>
+        <UiDisplayStateId>onOffState</UiDisplayStateId>
+
+    </Device>
+
     <!-- Weather Device -->
     <Device id="Weather" type="custom">
         <Name>Weather</Name>
 
         <ConfigUI>
+
+            <Field id="space00" type="label">
+                <Label>Weather information</Label>
+            </Field>
 
             <Field id="latitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
@@ -3986,6 +4055,10 @@ plugin updates within the plugin settings dialog.</Label>
             <Field id="longitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired longitude information for this device. It must follow the format of the examples below.">
                 <Label>Longitude:</Label>
+            </Field>
+
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+                <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
@@ -4514,59 +4587,6 @@ plugin updates within the plugin settings dialog.</Label>
                 <ControlPageLabel>Summary Email Sent</ControlPageLabel>
             </State>
 
-        </States>
-        <UiDisplayStateId>onOffState</UiDisplayStateId>
-
-    </Device>
-
-    <!-- Satellite Image Downloader -->
-
-    <Device id="satelliteImageDownloader" type="custom">
-        <Name>Satellite Image Downloader</Name>
-
-        <ConfigUI>
-
-            <Field id="space00" type="label" fontSize="small">
-                <Label>The image downloader only supports gif, jpg, jpeg, and png extensions. There is no limit to the number of downloader devices you can have.</Label>
-            </Field>
-
-            <Field id="space01" type="label"/>
-
-            <Field id="imageSourceLocation" type="textfield" defaultValue="http://www.url.com/imagefile.png" tooltip="Please enter the URL for the image file you want to download.">
-                <Label>Source Location:</Label>
-            </Field>
-
-            <Field id="sourceExamples" type="label" fontSize="small" alignWithControl="True">
-                <Label>Examples:
-http://www.website.com/imagefile.png
-file:///Users/username/Desktop/imagefile.png
-</Label>
-            </Field>
-
-            <Field id="imageDestinationLocation" type="textfield" defaultValue="/User/username/Desktop"
-                   tooltip="Please enter the location where you would like the image to be saved.">
-                <Label>Destination Location:</Label>
-            </Field>
-
-            <Field id="destinationExamples" type="label" fontSize="small" alignWithControl="True">
-                <Label>Example:
-/Users/username/Desktop/imagefile.png</Label>
-            </Field>
-
-            <Field id="isWeatherDevice" type="checkbox" defaultValue="false" hidden="true"/>
-
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
-            </Field>
-
-        </ConfigUI>
-
-        <States>
-
-            <State id="onOffState">
-                <ValueType>Boolean</ValueType>
-                <TriggerLabel>Device State</TriggerLabel>
-                <ControlPageLabel>Device State</ControlPageLabel>
-            </State>
         </States>
         <UiDisplayStateId>onOffState</UiDisplayStateId>
 

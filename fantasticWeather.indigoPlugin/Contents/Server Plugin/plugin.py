@@ -81,14 +81,14 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.02"
+__version__   = "0.1.03"
 
 # =============================================================================
 
 kDefaultPluginPrefs = {
     u'alertLogging': False,           # Write severe weather alerts to the log?
-    u'apiKey': "",                    # DS requires the api key.
-    u'callCounter': "999",            # DS call limit based on UW plan.
+    u'apiKey': "",                    # DS requires an api key.
+    u'callCounter': "999",            # DS call limit.
     u'dailyCallCounter': "0",         # Number of API calls today.
     u'dailyCallDay': "1970-01-01",    # API call counter date.
     u'dailyCallLimitReached': False,  # Has the daily call limit been reached?
@@ -102,7 +102,6 @@ kDefaultPluginPrefs = {
     u'showDebugLevel': "30",          # Logger level.
     u'uiDateFormat': "YYYY-MM-DD",    # Preferred date format string.
     u'uiPercentageDecimal': "1",      # Precision for Indigo UI display (humidity).
-    u'uiPressureTrend': "text",       # Pressure trend symbology
     u'uiTempDecimal': "1",            # Precision for Indigo UI display (temperature).
     u'uiTimeFormat': "military",      # Preferred time format string.
     u'uiWindDecimal': "1",            # Precision for Indigo UI display (wind).
@@ -1498,7 +1497,7 @@ class Plugin(indigo.PluginBase):
             # ================================= Dew Point =================================
             dew_point, dew_point_ui = self.fix_corrupted_data(state_name='dewpoint', val=dew_point)
             dew_point_ui = self.ui_format_temperature(dev, state_name='dewpoint', val=dew_point_ui)
-            weather_states_list.append({'key': 'dewpoint', 'value': dew_point_ui, 'uiValue': dew_point_ui})
+            weather_states_list.append({'key': 'dewpoint', 'value': dew_point, 'uiValue': dew_point_ui})
             weather_states_list.append({'key': 'dewpointIcon', 'value': round(dew_point)})
 
             # ================================= Humidity ==================================
