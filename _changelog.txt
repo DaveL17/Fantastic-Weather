@@ -7,6 +7,7 @@ v0.1.03 (beta 3)
 - Updates support URLs to forum and wiki.
 - Improves device config dialog UI.
 - Fixed bug in setting of Weather Device dewpoint value.
+- Fixes bug in icon naming convention.
 
 v0.1.02 (beta 2)
 - Fixes missing precipitation type device state for hourly device

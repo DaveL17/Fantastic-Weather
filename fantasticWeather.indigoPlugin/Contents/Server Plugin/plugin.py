@@ -1199,7 +1199,7 @@ class Plugin(indigo.PluginBase):
                     hourly_forecast_states_list.append({'key': u"h{0}_precipChance".format(fore_counter_text), 'value': precip_probability, 'uiValue': precip_probability_ui})
 
                     # =================================== Icon ====================================
-                    hourly_forecast_states_list.append({'key': u"h{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon)})
+                    hourly_forecast_states_list.append({'key': u"h{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon.replace('-', '_'))})
 
                     # TODO: This code is temporary and can be safely removed.
                     if icon not in self.pluginPrefs['hourlyIconNames']:
@@ -1346,7 +1346,7 @@ class Plugin(indigo.PluginBase):
                     daily_forecast_states_list.append({'key': u"d{0}_humidity".format(fore_counter_text), 'value': humidity, 'uiValue': humidity_ui})
 
                     # =================================== Icon ====================================
-                    daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon)})
+                    daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon.replace('-', '_'))})
 
                     # TODO: This code is temporary and can be safely removed.
                     if icon not in self.pluginPrefs['dailyIconNames']:
@@ -1508,7 +1508,7 @@ class Plugin(indigo.PluginBase):
 
             # =================================== Icon ====================================
             # (string: clear-day, clear-night, rain, snow, sleet, wind, fog, cloudy, partly-cloudy-day, or partly-cloudy-night...)
-            weather_states_list.append({'key': 'icon', 'value': unicode(icon)})
+            weather_states_list.append({'key': 'icon', 'value': unicode(icon.replace('-', '_'))})
 
             # TODO: This code is temporary and can be safely removed.
             if icon not in self.pluginPrefs['weatherIconNames']:
