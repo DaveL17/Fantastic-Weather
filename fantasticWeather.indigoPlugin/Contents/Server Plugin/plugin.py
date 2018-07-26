@@ -47,6 +47,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 # TODO: Construct a current conditions, forecast long string to augment DS?
 # TODO: Wind string (Southeast at 4 mph)
 
+# TODO: Time format should adjust all times (i.e., hourly)
 # ================================== IMPORTS ==================================
 
 # Built-in modules
@@ -81,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.03"
+__version__   = "0.1.04"
 
 # =============================================================================
 
@@ -1101,6 +1102,10 @@ class Plugin(indigo.PluginBase):
             moon_phase_ui = self.ui_format_percentage(dev=dev, state_name='moonPhase', val=moon_phase_ui)
             astronomy_states_list.append({'key': 'moonPhase', 'value': moon_phase, 'uiValue': moon_phase_ui})
 
+            new_props = dev.pluginProps
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            dev.replacePluginPropsOnServer(new_props)
+
             astronomy_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': u" "})
 
             dev.updateStatesOnServer(astronomy_states_list)
@@ -1129,6 +1134,9 @@ class Plugin(indigo.PluginBase):
             location      = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data  = self.masterWeatherDict[location]
             forecast_data = weather_data['hourly']['data']
+
+            # ============================== Hourly Summary ===============================
+            hourly_forecast_states_list.append({'key': 'hourly_summary', 'value': self.masterWeatherDict[location]['hourly']['summary']})
 
             # ============================= Observation Epoch =============================
             current_observation_epoch = int(self.nested_lookup(weather_data, keys=('currently', 'time')))
@@ -1170,9 +1178,10 @@ class Plugin(indigo.PluginBase):
                     else:
                         fore_counter_text = fore_counter
 
-                    # =============================== Forecast Date ===============================
-                    forecast_date = time.strftime('%H:%M', time.localtime(float(forecast_time)))
-                    hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                    # =============================== Forecast Hour ===============================
+                    forecast_hour = time.strftime('%H:%M', time.localtime(float(forecast_time)))
+                    forecast_hour_ui = time.strftime(self.time_format, time.localtime(float(forecast_time)))
+                    hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
                     # =============================== Forecast Day ================================
                     weekday = time.strftime('%A', time.localtime(float(forecast_time)))
@@ -1256,6 +1265,10 @@ class Plugin(indigo.PluginBase):
 
                     fore_counter += 1
 
+            new_props = dev.pluginProps
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            dev.replacePluginPropsOnServer(new_props)
+
             hourly_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': u" "})
             dev.updateStatesOnServer(hourly_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
@@ -1284,6 +1297,9 @@ class Plugin(indigo.PluginBase):
             location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
             forecast_day = self.masterWeatherDict[location]['daily']['data']
+
+            # =============================== Daily Summary ===============================
+            daily_forecast_states_list.append({'key': 'daily_summary', 'value': self.masterWeatherDict[location]['daily']['summary']})
 
             # ============================= Observation Epoch =============================
             current_observation_epoch = self.nested_lookup(weather_data, keys=('currently', 'time'))
@@ -1417,6 +1433,10 @@ class Plugin(indigo.PluginBase):
                     daily_forecast_states_list.append({'key': u"d{0}_windSpeed".format(fore_counter_text), 'value': wind_speed, 'uiValue': wind_speed_ui})
 
                     forecast_counter += 1
+
+            new_props = dev.pluginProps
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            dev.replacePluginPropsOnServer(new_props)
 
             daily_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': u" "})
             dev.updateStatesOnServer(daily_forecast_states_list)
@@ -1591,6 +1611,10 @@ class Plugin(indigo.PluginBase):
             current_wind_speed_ui = self.ui_format_wind(dev=dev, state_name="current_wind_speed", val=current_wind_speed_ui)
             weather_states_list.append({'key': 'windSpeed', 'value': current_wind_speed, 'uiValue': current_wind_speed_ui})
             weather_states_list.append({'key': 'windSpeedIcon', 'value': round(current_wind_speed)})
+
+            new_props = dev.pluginProps
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            dev.replacePluginPropsOnServer(new_props)
 
             dev.updateStatesOnServer(weather_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensorOn)
@@ -1998,23 +2022,46 @@ class Plugin(indigo.PluginBase):
         :param val:
         """
 
+        long_short = self.pluginPrefs.get('uiWindName', 'Long')
+
         val = round(val)
 
-        if val in range(0, 22):
-            return u"North"
-        elif val in range(22, 68):
-            return u"Northeast"
-        elif val in range(68, 113):
-            return u"East"
-        elif val in range(113, 158):
-            return u"Southeast"
-        elif val in range(158, 203):
-            return u"South"
-        elif val in range(203, 248):
-            return u"Southwest"
-        elif val in range(248, 293):
-            return u"West"
-        elif val in range(293, 338):
-            return u"Northwest"
-        elif val in range(338, 361):
-            return u"North"
+        if long_short == 'Long':
+            if val in range(0, 22):
+                return u"North"
+            elif val in range(22, 68):
+                return u"Northeast"
+            elif val in range(68, 113):
+                return u"East"
+            elif val in range(113, 158):
+                return u"Southeast"
+            elif val in range(158, 203):
+                return u"South"
+            elif val in range(203, 248):
+                return u"Southwest"
+            elif val in range(248, 293):
+                return u"West"
+            elif val in range(293, 338):
+                return u"Northwest"
+            elif val in range(338, 361):
+                return u"North"
+        else:
+            if val in range(0, 22):
+                return u"N"
+            elif val in range(22, 68):
+                return u"NE"
+            elif val in range(68, 113):
+                return u"E"
+            elif val in range(113, 158):
+                return u"SE"
+            elif val in range(158, 203):
+                return u"S"
+            elif val in range(203, 248):
+                return u"SW"
+            elif val in range(248, 293):
+                return u"W"
+            elif val in range(293, 338):
+                return u"NW"
+            elif val in range(338, 361):
+                return u"N"
+

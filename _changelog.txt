@@ -2,6 +2,14 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.1.04 (beta 4)
+- Adds "Daily Summary" state to daily weather devices.
+- Adds "Hourly Summary" state to hourly weather devices.
+- Adds plugin configuration option for Long vs. Short wind names.
+- Adds lat/long to Indigo UI Address field for most plugin devices.
+- Fixes bug where global time setting didn't affect Hourly device state UI
+  [h##_hour].
+
 v0.1.03 (beta 3)
 - Renames menu items from "Dark Sky" to "Fantastic Weather".
 - Updates support URLs to forum and wiki.

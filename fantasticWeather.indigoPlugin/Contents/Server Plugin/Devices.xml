@@ -196,6 +196,16 @@ plugin updates within the plugin settings dialog.</Label>
 
         <States>
 
+            <State id="daily_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Daily Summary</TriggerLabel>
+                <ControlPageLabel>Daily Summary</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
             <State id="d01_pressure">
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Barometric Pressure - Day 1</TriggerLabel>
@@ -1292,6 +1302,16 @@ plugin updates within the plugin settings dialog.</Label>
 
         <States>
 
+            <State id="hourly_summary">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Hourly Summary</TriggerLabel>
+                <ControlPageLabel>Hourly Summary</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
             <State id="h01_cloudCover">
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Cloud Cover - Hour 1</TriggerLabel>
@@ -1582,152 +1602,6 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Barometric Pressure - Hour 24</TriggerLabel>
                 <ControlPageLabel>Barometric Pressure - Hour 24</ControlPageLabel>
-            </State>
-
-            <State id="separator">
-                <ValueType>Separator</ValueType>
-            </State>
-
-            <State id="h01_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 1</TriggerLabel>
-                <ControlPageLabel>Date - Hour 1</ControlPageLabel>
-            </State>
-
-            <State id="h02_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 2</TriggerLabel>
-                <ControlPageLabel>Date - Hour 2</ControlPageLabel>
-            </State>
-
-            <State id="h03_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 3</TriggerLabel>
-                <ControlPageLabel>Date - Hour 3</ControlPageLabel>
-            </State>
-
-            <State id="h04_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 4</TriggerLabel>
-                <ControlPageLabel>Date - Hour 4</ControlPageLabel>
-            </State>
-
-            <State id="h05_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 5</TriggerLabel>
-                <ControlPageLabel>Date - Hour 5</ControlPageLabel>
-            </State>
-
-            <State id="h06_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 6</TriggerLabel>
-                <ControlPageLabel>Date - Hour 6</ControlPageLabel>
-            </State>
-
-            <State id="h07_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 7</TriggerLabel>
-                <ControlPageLabel>Date - Hour 7</ControlPageLabel>
-            </State>
-
-            <State id="h08_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 8</TriggerLabel>
-                <ControlPageLabel>Date - Hour 8</ControlPageLabel>
-            </State>
-            <State id="h09_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 9</TriggerLabel>
-                <ControlPageLabel>Date - Hour 9</ControlPageLabel>
-            </State>
-
-            <State id="h10_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 10</TriggerLabel>
-                <ControlPageLabel>Date - Hour 10</ControlPageLabel>
-            </State>
-
-            <State id="h11_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 11</TriggerLabel>
-                <ControlPageLabel>Date - Hour 11</ControlPageLabel>
-            </State>
-
-            <State id="h12_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 12</TriggerLabel>
-                <ControlPageLabel>Date - Hour 12</ControlPageLabel>
-            </State>
-
-            <State id="h13_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 13</TriggerLabel>
-                <ControlPageLabel>Date - Hour 13</ControlPageLabel>
-            </State>
-
-            <State id="h14_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 14</TriggerLabel>
-                <ControlPageLabel>Date - Hour 14</ControlPageLabel>
-            </State>
-
-            <State id="h15_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 15</TriggerLabel>
-                <ControlPageLabel>Date - Hour 15</ControlPageLabel>
-            </State>
-
-            <State id="h16_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 16</TriggerLabel>
-                <ControlPageLabel>Date - Hour 16</ControlPageLabel>
-            </State>
-            <State id="h17_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 17</TriggerLabel>
-                <ControlPageLabel>Date - Hour 17</ControlPageLabel>
-            </State>
-
-            <State id="h18_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 18</TriggerLabel>
-                <ControlPageLabel>Date - Hour 18</ControlPageLabel>
-            </State>
-
-            <State id="h19_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 19</TriggerLabel>
-                <ControlPageLabel>Date - Hour 19</ControlPageLabel>
-            </State>
-
-            <State id="h20_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 20</TriggerLabel>
-                <ControlPageLabel>Date - Hour 20</ControlPageLabel>
-            </State>
-
-            <State id="h21_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 21</TriggerLabel>
-                <ControlPageLabel>Date - Hour 21</ControlPageLabel>
-            </State>
-
-            <State id="h22_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 22</TriggerLabel>
-                <ControlPageLabel>Date - Hour 22</ControlPageLabel>
-            </State>
-
-            <State id="h23_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 23</TriggerLabel>
-                <ControlPageLabel>Date - Hour 23</ControlPageLabel>
-            </State>
-
-            <State id="h24_hour">
-                <ValueType>String</ValueType>
-                <TriggerLabel>Date - Hour 24</TriggerLabel>
-                <ControlPageLabel>Date - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
@@ -3060,6 +2934,152 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Temperature (High) - Hour 24</TriggerLabel>
                 <ControlPageLabel>Temperature (High) - Hour 24</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="h01_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 1</TriggerLabel>
+                <ControlPageLabel>Time - Hour 1</ControlPageLabel>
+            </State>
+
+            <State id="h02_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 2</TriggerLabel>
+                <ControlPageLabel>Time - Hour 2</ControlPageLabel>
+            </State>
+
+            <State id="h03_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 3</TriggerLabel>
+                <ControlPageLabel>Time - Hour 3</ControlPageLabel>
+            </State>
+
+            <State id="h04_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 4</TriggerLabel>
+                <ControlPageLabel>Time - Hour 4</ControlPageLabel>
+            </State>
+
+            <State id="h05_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 5</TriggerLabel>
+                <ControlPageLabel>Time - Hour 5</ControlPageLabel>
+            </State>
+
+            <State id="h06_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 6</TriggerLabel>
+                <ControlPageLabel>Time - Hour 6</ControlPageLabel>
+            </State>
+
+            <State id="h07_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 7</TriggerLabel>
+                <ControlPageLabel>Time - Hour 7</ControlPageLabel>
+            </State>
+
+            <State id="h08_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 8</TriggerLabel>
+                <ControlPageLabel>Time - Hour 8</ControlPageLabel>
+            </State>
+            <State id="h09_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 9</TriggerLabel>
+                <ControlPageLabel>Time - Hour 9</ControlPageLabel>
+            </State>
+
+            <State id="h10_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 10</TriggerLabel>
+                <ControlPageLabel>Time - Hour 10</ControlPageLabel>
+            </State>
+
+            <State id="h11_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 11</TriggerLabel>
+                <ControlPageLabel>Time - Hour 11</ControlPageLabel>
+            </State>
+
+            <State id="h12_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 12</TriggerLabel>
+                <ControlPageLabel>Time - Hour 12</ControlPageLabel>
+            </State>
+
+            <State id="h13_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 13</TriggerLabel>
+                <ControlPageLabel>Time - Hour 13</ControlPageLabel>
+            </State>
+
+            <State id="h14_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 14</TriggerLabel>
+                <ControlPageLabel>Time - Hour 14</ControlPageLabel>
+            </State>
+
+            <State id="h15_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 15</TriggerLabel>
+                <ControlPageLabel>Time - Hour 15</ControlPageLabel>
+            </State>
+
+            <State id="h16_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 16</TriggerLabel>
+                <ControlPageLabel>Time - Hour 16</ControlPageLabel>
+            </State>
+            <State id="h17_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 17</TriggerLabel>
+                <ControlPageLabel>Time - Hour 17</ControlPageLabel>
+            </State>
+
+            <State id="h18_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 18</TriggerLabel>
+                <ControlPageLabel>Time - Hour 18</ControlPageLabel>
+            </State>
+
+            <State id="h19_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 19</TriggerLabel>
+                <ControlPageLabel>Time - Hour 19</ControlPageLabel>
+            </State>
+
+            <State id="h20_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 20</TriggerLabel>
+                <ControlPageLabel>Time - Hour 20</ControlPageLabel>
+            </State>
+
+            <State id="h21_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 21</TriggerLabel>
+                <ControlPageLabel>Time - Hour 21</ControlPageLabel>
+            </State>
+
+            <State id="h22_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 22</TriggerLabel>
+                <ControlPageLabel>Time - Hour 22</ControlPageLabel>
+            </State>
+
+            <State id="h23_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 23</TriggerLabel>
+                <ControlPageLabel>Time - Hour 23</ControlPageLabel>
+            </State>
+
+            <State id="h24_hour">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Time - Hour 24</TriggerLabel>
+                <ControlPageLabel>Time - Hour 24</ControlPageLabel>
             </State>
 
             <State id="separator">
