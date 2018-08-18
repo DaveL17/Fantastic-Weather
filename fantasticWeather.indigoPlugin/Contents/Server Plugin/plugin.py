@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.04"
+__version__   = "0.1.05"
 
 # =============================================================================
 
@@ -1177,6 +1177,9 @@ class Plugin(indigo.PluginBase):
                         fore_counter_text = u"0{0}".format(fore_counter)
                     else:
                         fore_counter_text = fore_counter
+
+                    # =============================== Forecast Epoch ==============================
+                    hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
 
                     # =============================== Forecast Hour ===============================
                     forecast_hour = time.strftime('%H:%M', time.localtime(float(forecast_time)))

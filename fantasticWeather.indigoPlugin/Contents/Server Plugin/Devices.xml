@@ -3086,6 +3086,152 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Separator</ValueType>
             </State>
 
+            <State id="h01_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 1</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 1</ControlPageLabel>
+            </State>
+
+            <State id="h02_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 2</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 2</ControlPageLabel>
+            </State>
+
+            <State id="h03_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 3</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 3</ControlPageLabel>
+            </State>
+
+            <State id="h04_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 4</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 4</ControlPageLabel>
+            </State>
+
+            <State id="h05_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 5</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 5</ControlPageLabel>
+            </State>
+
+            <State id="h06_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 6</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 6</ControlPageLabel>
+            </State>
+
+            <State id="h07_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 7</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 7</ControlPageLabel>
+            </State>
+
+            <State id="h08_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 8</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 8</ControlPageLabel>
+            </State>
+            <State id="h09_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 9</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 9</ControlPageLabel>
+            </State>
+
+            <State id="h10_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 10</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 10</ControlPageLabel>
+            </State>
+
+            <State id="h11_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 11</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 11</ControlPageLabel>
+            </State>
+
+            <State id="h12_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 12</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 12</ControlPageLabel>
+            </State>
+
+            <State id="h13_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 13</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 13</ControlPageLabel>
+            </State>
+
+            <State id="h14_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 14</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 14</ControlPageLabel>
+            </State>
+
+            <State id="h15_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 15</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 15</ControlPageLabel>
+            </State>
+
+            <State id="h16_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 16</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 16</ControlPageLabel>
+            </State>
+            <State id="h17_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 17</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 17</ControlPageLabel>
+            </State>
+
+            <State id="h18_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 18</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 18</ControlPageLabel>
+            </State>
+
+            <State id="h19_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 19</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 19</ControlPageLabel>
+            </State>
+
+            <State id="h20_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 20</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 20</ControlPageLabel>
+            </State>
+
+            <State id="h21_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 21</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 21</ControlPageLabel>
+            </State>
+
+            <State id="h22_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 22</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 22</ControlPageLabel>
+            </State>
+
+            <State id="h23_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 23</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 23</ControlPageLabel>
+            </State>
+
+            <State id="h24_epoch">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Epoch - Hour 24</TriggerLabel>
+                <ControlPageLabel>Epoch - Hour 24</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
             <State id="h01_uvIndex">
                 <ValueType>Float</ValueType>
                 <TriggerLabel>UV (Index) - Hour 1</TriggerLabel>
