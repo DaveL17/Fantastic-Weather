@@ -48,6 +48,10 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 # TODO: Wind string (Southeast at 4 mph)
 
 # TODO: Time format should adjust all times (i.e., hourly)
+
+# TODO: if the service returns invalid JSON, the plugin will continue to retry every 30 seconds.  Look at knocking the refresh time so that it tries less frequently (maybe every 5 or 10 minutes).
+# Remember - the condition where the plugin got mad and went to once a minute until it blew the API limit.
+# TODO: more logging of bad conditions and less logging of good conditions.
 # ================================== IMPORTS ==================================
 
 # Built-in modules
@@ -82,7 +86,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.05"
+__version__   = "0.1.06"
 
 # =============================================================================
 
@@ -111,7 +115,6 @@ kDefaultPluginPrefs = {
 }
 
 
-# Indigo Methods ==============================================================
 class Plugin(indigo.PluginBase):
 
     def __init__(self, pluginId, pluginDisplayName, pluginVersion, pluginPrefs):
@@ -183,6 +186,9 @@ class Plugin(indigo.PluginBase):
     def __del__(self):
         indigo.PluginBase.__del__(self)
 
+    # =============================================================================
+    # ============================== Indigo Methods ===============================
+    # =============================================================================
     def closedPrefsConfigUi(self, valuesDict, userCancelled):
 
         self.logger.debug(u"closedPrefsConfigUi called.")
@@ -230,6 +236,7 @@ class Plugin(indigo.PluginBase):
 
             self.logger.debug(u"User prefs saved.")
 
+    # =============================================================================
     def deviceStartComm(self, dev):
 
         self.logger.debug(u"Starting Device: {0}".format(dev.name))
@@ -254,6 +261,7 @@ class Plugin(indigo.PluginBase):
 
         dev.updateStateOnServer('onOffState', value=True, uiValue=display_value)
 
+    # =============================================================================
     def deviceStopComm(self, dev):
 
         self.logger.debug(u"Stopping Device: {0}".format(dev.name))
@@ -266,6 +274,7 @@ class Plugin(indigo.PluginBase):
 
         dev.updateStateOnServer('onOffState', value=False, uiValue=u"Disabled")
 
+    # =============================================================================
     def getDeviceConfigUiValues(self, valuesDict, typeId, devId):
 
         self.logger.debug(u"getDeviceConfigUiValues called.")
@@ -286,10 +295,12 @@ class Plugin(indigo.PluginBase):
 
         return valuesDict
 
+    # =============================================================================
     def getPrefsConfigUiValues(self):
 
         return self.pluginPrefs
 
+    # =============================================================================
     def runConcurrentThread(self):
 
         self.logger.debug(u"Starting main thread.")
@@ -331,14 +342,17 @@ class Plugin(indigo.PluginBase):
             self.logger.debug(u"StopThread: (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
             self.logger.debug(u"Stopping Fantastically Useful Weather Utility thread.")
 
+    # =============================================================================
     def shutdown(self):
 
         self.pluginIsShuttingDown = True
 
+    # =============================================================================
     def startup(self):
 
         pass
 
+    # =============================================================================
     def triggerStartProcessing(self, trigger):
 
         self.logger.debug(u"Starting Trigger: {0}".format(trigger.name))
@@ -352,10 +366,12 @@ class Plugin(indigo.PluginBase):
         if trigger.configured and trigger.pluginTypeId == 'weatherSiteOffline':
             self.masterTriggerDict[dev_id] = (timer, trigger.id)
 
+    # =============================================================================
     def triggerStopProcessing(self, trigger):
 
         self.logger.debug(u"Stopping {0} trigger.".format(trigger.name))
 
+    # =============================================================================
     def validateDeviceConfigUi(self, valuesDict, typeID, devId):
 
         error_msg_dict = indigo.Dict()
@@ -376,6 +392,7 @@ class Plugin(indigo.PluginBase):
 
         return True
 
+    # =============================================================================
     def validateEventConfigUi(self, valuesDict, typeId, eventId):
 
         self.logger.debug(u"validateEventConfigUi called.")
@@ -412,6 +429,7 @@ class Plugin(indigo.PluginBase):
 
         return True, valuesDict
 
+    # =============================================================================
     def validatePrefsConfigUi(self, valuesDict):
 
         self.logger.debug(u"validatePrefsConfigUi called.")
@@ -465,7 +483,9 @@ class Plugin(indigo.PluginBase):
 
         return True, valuesDict
 
-# Fantastically Useful Weather Utility Methods ================================
+    # =============================================================================
+    # ============================== Plugin Methods ===============================
+    # =============================================================================
     def action_refresh_weather(self, valuesDict):
         """
         Refresh all weather as a result of an action call
@@ -482,6 +502,7 @@ class Plugin(indigo.PluginBase):
 
         self.refresh_weather_data()
 
+    # =============================================================================
     def check_version_now(self):
         """
         Immediate call to determine if running latest version
@@ -498,6 +519,7 @@ class Plugin(indigo.PluginBase):
         except Exception as error:
             self.logger.warning(u"Unable to check plugin update status. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
+    # =============================================================================
     def comms_kill_all(self):
         """
         Disable all plugin devices
@@ -514,6 +536,7 @@ class Plugin(indigo.PluginBase):
             except Exception as error:
                 self.logger.error(u"Exception when trying to kill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
+    # =============================================================================
     def comms_unkill_all(self):
         """
         Enable all plugin devices
@@ -530,6 +553,7 @@ class Plugin(indigo.PluginBase):
             except Exception as error:
                 self.logger.error(u"Exception when trying to unkill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
+    # =============================================================================
     def dark_sky_site(self, valuesDict):
         """
         Launch a web browser to register for API
@@ -544,6 +568,7 @@ class Plugin(indigo.PluginBase):
 
         self.browserOpen(valuesDict['launchParameters'])
 
+    # =============================================================================
     def dump_the_json(self):
         """
         Dump copy of weather JSON to file
@@ -575,6 +600,7 @@ class Plugin(indigo.PluginBase):
         except IOError:
             self.logger.info(u"Unable to write to Indigo Log folder.")
 
+    # =============================================================================
     def email_forecast(self, dev):
         """
         Email forecast information
@@ -663,6 +689,7 @@ class Plugin(indigo.PluginBase):
         except Exception as error:
             self.logger.warning(u"Unable to send forecast email message. Will keep trying. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
+    # =============================================================================
     def fix_corrupted_data(self, state_name, val):
         """
         Format corrupted and missing data
@@ -691,6 +718,7 @@ class Plugin(indigo.PluginBase):
             self.logger.debug(u"Imputing {0} data. Got: {1} Returning: (-99.0, --)".format(state_name, val))
             return -99.0, u"--"
 
+    # =============================================================================
     def generator_time(self, filter="", valuesDict=None, typeId="", targetId=0):
         """
         List of hours generator
@@ -707,6 +735,7 @@ class Plugin(indigo.PluginBase):
 
         return [(u"{0:02.0f}:00".format(hour), u"{0:02.0f}:00".format(hour)) for hour in range(0, 24)]
 
+    # =============================================================================
     def get_satellite_image(self, dev):
         """
         Download satellite image and save to file
@@ -774,6 +803,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+    # =============================================================================
     def get_weather_data(self, dev):
         """
         Reach out to Dark Sky and download data for this location
@@ -826,9 +856,11 @@ class Plugin(indigo.PluginBase):
                             self.logger.warning(u"Unable to reach Dark Sky. Sleeping until next scheduled poll.")
                             self.logger.debug(u"Unable to reach Dark Sky after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
                             self.comm_error = True
+
                         for dev in indigo.devices.itervalues("self"):
                             dev.updateStateOnServer("onOffState", value=False, uiValue=u" ")
                             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+
                         return
 
                 # Report results of download timer.
@@ -841,6 +873,7 @@ class Plugin(indigo.PluginBase):
                 # Load the JSON data from the file.
                 try:
                     parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
+
                 except Exception as error:
                     self.logger.error(u"Unable to decode data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
                     parsed_simplejson = {}
@@ -871,11 +904,13 @@ class Plugin(indigo.PluginBase):
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
             self.ds_online = False
+            return {}
 
         # We could have come here from several different places. Return to whence we came to further process the weather data.
         self.ds_online = True
         return self.masterWeatherDict
 
+    # =============================================================================
     def list_of_devices(self, filter, valuesDict, targetId, triggerId):
         """
         Generate list of devices for offline trigger
@@ -897,6 +932,7 @@ class Plugin(indigo.PluginBase):
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
 
+    # =============================================================================
     def list_of_weather_devices(self, filter, valuesDict, targetId, triggerId):
         """
         Generate list of devices for severe weather alert trigger
@@ -918,6 +954,7 @@ class Plugin(indigo.PluginBase):
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]
 
+    # =============================================================================
     def nested_lookup(self, obj, keys, default=u"Not available"):
         """
         Do a nested lookup of the DS JSON
@@ -952,6 +989,7 @@ class Plugin(indigo.PluginBase):
 
         return current
 
+    # =============================================================================
     def parse_alerts_data(self, dev):
         """
         Parse alerts data to devices
@@ -970,6 +1008,7 @@ class Plugin(indigo.PluginBase):
         alerts_states_list = []
 
         try:
+            alert_array = []
             alerts_logging    = self.pluginPrefs.get('alertLogging', True)  # Whether to log alerts
             alerts_suppressed = dev.pluginProps.get('suppressWeatherAlerts', False)  # Suppress alert messages for device
             no_alerts_logging  = self.pluginPrefs.get('noAlertLogging', False)  # Suppress 'No Alert' messages
@@ -992,7 +1031,6 @@ class Plugin(indigo.PluginBase):
 
             # ============================ At Least One Alert =============================
             else:
-                alert_array = []
                 alerts_states_list.append({'key': 'alertStatus', 'value': True, 'uiValue': u"True"})
 
                 for alert in alerts_data:
@@ -1042,8 +1080,7 @@ class Plugin(indigo.PluginBase):
                     if alerts_logging and not alerts_suppressed:
                         self.logger.info(u"\n{0}".format(alert_array[alert][0]))
 
-                alerts_states_list.append({'key': 'alertCount', 'value': len(alert_array)})
-
+            alerts_states_list.append({'key': 'alertCount', 'value': len(alert_array)})
             dev.updateStatesOnServer(alerts_states_list)
 
         except Exception as error:
@@ -1051,6 +1088,7 @@ class Plugin(indigo.PluginBase):
             alerts_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+    # =============================================================================
     def parse_astronomy_data(self, dev):
         """
         Parse astronomy data to devices
@@ -1116,6 +1154,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+    # =============================================================================
     def parse_hourly_forecast_data(self, dev):
         """
         Parse hourly forecast data to devices
@@ -1282,6 +1321,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStatesOnServer(hourly_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+    # =============================================================================
     def parse_daily_forecast_data(self, dev):
         """
         Parse ten day forecast data to devices
@@ -1451,6 +1491,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
             dev.updateStatesOnServer(daily_forecast_states_list)
 
+    # =============================================================================
     def parse_current_weather_data(self, dev):
         """
         Parse weather data to devices
@@ -1629,6 +1670,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+    # =============================================================================
     def refresh_weather_data(self):
         """
         Refresh data for plugin devices
@@ -1735,6 +1777,7 @@ class Plugin(indigo.PluginBase):
         except Exception as error:
             self.logger.error(u"Problem parsing Weather data. Dev: {0} (Line: {1} Error: {2})".format(dev.name, sys.exc_traceback.tb_lineno, error))
 
+    # =============================================================================
     def trigger_processing(self):
         """
         Fire various triggers for plugin devices
@@ -1832,6 +1875,7 @@ class Plugin(indigo.PluginBase):
         except KeyError:
             pass
 
+    # =============================================================================
     def ui_format_distance(self, dev, state_name, val):
         """
         Format distance data for Indigo UI
@@ -1853,6 +1897,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}{1}".format(val, distance_units)
 
+    # =============================================================================
     def ui_format_index(self, dev, state_name, val):
         """
         Format index data for Indigo UI
@@ -1874,6 +1919,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}{1}".format(val, index_units)
 
+    # =============================================================================
     def ui_format_item_list_temperature(self, val):
         """
         Format temperature values for Indigo UI
@@ -1892,6 +1938,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}".format(val)
 
+    # =============================================================================
     def ui_format_pressure(self, dev, state_name, val):
         """
         Format index data for Indigo UI
@@ -1913,6 +1960,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}{1}".format(val, index_units)
 
+    # =============================================================================
     def ui_format_percentage(self, dev, state_name, val):
         """
         Format percentage data for Indigo UI
@@ -1936,6 +1984,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}{1}".format(val, percentage_units)
 
+    # =============================================================================
     def ui_format_rain(self, dev, state_name, val):
         """
         Format rain data for Indigo UI
@@ -1966,6 +2015,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}".format(val)
 
+    # =============================================================================
     def ui_format_temperature(self, dev, state_name, val):
         """
         Format temperature data for Indigo UI
@@ -1989,6 +2039,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"--"
 
+    # =============================================================================
     def ui_format_wind(self, dev, state_name, val):
         """
         Format wind data for Indigo UI
@@ -2012,6 +2063,7 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             return u"{0}".format(val)
 
+    # =============================================================================
     def ui_format_wind_name(self, state_name, val):
         """
         Format wind data for Indigo UI
@@ -2067,4 +2119,4 @@ class Plugin(indigo.PluginBase):
                 return u"NW"
             elif val in range(338, 361):
                 return u"N"
-
+    # =============================================================================
