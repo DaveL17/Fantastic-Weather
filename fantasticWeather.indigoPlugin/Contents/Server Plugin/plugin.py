@@ -52,6 +52,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 # TODO: if the service returns invalid JSON, the plugin will continue to retry every 30 seconds.  Look at knocking the refresh time so that it tries less frequently (maybe every 5 or 10 minutes).
 # Remember - the condition where the plugin got mad and went to once a minute until it blew the API limit.
 # TODO: more logging of bad conditions and less logging of good conditions.
+
 # ================================== IMPORTS ==================================
 
 # Built-in modules
@@ -86,7 +87,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.06"
+__version__   = "0.1.07"
 
 # =============================================================================
 
@@ -1342,6 +1343,8 @@ class Plugin(indigo.PluginBase):
             forecast_day = self.masterWeatherDict[location]['daily']['data']
 
             # =============================== Daily Summary ===============================
+            current_observation_epoch = self.nested_lookup(weather_data, keys=('daily', 'summary'))
+            # daily_forecast_states_list.append({'key': 'daily_summary', 'value': current_observation_epoch})
             daily_forecast_states_list.append({'key': 'daily_summary', 'value': self.masterWeatherDict[location]['daily']['summary']})
 
             # ============================= Observation Epoch =============================
@@ -1425,6 +1428,11 @@ class Plugin(indigo.PluginBase):
                     precip_probability, precip_probability_ui = self.fix_corrupted_data(state_name="d{0}_precipChance".format(fore_counter_text), val=precip_probability * 100)
                     precip_probability_ui = self.ui_format_percentage(dev=dev, state_name="d{0}_precipChance".format(fore_counter_text), val=precip_probability_ui)
                     daily_forecast_states_list.append({'key': u"d{0}_precipChance".format(fore_counter_text), 'value': precip_probability, 'uiValue': precip_probability_ui})
+
+                    # ================================ Precip Total ===============================
+                    precip_total = precip_intensity * 24
+                    precip_total_ui = u"{0:.2f}".format(precip_total)
+                    daily_forecast_states_list.append({'key': u"d{0}_precipTotal".format(fore_counter_text), 'value': precip_total, 'uiValue': precip_total_ui})
 
                     # ================================ Precip Type ================================
                     daily_forecast_states_list.append({'key': u"d{0}_precipType".format(fore_counter_text), 'value': precip_type})

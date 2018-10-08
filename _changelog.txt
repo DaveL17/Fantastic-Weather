@@ -2,6 +2,10 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.1.07 (beta 7)
+- Adds daily forecast precipitation total to daily weather devices
+  (thanks for forum user Monstergerm for making this happen).
+
 v0.1.06 (beta 6)
 - Adds additional traps when Dark Sky API is offline.
 - Fixes bug where alertCount state for weather devices was not resetting after

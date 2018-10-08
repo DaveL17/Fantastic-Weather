@@ -124,8 +124,7 @@ Display Units</Label>
             </Field>
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
-                <Label>
-Display Units</Label>
+                <Label>Display Units</Label>
             </Field>
 
             <Field id="separator01" type="separator"/>
@@ -668,6 +667,58 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Precipitation (Intensity) - Day 8</TriggerLabel>
                 <ControlPageLabel>Precipitation (Intensity) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 1</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 2</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 3</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 4</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 5</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 6</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>OzoPrecipitation (Total) - Day 7</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_precipTotal">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Precipitation (Total) - Day 8</TriggerLabel>
+                <ControlPageLabel>Precipitation (Total) - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">
