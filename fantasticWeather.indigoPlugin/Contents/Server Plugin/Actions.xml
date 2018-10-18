@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <Actions>
     <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki</SupportURL>
+
     <Action id="refresh_weather_data">
         <Name>Refresh Weather Data</Name>
         <CallbackMethod>action_refresh_weather</CallbackMethod>

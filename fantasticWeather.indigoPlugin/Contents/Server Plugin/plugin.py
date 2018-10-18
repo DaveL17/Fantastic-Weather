@@ -44,20 +44,20 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
 # TODO: Consider temperature for item list UI for daily (day's high) and hourly (hour's high)
-# TODO: Construct a current conditions, forecast long string to augment DS?
 # TODO: Wind string (Southeast at 4 mph)
 
 # TODO: Time format should adjust all times (i.e., hourly)
-
-# TODO: if the service returns invalid JSON, the plugin will continue to retry every 30 seconds.  Look at knocking the refresh time so that it tries less frequently (maybe every 5 or 10 minutes).
-# Remember - the condition where the plugin got mad and went to once a minute until it blew the API limit.
 # TODO: more logging of bad conditions and less logging of good conditions.
+
+# TODO: add feature to display dates and times as either server-local time or location-local time.
 
 # ================================== IMPORTS ==================================
 
 # Built-in modules
 import datetime as dt
 import logging
+import pytz
+import xml
 import requests
 import simplejson
 import socket
@@ -1171,9 +1171,11 @@ class Plugin(indigo.PluginBase):
         hourly_forecast_states_list = []
 
         try:
-            location      = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-            weather_data  = self.masterWeatherDict[location]
-            forecast_data = weather_data['hourly']['data']
+            location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+            weather_data   = self.masterWeatherDict[location]
+            forecast_data  = weather_data['hourly']['data']
+            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
+            timezone       = pytz.timezone(weather_data['timezone'])
 
             # ============================== Hourly Summary ===============================
             hourly_forecast_states_list.append({'key': 'hourly_summary', 'value': self.masterWeatherDict[location]['hourly']['summary']})
@@ -1221,14 +1223,26 @@ class Plugin(indigo.PluginBase):
                     # =============================== Forecast Epoch ==============================
                     hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
 
-                    # =============================== Forecast Hour ===============================
-                    forecast_hour = time.strftime('%H:%M', time.localtime(float(forecast_time)))
-                    forecast_hour_ui = time.strftime(self.time_format, time.localtime(float(forecast_time)))
-                    hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
+                    # =========================== Forecast Hour and Day ===========================
+                    if preferred_time == "time_here":
+                        local_time       = time.localtime(float(forecast_time))
 
-                    # =============================== Forecast Day ================================
-                    weekday = time.strftime('%A', time.localtime(float(forecast_time)))
-                    hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': weekday, 'uiValue': weekday})
+                        forecast_day     = time.strftime('%A', local_time)
+                        forecast_hour    = time.strftime('%H:%M', local_time)
+                        forecast_hour_ui = time.strftime(self.time_format, local_time)
+
+                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
+
+                    elif preferred_time == "time_there":
+                        aware_time       = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
+
+                        forecast_day     = timezone.normalize(aware_time).strftime("%A")
+                        forecast_hour    = timezone.normalize(aware_time).strftime("%H:%M")
+                        forecast_hour_ui = time.strftime(self.time_format, timezone.normalize(aware_time).timetuple())
+
+                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
                     # ================================ Cloud Cover ================================
                     cloud_cover, cloud_cover_ui = self.fix_corrupted_data(state_name="h{0}_cloudCover".format(fore_counter_text), val=cloud_cover * 100)
@@ -1338,14 +1352,15 @@ class Plugin(indigo.PluginBase):
         daily_forecast_states_list = []
 
         try:
-            location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-            weather_data = self.masterWeatherDict[location]
-            forecast_day = self.masterWeatherDict[location]['daily']['data']
+            location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+            weather_data   = self.masterWeatherDict[location]
+            forecast_date   = self.masterWeatherDict[location]['daily']['data']
+            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
+            timezone       = pytz.timezone(weather_data['timezone'])
 
             # =============================== Daily Summary ===============================
-            current_observation_epoch = self.nested_lookup(weather_data, keys=('daily', 'summary'))
-            # daily_forecast_states_list.append({'key': 'daily_summary', 'value': current_observation_epoch})
-            daily_forecast_states_list.append({'key': 'daily_summary', 'value': self.masterWeatherDict[location]['daily']['summary']})
+            current_summary = self.nested_lookup(weather_data, keys=('daily', 'summary'))
+            daily_forecast_states_list.append({'key': 'daily_summary', 'value': current_summary})
 
             # ============================= Observation Epoch =============================
             current_observation_epoch = self.nested_lookup(weather_data, keys=('currently', 'time'))
@@ -1360,7 +1375,7 @@ class Plugin(indigo.PluginBase):
             daily_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
 
             forecast_counter = 1
-            for observation in forecast_day:
+            for observation in forecast_date:
                 cloud_cover        = self.nested_lookup(observation, keys=('cloudCover',))
                 forecast_time      = self.nested_lookup(observation, keys=('time',))
                 humidity           = self.nested_lookup(observation, keys=('humidity',))
@@ -1394,13 +1409,24 @@ class Plugin(indigo.PluginBase):
                     cloud_cover_ui = self.ui_format_percentage(dev=dev, state_name="d{0}_cloudCover".format(fore_counter_text), val=cloud_cover_ui)
                     daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text), 'value': cloud_cover, 'uiValue': cloud_cover_ui})
 
-                    # =============================== Forecast Date ===============================
-                    forecast_date = time.strftime('%Y-%m-%d', time.localtime(float(forecast_time)))
-                    daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                    # =========================== Forecast Date and Day ===========================
+                    if preferred_time == "time_here":
+                        local_time = time.localtime(float(forecast_time))
 
-                    # =============================== Forecast Day ================================
-                    weekday = time.strftime('%A', time.localtime(float(forecast_time)))
-                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': weekday, 'uiValue': weekday})
+                        forecast_date = time.strftime('%Y-%m-%d', local_time)
+                        forecast_day  = time.strftime('%A', local_time)
+
+                        daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                        daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+
+                    elif preferred_time == "time_there":
+                        aware_time = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
+
+                        forecast_date = timezone.normalize(aware_time).strftime('%Y-%m-%d')
+                        forecast_day  = timezone.normalize(aware_time).strftime("%A")
+
+                        daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                        daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
 
                     # ================================= Humidity ==================================
                     humidity, humidity_ui = self.fix_corrupted_data(state_name="d{0}_humidity".format(fore_counter_text), val=humidity * 100)
