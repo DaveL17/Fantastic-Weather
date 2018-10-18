@@ -1220,10 +1220,8 @@ class Plugin(indigo.PluginBase):
                     else:
                         fore_counter_text = fore_counter
 
-                    # =============================== Forecast Epoch ==============================
-                    hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
-
-                    # =========================== Forecast Hour and Day ===========================
+                    # ========================= Forecast Day, Epoch, Hour =========================
+                    # Local Time (server timezone)
                     if preferred_time == "time_here":
                         local_time       = time.localtime(float(forecast_time))
 
@@ -1232,8 +1230,10 @@ class Plugin(indigo.PluginBase):
                         forecast_hour_ui = time.strftime(self.time_format, local_time)
 
                         hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
                         hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
+                    # Location Time (location timezone)
                     elif preferred_time == "time_there":
                         aware_time       = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
 
@@ -1241,7 +1241,12 @@ class Plugin(indigo.PluginBase):
                         forecast_hour    = timezone.normalize(aware_time).strftime("%H:%M")
                         forecast_hour_ui = time.strftime(self.time_format, timezone.normalize(aware_time).timetuple())
 
+                        zone             = dt.datetime.fromtimestamp(forecast_time, timezone)
+                        zone_tuple       = zone.timetuple()              # tuple
+                        zone_posix       = int(time.mktime(zone_tuple))  # timezone timestamp
+
                         hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': zone_posix})
                         hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
                     # ================================ Cloud Cover ================================
