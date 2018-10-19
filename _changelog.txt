@@ -4,7 +4,7 @@ Note: Fantastic Weather requires Indigo 7
 
 v0.1.07 (beta 7)
 - Adds forecast precipitation total to daily weather devices
-- Adds timezone setting to hourly and daily forecast devices.
+- Adds timezone setting to astronomy, hourly and daily forecast devices.
   (Thanks for forum user Monstergerm for the suggestions and beta testing.)
 
 v0.1.06 (beta 6)

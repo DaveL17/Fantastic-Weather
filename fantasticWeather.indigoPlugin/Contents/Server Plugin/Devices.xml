@@ -27,6 +27,14 @@
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
+            <Field id="time_zone" type="menu" defaultValue="time_here" tooltip="Display local time or location time (time at server or time at location).">
+                <Label>Timezone</Label>
+                <List>
+                    <Option value="time_here">Local Time</Option>
+                    <Option value="time_there">Location Time</Option>
+                </List>
+            </Field>
+
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>
             </Field>
@@ -122,13 +130,13 @@
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
-            <Field id="time_zone" type="menu" defaultValue="time_here" tooltip="Display local time or location time (time at server or time at location).">
-                <Label>Timezone</Label>
-                <List>
-                    <Option value="time_here">Local Time</Option>
-                    <Option value="time_there">Location Time</Option>
-                </List>
-            </Field>
+            <!--<Field id="time_zone" type="menu" defaultValue="time_here" tooltip="Display local time or location time (time at server or time at location).">-->
+                <!--<Label>Timezone</Label>-->
+                <!--<List>-->
+                    <!--<Option value="time_here">Local Time</Option>-->
+                    <!--<Option value="time_there">Location Time</Option>-->
+                <!--</List>-->
+            <!--</Field>-->
 
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>

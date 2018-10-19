@@ -1108,6 +1108,8 @@ class Plugin(indigo.PluginBase):
             location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data   = self.masterWeatherDict[location]
             astronomy_data = weather_data['daily']['data']
+            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
+            timezone = pytz.timezone(weather_data['timezone'])
 
             epoch      = self.nested_lookup(weather_data, keys=('currently', 'time'))
             sun_rise   = self.nested_lookup(astronomy_data, keys=('sunriseTime',))
@@ -1126,15 +1128,31 @@ class Plugin(indigo.PluginBase):
             current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(current_observation_epoch))
             astronomy_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
 
-            # =============================== Sunrise Time ================================
-            sunrise_time = int(sun_rise)
-            sunrise_time = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(sunrise_time))
-            astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_time})
+            # ============================= Sunrise / Sunset ==============================
+            # Local Time (server timezone)
+            if preferred_time == "time_here":
 
-            # ================================ Sunset Time ================================
-            sunset_time = int(sun_set)
-            sunset_time = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(sunset_time))
-            astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_time})
+                sunrise_local = time.localtime(int(sun_rise))
+                sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_local)
+                astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
+
+                sunset_local  = time.localtime(int(sun_set))
+                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_local)
+                astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
+
+            # Location Time (location timezone)
+            elif preferred_time == "time_there":
+                sunrise_aware = dt.datetime.fromtimestamp(int(sun_rise), tz=pytz.utc)
+                sunset_aware  = dt.datetime.fromtimestamp(int(sun_set), tz=pytz.utc)
+
+                sunrise_normal = timezone.normalize(sunrise_aware)
+                sunset_normal  = timezone.normalize(sunset_aware)
+
+                sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_normal.timetuple())
+                astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
+
+                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_normal.timetuple())
+                astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
 
             # ================================ Moon Phase =================================
             moon_phase, moon_phase_ui = self.fix_corrupted_data(state_name='moonPhase', val=float(moon_phase * 100))
@@ -1360,7 +1378,6 @@ class Plugin(indigo.PluginBase):
             location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data   = self.masterWeatherDict[location]
             forecast_date   = self.masterWeatherDict[location]['daily']['data']
-            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
             timezone       = pytz.timezone(weather_data['timezone'])
 
             # =============================== Daily Summary ===============================
@@ -1415,23 +1432,16 @@ class Plugin(indigo.PluginBase):
                     daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text), 'value': cloud_cover, 'uiValue': cloud_cover_ui})
 
                     # =========================== Forecast Date and Day ===========================
-                    if preferred_time == "time_here":
-                        local_time = time.localtime(float(forecast_time))
+                    # We set the daily stuff to the location timezone regardless, because the
+                    # timestamp from DS is always 00:00 localized. If we set it using the
+                    # server timezone, it may display the wrong day if the location is ahead of
+                    # where we are.
+                    aware_time = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
+                    forecast_date = timezone.normalize(aware_time).strftime('%Y-%m-%d')
+                    forecast_day  = timezone.normalize(aware_time).strftime("%A")
 
-                        forecast_date = time.strftime('%Y-%m-%d', local_time)
-                        forecast_day  = time.strftime('%A', local_time)
-
-                        daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
-                        daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
-
-                    elif preferred_time == "time_there":
-                        aware_time = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
-
-                        forecast_date = timezone.normalize(aware_time).strftime('%Y-%m-%d')
-                        forecast_day  = timezone.normalize(aware_time).strftime("%A")
-
-                        daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
-                        daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                    daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
+                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
 
                     # ================================= Humidity ==================================
                     humidity, humidity_ui = self.fix_corrupted_data(state_name="d{0}_humidity".format(fore_counter_text), val=humidity * 100)
