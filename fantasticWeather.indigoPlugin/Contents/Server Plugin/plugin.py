@@ -42,14 +42,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO: Refactor plugin config last success. This could key off the response headers and always be the most current (it now changes based on automatic updates only.)
-# TODO: Consider temperature for item list UI for daily (day's high) and hourly (hour's high)
-# TODO: Wind string (Southeast at 4 mph)
-
-# TODO: Time format should adjust all times (i.e., hourly)
-# TODO: more logging of bad conditions and less logging of good conditions.
-
-# TODO: add feature to display dates and times as either server-local time or location-local time.
+# TODO: None
 
 # ================================== IMPORTS ==================================
 
@@ -57,7 +50,6 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 import datetime as dt
 import logging
 import pytz
-import xml
 import requests
 import simplejson
 import socket
@@ -65,6 +57,7 @@ import sys
 import time
 import urllib   # (satellite imagery fallback)
 import urllib2  # (weather data fallback)
+import xml
 
 # Third-party modules
 from DLFramework import indigoPluginUpdateChecker
@@ -649,7 +642,9 @@ class Plugin(indigo.PluginBase):
                 forecast_day_name  = time.strftime('%A', time.localtime(float(forecast_time)))
                 humidity           = self.nested_lookup(forecast_day, keys=('humidity',))
                 ozone              = self.nested_lookup(forecast_day, keys=('ozone',))
+                precip_intensity   = self.nested_lookup(forecast_day, keys=('precipIntensity',))
                 precip_probability = self.nested_lookup(forecast_day, keys=('precipProbability',))
+                precip_total       = precip_intensity * 24
                 precip_type        = self.nested_lookup(forecast_day, keys=('precipType',))
                 pressure           = self.nested_lookup(forecast_day, keys=('pressure',))
                 summary            = self.nested_lookup(forecast_day, keys=('summary',))
@@ -670,6 +665,7 @@ class Plugin(indigo.PluginBase):
                 email_body += u"High: {0}\n".format(temperature_high)
                 email_body += u"Low: {0}\n".format(temperature_low)
                 email_body += u"{0} chance of {1}\n".format(precip_probability, precip_type)
+                email_body += u"Total Precip: {0}\n".format(precip_total)
                 email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(wind_name, wind_speed, wind_gust)
                 email_body += u"Clouds: {0}\n".format(cloud_cover)
                 email_body += u"Humidity: {0}\n".format(humidity)
@@ -846,6 +842,7 @@ class Plugin(indigo.PluginBase):
 
                 # If requests is not installed, try urllib2 instead.
                 except NameError:
+                    self.logger.debug(u"Requests module not loading. Trying urllib2 instead.")
                     try:
                         # Connect to Dark Sky and retrieve data.
                         socket.setdefaulttimeout(20)
@@ -1017,6 +1014,8 @@ class Plugin(indigo.PluginBase):
             location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
             alerts_data  = self.nested_lookup(weather_data, keys=('alerts',))
+            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
+            timezone = pytz.timezone(weather_data['timezone'])
 
             # ============================= Delete Old Alerts =============================
             for alert_counter in range(1, 6):
@@ -1065,14 +1064,37 @@ class Plugin(indigo.PluginBase):
                     if alert_counter <= 5:
 
                         # Convert epoch times to human friendly values
-                        alert_expires = time.strftime('%Y-%m-%d %H:%M', time.localtime(float(alert_array[alert][1])))
-                        alert_time    = time.strftime('%Y-%m-%d %H:%M', time.localtime(float(alert_array[alert][4])))
+
+                        # ============================ Effective / Expires ============================
+                        # Local Time (server timezone)
+                        if preferred_time == "time_here":
+
+                            alert_effective_time = time.localtime(int(alert_array[alert][4]))
+                            alert_time    = time.strftime('%Y-%m-%d %H:%M', alert_effective_time)
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter), 'value': u"{0}".format(alert_time)})
+
+                            alert_expires_time = time.localtime(int(alert_array[alert][1]))
+                            alert_expires = time.strftime('%Y-%m-%d %H:%M', alert_expires_time)
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter), 'value': u"{0}".format(alert_expires)})
+
+                        # Location Time (location timezone)
+                        elif preferred_time == "time_there":
+
+                            alert_effective_time = dt.datetime.fromtimestamp(int(alert_array[alert][4]), tz=pytz.utc)
+                            alert_effective_time = timezone.normalize(alert_effective_time)
+                            alert_time = time.strftime("{0} {1}".format(self.date_format, self.time_format), alert_effective_time.timetuple())
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter), 'value': u"{0}".format(alert_time)})
+
+                            alert_expires_time = dt.datetime.fromtimestamp(int(alert_array[alert][1]), tz=pytz.utc)
+                            alert_expires_time = timezone.normalize(alert_expires_time)
+                            alert_expires = time.strftime("{0} {1}".format(self.date_format, self.time_format), alert_expires_time.timetuple())
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter), 'value': u"{0}".format(alert_expires)})
+
+                        # ================================ Alert Info =================================
 
                         alerts_states_list.append({'key': u"{0}{1}".format('alertDescription', alert_counter), 'value': u"{0}".format(alert_array[alert][0])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter), 'value': u"{0}".format(alert_expires)})
                         alerts_states_list.append({'key': u"{0}{1}".format('alertRegions', alert_counter), 'value': u"{0}".format(alert_array[alert][2])})
                         alerts_states_list.append({'key': u"{0}{1}".format('alertSeverity', alert_counter), 'value': u"{0}".format(alert_array[alert][3])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter), 'value': u"{0}".format(alert_time)})
                         alerts_states_list.append({'key': u"{0}{1}".format('alertTitle', alert_counter), 'value': u"{0}".format(alert_array[alert][5])})
                         alerts_states_list.append({'key': u"{0}{1}".format('alertUri', alert_counter), 'value': u"{0}".format(alert_array[alert][6])})
                         alert_counter += 1
@@ -1189,6 +1211,7 @@ class Plugin(indigo.PluginBase):
         hourly_forecast_states_list = []
 
         try:
+            hour_temp      = 0
             location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data   = self.masterWeatherDict[location]
             forecast_data  = weather_data['hourly']['data']
@@ -1210,10 +1233,10 @@ class Plugin(indigo.PluginBase):
             current_observation_24hr = time.strftime("{0} {1}".format(self.date_format, self.time_format), time.localtime(current_observation_epoch))
             hourly_forecast_states_list.append({'key': 'currentObservation24hr', 'value': current_observation_24hr})
 
-            fore_counter = 1
+            forecast_counter = 1
             for observation in forecast_data:
 
-                if fore_counter <= 24:
+                if forecast_counter <= 24:
 
                     cloud_cover        = self.nested_lookup(observation, keys=('cloudCover',))
                     forecast_time      = self.nested_lookup(observation, keys=('time',))
@@ -1233,10 +1256,10 @@ class Plugin(indigo.PluginBase):
                     wind_speed         = self.nested_lookup(observation, keys=('windSpeed',))
 
                     # Add leading zero to counter value for device state names 1-9.
-                    if fore_counter < 10:
-                        fore_counter_text = u"0{0}".format(fore_counter)
+                    if forecast_counter < 10:
+                        fore_counter_text = u"0{0}".format(forecast_counter)
                     else:
-                        fore_counter_text = fore_counter
+                        fore_counter_text = forecast_counter
 
                     # ========================= Forecast Day, Epoch, Hour =========================
                     # Local Time (server timezone)
@@ -1315,6 +1338,9 @@ class Plugin(indigo.PluginBase):
                     temperature_ui = self.ui_format_temperature(dev=dev, state_name="h{0}_temperature".format(fore_counter_text), val=temperature_ui)
                     hourly_forecast_states_list.append({'key': u"h{0}_temperature".format(fore_counter_text), 'value': temperature, 'uiValue': temperature_ui})
 
+                    if forecast_counter == 1:
+                        hour_temp = round(temperature)
+
                     # ================================= UV Index ==================================
                     uv_index, uv_index_ui = self.fix_corrupted_data(state_name="h{0}_uvIndex".format(fore_counter_text), val=uv_index)
                     uv_index_ui = self.ui_format_index(dev, state_name="h{0}_uvIndex".format(fore_counter_text), val=uv_index_ui)
@@ -1343,13 +1369,15 @@ class Plugin(indigo.PluginBase):
                     visibility_ui = self.ui_format_distance(dev, state_name="h{0}_visibility".format(fore_counter_text), val=visibility_ui)
                     hourly_forecast_states_list.append({'key': u"h{0}_visibility".format(fore_counter_text), 'value': visibility, 'uiValue': visibility_ui})
 
-                    fore_counter += 1
+                    forecast_counter += 1
 
             new_props = dev.pluginProps
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
             dev.replacePluginPropsOnServer(new_props)
 
-            hourly_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': u" "})
+            display_value = u"{0}{1}".format(int(hour_temp), dev.pluginProps['temperatureUnits'])
+            hourly_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': display_value})
+
             dev.updateStatesOnServer(hourly_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
@@ -1375,10 +1403,12 @@ class Plugin(indigo.PluginBase):
         daily_forecast_states_list = []
 
         try:
-            location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-            weather_data   = self.masterWeatherDict[location]
-            forecast_date   = self.masterWeatherDict[location]['daily']['data']
-            timezone       = pytz.timezone(weather_data['timezone'])
+            location      = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+            weather_data  = self.masterWeatherDict[location]
+            forecast_date = self.masterWeatherDict[location]['daily']['data']
+            timezone      = pytz.timezone(weather_data['timezone'])
+            today_high    = 0
+            today_low     = 0
 
             # =============================== Daily Summary ===============================
             current_summary = self.nested_lookup(weather_data, keys=('daily', 'summary'))
@@ -1472,7 +1502,7 @@ class Plugin(indigo.PluginBase):
 
                     # ================================ Precip Total ===============================
                     precip_total = precip_intensity * 24
-                    precip_total_ui = u"{0:.2f}".format(precip_total)
+                    precip_total_ui = self.ui_format_rain(dev, state_name="precip_total", val=precip_total)
                     daily_forecast_states_list.append({'key': u"d{0}_precipTotal".format(fore_counter_text), 'value': precip_total, 'uiValue': precip_total_ui})
 
                     # ================================ Precip Type ================================
@@ -1491,10 +1521,16 @@ class Plugin(indigo.PluginBase):
                     temperature_high_ui = self.ui_format_temperature(dev, state_name="d{0}_temperatureHigh".format(fore_counter_text), val=temperature_high_ui)
                     daily_forecast_states_list.append({'key': u"d{0}_temperatureHigh".format(fore_counter_text), 'value': temperature_high, 'uiValue': temperature_high_ui})
 
+                    if forecast_counter == 1:
+                        today_high = round(temperature_high)
+
                     # ============================== Temperature Low ==============================
                     temperature_low, temperature_low_ui = self.fix_corrupted_data(state_name="d{0}_temperatureLow".format(fore_counter_text), val=temperature_low)
                     temperature_low_ui = self.ui_format_temperature(dev, state_name="d{0}_temperatureLow".format(fore_counter_text), val=temperature_low_ui)
                     daily_forecast_states_list.append({'key': u"d{0}_temperatureLow".format(fore_counter_text), 'value': temperature_low, 'uiValue': temperature_low_ui})
+
+                    if forecast_counter == 1:
+                        today_low = round(temperature_low)
 
                     # ================================= UV Index ==================================
                     uv_index, uv_index_ui = self.fix_corrupted_data(state_name="d{0}_uvIndex".format(fore_counter_text), val=uv_index)
@@ -1530,7 +1566,9 @@ class Plugin(indigo.PluginBase):
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
             dev.replacePluginPropsOnServer(new_props)
 
-            daily_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': u" "})
+            display_value = u"{0}{2}/{1}{2}".format(int(today_high), int(today_low), dev.pluginProps['temperatureUnits'])
+            daily_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': display_value})
+
             dev.updateStatesOnServer(daily_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
@@ -1704,6 +1742,9 @@ class Plugin(indigo.PluginBase):
             current_wind_speed_ui = self.ui_format_wind(dev=dev, state_name="current_wind_speed", val=current_wind_speed_ui)
             weather_states_list.append({'key': 'windSpeed', 'value': current_wind_speed, 'uiValue': current_wind_speed_ui})
             weather_states_list.append({'key': 'windSpeedIcon', 'value': round(current_wind_speed)})
+
+            # ================================ Wind String ================================
+            weather_states_list.append({'key': 'windString', 'value': u"{0} at {1}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
 
             new_props = dev.pluginProps
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))

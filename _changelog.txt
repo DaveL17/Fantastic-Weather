@@ -3,9 +3,17 @@ Fantastic Weather Plugin - Developed by: DaveL17
 Note: Fantastic Weather requires Indigo 7
 
 v0.1.07 (beta 7)
-- Adds forecast precipitation total to daily weather devices
-- Adds timezone setting to astronomy, hourly and daily forecast devices.
-  (Thanks for forum user Monstergerm for the suggestions and beta testing.)
+- Adds forecast precipitation total state to daily weather devices
+- Adds timezone setting to astronomy, daily, hourly and weather forecast
+  devices.
+- Adds 'WindString' state to Weather devices 'East at 4.0 mph'.
+- Adds temperatures to Indigo device state list for Daily and Hourly Weather
+  devices (modified by temperature display units).
+  - Daily reports daily High/Low (i.e., 72°/32°)
+  - Hourly reports hourly High (i.e., 72°)
+
+(Thanks for forum user Monstergerm for the suggestions and beta testing.)
+
 
 v0.1.06 (beta 6)
 - Adds additional traps when Dark Sky API is offline.

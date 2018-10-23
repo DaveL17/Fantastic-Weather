@@ -130,21 +130,13 @@
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
-            <!--<Field id="time_zone" type="menu" defaultValue="time_here" tooltip="Display local time or location time (time at server or time at location).">-->
-                <!--<Label>Timezone</Label>-->
-                <!--<List>-->
-                    <!--<Option value="time_here">Local Time</Option>-->
-                    <!--<Option value="time_there">Location Time</Option>-->
-                <!--</List>-->
-            <!--</Field>-->
-
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>
             </Field>
 
             <Field id="separator01" type="separator"/>
 
-            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mph.)">
+            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mi.)">
                 <Label>Distance:</Label>
             </Field>
 
@@ -1335,7 +1327,7 @@ plugin updates within the plugin settings dialog.</Label>
 
             <Field id="separator01" type="separator"/>
 
-            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mph.)">
+            <Field id="distanceUnits" type="textfield" defaultValue=" mi." tooltip="Appended to all distance values. (10 mi.)">
                 <Label>Distance:</Label>
             </Field>
 
@@ -4301,6 +4293,14 @@ file:///Users/username/Desktop/imagefile.png
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
+            <Field id="time_zone" type="menu" defaultValue="time_here" tooltip="Display local time or location time (time at server or time at location).">
+                <Label>Timezone</Label>
+                <List>
+                    <Option value="time_here">Local Time</Option>
+                    <Option value="time_there">Location Time</Option>
+                </List>
+            </Field>
+
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>
             </Field>
@@ -4791,6 +4791,12 @@ file:///Users/username/Desktop/imagefile.png
                 <ValueType>Integer</ValueType>
                 <TriggerLabel>Current Conditions - Wind Speed (Icon)</TriggerLabel>
                 <ControlPageLabel>Current Conditions - Wind Speed (Icon)</ControlPageLabel>
+            </State>
+
+            <State id="windString">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Current Conditions - Wind String</TriggerLabel>
+                <ControlPageLabel>Current Conditions - Wind String</ControlPageLabel>
             </State>
 
             <State id="separator">
