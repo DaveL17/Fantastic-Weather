@@ -1282,6 +1282,12 @@ plugin updates within the plugin settings dialog.</Label>
                 <ControlPageLabel>Weather Summary Email Sent</ControlPageLabel>
             </State>
 
+            <State id="weatherSummaryEmailTimestamp">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Summary Email Timestamp</TriggerLabel>
+                <ControlPageLabel>Summary Email Timestamp</ControlPageLabel>
+            </State>
+
         </States>
 
         <UiDisplayStateId>onOffState</UiDisplayStateId>
@@ -4825,12 +4831,6 @@ file:///Users/username/Desktop/imagefile.png
                 <ValueType>String</ValueType>
                 <TriggerLabel>Observation Time (Long)</TriggerLabel>
                 <ControlPageLabel>Observation Time (Long)</ControlPageLabel>
-            </State>
-
-            <State id="weatherSummaryEmailSent">
-                <ValueType>Boolean</ValueType>
-                <TriggerLabel>Summary Email Sent</TriggerLabel>
-                <ControlPageLabel>Summary Email Sent</ControlPageLabel>
             </State>
 
         </States>

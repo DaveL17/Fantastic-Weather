@@ -42,7 +42,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO: None
+# TODO:
 
 # ================================== IMPORTS ==================================
 
@@ -80,7 +80,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.07"
+__version__   = "0.1.08"
 
 # =============================================================================
 
@@ -271,8 +271,6 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def getDeviceConfigUiValues(self, valuesDict, typeId, devId):
 
-        self.logger.debug(u"getDeviceConfigUiValues called.")
-
         if typeId == 'Daily':
             # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
             # populate the control with the default value when a new device is created.
@@ -282,10 +280,13 @@ class Plugin(indigo.PluginBase):
         if typeId != 'satelliteImageDownloader':
             # If new device, lat/long will be zero. so let's start with the lat/long of
             # the Indigo server.
-            if 'latitude' not in valuesDict.keys():
-                lat_long = indigo.server.getLatitudeAndLongitude()
-                valuesDict['latitude'] = lat_long[0]
-                valuesDict['longitude'] = lat_long[1]
+
+            if 'latitude' in valuesDict['latitude'].keys():
+                if valuesDict['latitude'] == "0" or valuesDict['longitude'] == "0":
+                    lat_long = indigo.server.getLatitudeAndLongitude()
+                    valuesDict['latitude'] = str(lat_long[0])
+                    valuesDict['longitude'] = str(lat_long[1])
+                    self.logger.debug(u"Populated lat/long.")
 
         return valuesDict
 
@@ -367,6 +368,8 @@ class Plugin(indigo.PluginBase):
 
     # =============================================================================
     def validateDeviceConfigUi(self, valuesDict, typeID, devId):
+
+        self.logger.debug(u"{0}".format(u"validateDeviceConfigUi called."))
 
         error_msg_dict = indigo.Dict()
 
@@ -617,6 +620,18 @@ class Plugin(indigo.PluginBase):
             summary_wanted = dev.pluginProps.get('weatherSummaryEmail', '')
             summary_sent   = dev.states.get('weatherSummaryEmailSent', False)
 
+            # If it's a new day, reset the email summary sent flag.
+            try:
+                timestamp     = dev.states['weatherSummaryEmailTimestamp']
+                last_sent     = dt.datetime.strptime(timestamp, '%Y-%m-%d')
+                last_sent_day = last_sent.day
+
+                if last_sent_day != dt.datetime.now().day:
+                    dev.updateStateOnServer('weatherSummaryEmailSent', value=False)
+                    summary_sent = False
+            except ValueError:
+                summary_sent = False
+
             # Get the desired summary email time and convert it for test.
             summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
             summary_time = dt.datetime.strptime(summary_time, '%H:%M')
@@ -637,45 +652,64 @@ class Plugin(indigo.PluginBase):
             # If an email summary is wanted but not yet sent and we have reached the desired time of day.
             if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour:
 
-                cloud_cover        = self.nested_lookup(forecast_day, keys=('cloudCover',))
-                forecast_time      = self.nested_lookup(forecast_day, keys=('time',))
-                forecast_day_name  = time.strftime('%A', time.localtime(float(forecast_time)))
-                humidity           = self.nested_lookup(forecast_day, keys=('humidity',))
-                ozone              = self.nested_lookup(forecast_day, keys=('ozone',))
-                precip_intensity   = self.nested_lookup(forecast_day, keys=('precipIntensity',))
-                precip_probability = self.nested_lookup(forecast_day, keys=('precipProbability',))
-                precip_total       = precip_intensity * 24
-                precip_type        = self.nested_lookup(forecast_day, keys=('precipType',))
-                pressure           = self.nested_lookup(forecast_day, keys=('pressure',))
-                summary            = self.nested_lookup(forecast_day, keys=('summary',))
-                temperature_high   = self.nested_lookup(forecast_day, keys=('temperatureHigh',))
-                temperature_low    = self.nested_lookup(forecast_day, keys=('temperatureLow',))
-                uv_index           = self.nested_lookup(forecast_day, keys=('uvIndex',))
-                visibility         = self.nested_lookup(forecast_day, keys=('visibility',))
-                wind_bearing       = self.nested_lookup(forecast_day, keys=('windBearing',))
-                wind_gust          = self.nested_lookup(forecast_day, keys=('windGust',))
-                wind_name          = self.ui_format_wind_name(state_name='wind_bearing', val=wind_bearing)
-                wind_speed         = self.nested_lookup(forecast_day, keys=('windSpeed',))
+                cloud_cover         = int(self.nested_lookup(forecast_day, keys=('cloudCover',)) * 100)
+                forecast_time       = self.nested_lookup(forecast_day, keys=('time',))
+                forecast_day_name   = time.strftime('%A', time.localtime(float(forecast_time)))
+                humidity            = int(self.nested_lookup(forecast_day, keys=('humidity',)) * 100)
+                long_range_forecast = self.masterWeatherDict[location]['daily'].get('summary', 'Not available.')
+                ozone               = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
+                precip_intensity    = self.nested_lookup(forecast_day, keys=('precipIntensity',))
+                precip_probability  = int(self.nested_lookup(forecast_day, keys=('precipProbability',)) * 100)
+                precip_total        = precip_intensity * 24
+                precip_type         = self.nested_lookup(forecast_day, keys=('precipType',))
+                pressure            = int(round(self.nested_lookup(forecast_day, keys=('pressure',))))
+                summary             = self.nested_lookup(forecast_day, keys=('summary',))
+                temperature_high    = int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',))))
+                temperature_low     = int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',))))
+                uv_index            = self.nested_lookup(forecast_day, keys=('uvIndex',))
+                visibility          = self.nested_lookup(forecast_day, keys=('visibility',))
+                wind_bearing        = self.nested_lookup(forecast_day, keys=('windBearing',))
+                wind_gust           = int(round(self.nested_lookup(forecast_day, keys=('windGust',))))
+                wind_name           = self.ui_format_wind_name(state_name='wind_bearing', val=wind_bearing)
+                wind_speed          = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
 
-                email_body += u"Indigo Fantastic Weather Device: {0}\n".format(dev.name)
-                email_body += u"{0:-<60}\n\n".format('')
-                email_body += u"{0}:\n".format(forecast_day_name)
-                email_body += u"{0:-<60}\n".format('')
+                # Heading
+                email_body += u"{0}\n".format(dev.name)
+                email_body += u"{0:-<38}\n\n".format('')
+
+                # Day
+                email_body += u"{0} Forecast:\n".format(forecast_day_name)
+                email_body += u"{0:-<38}\n".format('')
                 email_body += u"{0}\n\n".format(summary)
-                email_body += u"High: {0}\n".format(temperature_high)
-                email_body += u"Low: {0}\n".format(temperature_low)
-                email_body += u"{0} chance of {1}\n".format(precip_probability, precip_type)
-                email_body += u"Total Precip: {0}\n".format(precip_total)
-                email_body += u"Winds out of the {0} at {1} -- gusting to {2}\n".format(wind_name, wind_speed, wind_gust)
-                email_body += u"Clouds: {0}\n".format(cloud_cover)
-                email_body += u"Humidity: {0}\n".format(humidity)
-                email_body += u"Ozone: {0}\n".format(ozone)
-                email_body += u"Pressure: {0}\n".format(pressure)
-                email_body += u"UV: {0}\n".format(uv_index)
-                email_body += u"Visibility: {0}\n".format(visibility)
+
+                # Data
+                email_body += u"High: {0}{1}\n".format(temperature_high, dev.pluginProps.get('temperatureUnits', ''))
+                email_body += u"Low: {0}{1}\n".format(temperature_low, dev.pluginProps.get('temperatureUnits', ''))
+                email_body += u"Chance of {1}: {0}{2} \n".format(precip_probability, precip_type, dev.pluginProps.get('percentageUnits', ''))
+                email_body += u"Total Precipitation: {0:.2f}\n".format(precip_total, dev.pluginProps.get('rainAmountUnits', ''))
+                email_body += u"Winds out of the {0} at {1}{3} -- gusting to {2}{3}\n".format(wind_name, wind_speed, wind_gust, dev.pluginProps.get('windUnits', ''))
+                email_body += u"Clouds: {0}{1}\n".format(cloud_cover, dev.pluginProps.get('percentageUnits', ''))
+                email_body += u"Humidity: {0}{1}\n".format(humidity, dev.pluginProps.get('percentageUnits', ''))
+                email_body += u"Ozone: {0}{1}\n".format(ozone, dev.pluginProps.get('indexUnits', ''))
+                email_body += u"Pressure: {0}{1}\n".format(pressure, dev.pluginProps.get('pressureUnits', ''))
+                email_body += u"UV: {0}\n".format(uv_index, dev.pluginProps.get('pressureUnits', ''))
+                email_body += u"Visibility: {0}{1}\n\n".format(visibility, dev.pluginProps.get('distanceUnits', ''))
+
+                # Long Range Forecast
+                email_body += u"Long Range Forecast:\n"
+                email_body += u"{0:-<38}\n".format('')
+                email_body += u"{0}\n\n".format(long_range_forecast)
+
+                # Footer
+                email_body += u"{0:-<38}\n".format('')
+                email_body += u"{0}".format(u'This email sent at your request on behalf of the Fantastic Weather Plugin for Indigo.\n\n*** Powered by Dark Sky ***')
 
                 indigo.server.sendEmailTo(self.pluginPrefs['updaterEmail'], subject=u"Daily Weather Summary", body=email_body)
                 dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
+
+                # Set email sent date
+                timestamp = dt.datetime.strftime(dt.datetime.now(), '%Y-%m-%d')
+                dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
             else:
                 pass
 
@@ -1313,10 +1347,6 @@ class Plugin(indigo.PluginBase):
                     # =================================== Icon ====================================
                     hourly_forecast_states_list.append({'key': u"h{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon.replace('-', '_'))})
 
-                    # TODO: This code is temporary and can be safely removed.
-                    if icon not in self.pluginPrefs['hourlyIconNames']:
-                        self.pluginPrefs['hourlyIconNames'] += u"{0}, ".format(icon)
-
                     # =================================== Ozone ===================================
                     ozone, ozone_ui = self.fix_corrupted_data(state_name="h{0}_ozone".format(fore_counter_text), val=ozone)
                     ozone_ui = self.ui_format_index(dev, state_name="h{0}_ozone".format(fore_counter_text), val=ozone_ui)
@@ -1480,10 +1510,6 @@ class Plugin(indigo.PluginBase):
 
                     # =================================== Icon ====================================
                     daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon.replace('-', '_'))})
-
-                    # TODO: This code is temporary and can be safely removed.
-                    if icon not in self.pluginPrefs['dailyIconNames']:
-                        self.pluginPrefs['dailyIconNames'] += u"{0}, ".format(icon)
 
                     # =================================== Ozone ===================================
                     ozone, ozone_ui = self.fix_corrupted_data(state_name="d{0}_ozone".format(fore_counter_text), val=ozone)
@@ -1658,12 +1684,7 @@ class Plugin(indigo.PluginBase):
             weather_states_list.append({'key': 'humidityIcon', 'value': round(humidity)})
 
             # =================================== Icon ====================================
-            # (string: clear-day, clear-night, rain, snow, sleet, wind, fog, cloudy, partly-cloudy-day, or partly-cloudy-night...)
             weather_states_list.append({'key': 'icon', 'value': unicode(icon.replace('-', '_'))})
-
-            # TODO: This code is temporary and can be safely removed.
-            if icon not in self.pluginPrefs['weatherIconNames']:
-                self.pluginPrefs['weatherIconNames'] += u"{0}, ".format(icon)
 
             # =========================== Nearest Storm Bearing ===========================
             storm_bearing, storm_bearing_ui = self.fix_corrupted_data(state_name='nearestStormBearing', val=storm_bearing)

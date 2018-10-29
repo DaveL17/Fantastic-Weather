@@ -6,13 +6,13 @@
     </Field>
 
     <Field id="space000" type="label" fontSize="small">
-        <Label>Developed by DaveL17
-Powered by Dark Sky
-https://darksky.net/poweredby/</Label>
+        <Label>Developed by DaveL17</Label>
     </Field>
 
     <Field id="termsOfService" type="label" fontSize="mini">
-        <Label>This plugin and its author are in no way affiliated with Dark Sky.</Label>
+        <Label>Powered by Dark Sky
+https://darksky.net/poweredby/
+This plugin and its author are in no way affiliated with the Dark Sky service.</Label>
     </Field>
 
 <!--Hidden Controls-->
@@ -21,25 +21,23 @@ https://darksky.net/poweredby/</Label>
         <Label/>
     </Field>
 
-    <Field id="iconNamesLabel" type="label" fontSize="mini">
+    <Field id="iconNamesLabel" type="label" fontSize="mini" hidden="True">
         <Label>The following three fields are for development purposes and will ultimately be hidden (or deleted). They are used to capture the possible icon names from the API.</Label>
     </Field>
 
-    <Field id="dailyIconNames" type="textfield">
+    <Field id="dailyIconNames" type="textfield" hidden="True">
         <Label>Daily Icon Names:</Label>
     </Field>
 
-    <Field id="hourlyIconNames" type="textfield">
+    <Field id="hourlyIconNames" type="textfield" hidden="True">
         <Label>Hourly Icon Names:</Label>
     </Field>
 
-    <Field id="weatherIconNames" type="textfield">
+    <Field id="weatherIconNames" type="textfield" hidden="True">
         <Label>Weather Icon Names:</Label>
     </Field>
 
 <!-- End Hidden Controls -->
-
-    <Field id="space00" type="label" fontSize="mini"/>
 
     <Field id="space001" type="label" alignText="right">
         <Label>Plugin Settings:</Label>
