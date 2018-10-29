@@ -1,14 +1,15 @@
-Version: 0.1.07
+Version: 0.1.08
 EmailSubject: Fantastic Weather Plugin - Update Available
 EmailBody: The Fantastic Plugin you are using has been updated.
 
-Beta 7
-- Adds forecast precipitation total state to daily weather devices
-- Adds timezone setting to astronomy, daily, hourly and weather forecast devices.
-- Adds 'WindString' state to Weather devices 'East at 4.0 mph'.
-- Adds temperatures to Indigo device state list for Daily and Hourly Weather devices (modified by temperature display units).
-  - Daily reports daily High/Low (i.e., 72°/32°)
-  - Hourly reports hourly High (i.e., 72°)
+Beta 8
+- Fixes bug for latitude/longitude where default values could not be overridden.
+- Refinements to daily forecast email:
+  - Adds long range forecast
+  - Rounds total precipitation to 2 decimal places.
+  - Refines data formatting.
+  - Fixes bug for instances where email sent flag not reset on new day.
+- Hides development fields for icon names in plugin configuration dialog.
 
 As always, if something doesn't seem quite right, please let me know.
 
