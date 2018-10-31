@@ -80,7 +80,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.08"
+__version__   = "0.1.09"
 
 # =============================================================================
 
@@ -281,12 +281,11 @@ class Plugin(indigo.PluginBase):
             # If new device, lat/long will be zero. so let's start with the lat/long of
             # the Indigo server.
 
-            if 'latitude' in valuesDict['latitude'].keys():
-                if valuesDict['latitude'] == "0" or valuesDict['longitude'] == "0":
-                    lat_long = indigo.server.getLatitudeAndLongitude()
-                    valuesDict['latitude'] = str(lat_long[0])
-                    valuesDict['longitude'] = str(lat_long[1])
-                    self.logger.debug(u"Populated lat/long.")
+            if valuesDict['latitude'] == "0" or valuesDict['longitude'] == "0":
+                lat_long = indigo.server.getLatitudeAndLongitude()
+                valuesDict['latitude'] = str(lat_long[0])
+                valuesDict['longitude'] = str(lat_long[1])
+                self.logger.debug(u"Populated lat/long.")
 
         return valuesDict
 
