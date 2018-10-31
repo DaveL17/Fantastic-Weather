@@ -38,6 +38,7 @@ http://www.darksky.net
 For information regarding the use of this plugin, see the license located in
 the plugin package or located on GitHub:
 https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
+
 """
 
 # =================================== TO DO ===================================
