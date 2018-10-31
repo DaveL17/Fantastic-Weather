@@ -2,7 +2,7 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
-v0.1.09 (beta 9)
+v0.1.10 (beta 10)
 - Fixes a bug in getDeviceConfigUiValues:
   AttributeError: 'float' object has no attribute 'keys'.
 
