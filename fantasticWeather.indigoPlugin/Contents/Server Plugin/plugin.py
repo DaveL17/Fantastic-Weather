@@ -58,7 +58,7 @@ import sys
 import time
 import urllib   # (satellite imagery fallback)
 import urllib2  # (weather data fallback)
-import xml
+# import xml
 
 # Third-party modules
 from DLFramework import indigoPluginUpdateChecker
@@ -222,7 +222,10 @@ class Plugin(indigo.PluginBase):
                         try:
                             units_dict = {'auto': '', 'ca': 'C', 'uk2': 'C', 'us': 'F', 'si': 'C'}
                             units = units_dict[self.pluginPrefs.get('units', '')]
-                            display_value = u"{0:.{1}f} {2}{3}".format(dev.states['temperature'], int(self.pluginPrefs['itemListTempDecimal']), dev.pluginProps['temperatureUnits'], units)
+                            display_value = u"{0:.{1}f} {2}{3}".format(dev.states['temperature'],
+                                                                       int(self.pluginPrefs['itemListTempDecimal']),
+                                                                       dev.pluginProps['temperatureUnits'],
+                                                                       units)
 
                         except KeyError:
                             display_value = u""

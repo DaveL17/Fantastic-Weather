@@ -718,7 +718,7 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="d07_precipTotal">
                 <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Total) - Day 7</TriggerLabel>
+                <TriggerLabel>Precipitation (Total) - Day 7</TriggerLabel>
                 <ControlPageLabel>Precipitation (Total) - Day 7</ControlPageLabel>
             </State>
 
@@ -770,7 +770,7 @@ plugin updates within the plugin settings dialog.</Label>
 
             <State id="d07_precipType">
                 <ValueType>String</ValueType>
-                <TriggerLabel>OzoPrecipitation (Type)ne - Day 7</TriggerLabel>
+                <TriggerLabel>Precipitation (Type)ne - Day 7</TriggerLabel>
                 <ControlPageLabel>Precipitation (Type) - Day 7</ControlPageLabel>
             </State>
 
