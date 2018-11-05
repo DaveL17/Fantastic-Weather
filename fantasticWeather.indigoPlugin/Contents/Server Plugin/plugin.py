@@ -81,7 +81,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.1.10"
+__version__   = "0.2.01"
 
 # =============================================================================
 
@@ -1371,7 +1371,7 @@ class Plugin(indigo.PluginBase):
                     temperature_ui = self.ui_format_temperature(dev=dev, state_name="h{0}_temperature".format(fore_counter_text), val=temperature_ui)
                     hourly_forecast_states_list.append({'key': u"h{0}_temperature".format(fore_counter_text), 'value': temperature, 'uiValue': temperature_ui})
 
-                    if forecast_counter == 1:
+                    if forecast_counter == int(dev.pluginProps.get('ui_display', '1')):
                         hour_temp = round(temperature)
 
                     # ================================= UV Index ==================================

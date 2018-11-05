@@ -1327,6 +1327,14 @@ plugin updates within the plugin settings dialog.</Label>
                 </List>
             </Field>
 
+            <Field id="ui_display" type="menu" defaultValue="001" tooltip="Display local time or location time (time at server or time at location).">
+                <Label>UI Display</Label>
+                <List>
+                    <Option value="001">Current Hour</Option>
+                    <Option value="002">Next Hour</Option>
+                </List>
+            </Field>
+
             <Field id="displayUnitsLabel" type="label" alignText="Right">
                 <Label>Display Units</Label>
             </Field>
