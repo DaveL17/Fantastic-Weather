@@ -81,7 +81,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.01"
+__version__   = "0.2.02"
 
 # =============================================================================
 
@@ -355,7 +355,7 @@ class Plugin(indigo.PluginBase):
 
         self.logger.debug(u"Starting Trigger: {0}".format(trigger.name))
 
-        dev_id = trigger.pluginProps['listOfDevices']
+        dev_id = trigger.pluginProps['list_of_devices']
         timer  = trigger.pluginProps.get('offlineTimer', '60')
 
         # ============================= masterTriggerDict =============================

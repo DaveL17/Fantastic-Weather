@@ -2,6 +2,9 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.02 (beta 10)
+- Fixes KeyError bug when Fantastic Weather triggers are enabled.
+
 v0.2.01 (beta 10)
 - Adds configuration option for hourly device UI display value.
   Options: Forecast high temperature [current hour | next hour].
