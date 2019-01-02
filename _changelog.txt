@@ -2,6 +2,12 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.03 (beta 11)
+- Pretty prints severe weather alert text when written to the Indigo log.
+- Improves robustness when connection problems occur.
+- Removes plugin update notifications.
+- Reduces plugin debug logging considerably.
+
 v0.2.02 (beta 10)
 - Fixes KeyError bug when Fantastic Weather triggers are enabled.
 

@@ -261,7 +261,28 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
     </Field>
 
     <!-- Notifications Template -->
-    <Template file="DLFramework/template_notifications.xml" />
+    <Field id="notificationsHeaderSpace" type="label" fontSize="mini"/>
+
+    <Field id="notificationsLabel" type="label" alignText="right">
+        <Label>Daily Forecast Emails (optional)</Label>
+    </Field>
+
+    <Field id="separator02" type="separator"/>
+
+    <Field id="space05" type="label" fontSize="small" alignWithControl="True">
+        <Label>If enabled and configured, you can receive a daily email with the day's weather forecast. The feature requires a Fantastic Weather Daily Forecast device to be configured and enabled.</Label>
+    </Field>
+
+    <Field id="updaterEmailsEnabled" type="checkbox" defaultValue="false"
+           tooltip="Enables (disables) email forecasts.">
+        <Label/>
+        <Description>Enable/Disable Forecast Emails</Description>
+    </Field>
+
+    <Field id="updaterEmail" type="textfield"
+           tooltip="Please enter the email address to receive forecast emails.">
+        <Label>Email address:</Label>
+    </Field>
 
     <!-- Debugging Template -->
     <Template file="DLFramework/template_debugging.xml" />

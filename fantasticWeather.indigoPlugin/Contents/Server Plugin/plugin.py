@@ -43,7 +43,8 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO:
+# TODO:  What happened here? --> https://forums.indigodomo.com/viewtopic.php?f=285&t=20949&p=172064#p172064
+# TODO:  When no Internet, poll still showing up as successful.
 
 # ================================== IMPORTS ==================================
 
@@ -53,15 +54,16 @@ import logging
 import pytz
 import requests
 import simplejson
-import socket
+# import socket
 import sys
+import textwrap
 import time
-import urllib   # (satellite imagery fallback)
-import urllib2  # (weather data fallback)
+# import urllib   # (satellite imagery fallback)
+# import urllib2  # (weather data fallback)
 # import xml
 
 # Third-party modules
-from DLFramework import indigoPluginUpdateChecker
+# from DLFramework import indigoPluginUpdateChecker
 try:
     import indigo
 except ImportError:
@@ -81,7 +83,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.02"
+__version__   = "0.2.03"
 
 # =============================================================================
 
@@ -97,7 +99,7 @@ kDefaultPluginPrefs = {
     u'language': "en",                # Language for DS text.
     u'lastSuccessfulPoll': "1970-01-01 00:00:00",  # Last successful plugin cycle
     u'launchParameters': "https://www.darksky.net",  # url for launch API button
-    u'nextPoll': "",                  # Last successful plugin cycle
+    u'nextPoll': "",                  # Next plugin cycle
     u'noAlertLogging': False,         # Suppresses "no active alerts" logging.
     u'showDebugLevel': "30",          # Logger level.
     u'uiDateFormat': "YYYY-MM-DD",    # Preferred date format string.
@@ -105,8 +107,6 @@ kDefaultPluginPrefs = {
     u'uiTempDecimal': "1",            # Precision for Indigo UI display (temperature).
     u'uiTimeFormat': "military",      # Preferred time format string.
     u'uiWindDecimal': "1",            # Precision for Indigo UI display (wind).
-    u'updaterEmail': "",              # Email to notify of plugin updates.
-    u'updaterEmailsEnabled': False    # Notification of plugin updates wanted.
 }
 
 
@@ -122,22 +122,21 @@ class Plugin(indigo.PluginBase):
         self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
         self.masterWeatherDict = {}
         self.masterTriggerDict = {}
-        self.updater           = indigoPluginUpdateChecker.updateChecker(self, "https://raw.githubusercontent.com/DaveL17/Fantastic-Weather/master/fantastic_weather_version.html")
         self.ds_online         = True
         self.pluginPrefs['dailyCallLimitReached'] = False
 
         # ========================== API Poll Values ==========================
         last_poll = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
         try:
-            self.last_poll_attempt = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S')
+            self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S')
         except ValueError:
-            self.last_poll_attempt = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f')
+            self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f')
 
-        next_poll = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
+        next_poll = self.pluginPrefs.get('nextPoll', "1970-01-01 00:00:00")
         try:
-            self.next_poll_attempt = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S')
+            self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S')
         except ValueError:
-            self.next_poll_attempt = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S.%f')
+            self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S.%f')
 
         # =========================== Version Check ===========================
         if int(indigo.server.version[0]) >= 7:
@@ -186,8 +185,6 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def closedPrefsConfigUi(self, valuesDict, userCancelled):
 
-        self.logger.debug(u"closedPrefsConfigUi called.")
-
         if userCancelled:
             self.logger.debug(u"User prefs dialog cancelled.")
 
@@ -232,12 +229,8 @@ class Plugin(indigo.PluginBase):
 
                         dev.updateStateOnServer('onOffState', value=current_on_off_state, uiValue=display_value)
 
-            self.logger.debug(u"User prefs saved.")
-
     # =============================================================================
     def deviceStartComm(self, dev):
-
-        self.logger.debug(u"Starting Device: {0}".format(dev.name))
 
         # Check to see if the device profile has changed.
         dev.stateListOrDisplayStateIdChanged()
@@ -261,8 +254,6 @@ class Plugin(indigo.PluginBase):
 
     # =============================================================================
     def deviceStopComm(self, dev):
-
-        self.logger.debug(u"Stopping Device: {0}".format(dev.name))
 
         # =========================== Set Device Icon to Off ==========================
         if dev.deviceTypeId == 'Weather':
@@ -311,27 +302,15 @@ class Plugin(indigo.PluginBase):
                 # Load the download interval in case it's changed
                 refresh_time           = self.pluginPrefs.get('downloadInterval', '900')
                 self.download_interval = dt.timedelta(seconds=int(refresh_time))
-
-                # If the next poll attempt hasn't been changed to tomorrow, let's update it
-                if self.next_poll_attempt == "1970-01-01 00:00:00" or not self.next_poll_attempt.day > dt.datetime.now().day:
-                    self.next_poll_attempt = self.last_poll_attempt + self.download_interval
-                    self.pluginPrefs['nextPoll'] = dt.datetime.strftime(self.next_poll_attempt, '%Y-%m-%d %H:%M:%S')
-
+                
+                self.last_successful_poll = dt.datetime.strptime(self.pluginPrefs['lastSuccessfulPoll'], '%Y-%m-%d %H:%M:%S')
+                self.next_poll            = dt.datetime.strptime(self.pluginPrefs['nextPoll'], '%Y-%m-%d %H:%M:%S')
+                
                 # If we have reached the time for the next scheduled poll
-                if dt.datetime.now() > self.next_poll_attempt:
-
-                    self.last_poll_attempt = dt.datetime.now()
-                    self.pluginPrefs['lastSuccessfulPoll'] = dt.datetime.strftime(self.last_poll_attempt, '%Y-%m-%d %H:%M:%S')
+                if dt.datetime.now() > self.next_poll:
 
                     self.refresh_weather_data()
                     self.trigger_processing()
-
-                    # Report results of download timer.
-                    plugin_cycle_time = (dt.datetime.now() - self.last_poll_attempt)
-                    plugin_cycle_time = (dt.datetime.min + plugin_cycle_time).time()
-
-                    self.logger.debug(u"[  Plugin execution time: {0} seconds  ]".format(plugin_cycle_time.strftime('%S.%f')))
-                    self.logger.debug(u"{0:{1}^40}".format(' Plugin Cycle Complete ', '='))
 
                 # Wait 30 seconds before trying again.
                 self.sleep(30)
@@ -372,8 +351,6 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def validateDeviceConfigUi(self, valuesDict, typeID, devId):
 
-        self.logger.debug(u"{0}".format(u"validateDeviceConfigUi called."))
-
         error_msg_dict = indigo.Dict()
 
         if valuesDict['isWeatherDevice']:
@@ -394,8 +371,6 @@ class Plugin(indigo.PluginBase):
 
     # =============================================================================
     def validateEventConfigUi(self, valuesDict, typeId, eventId):
-
-        self.logger.debug(u"validateEventConfigUi called.")
 
         dev_id         = valuesDict['list_of_devices']
         error_msg_dict = indigo.Dict()
@@ -432,13 +407,9 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def validatePrefsConfigUi(self, valuesDict):
 
-        self.logger.debug(u"validatePrefsConfigUi called.")
-
         api_key_config      = valuesDict['apiKey']
         call_counter_config = valuesDict['callCounter']
         error_msg_dict      = indigo.Dict()
-        update_email        = valuesDict['updaterEmail']
-        update_wanted       = valuesDict['updaterEmailsEnabled']
 
         # Test api_keyconfig setting.
         try:
@@ -467,17 +438,6 @@ class Plugin(indigo.PluginBase):
                 error_msg_dict['showAlertText'] = u"The call counter that you have entered is invalid.\n\nReason: Call counters must be positive integers."
                 return False, valuesDict, error_msg_dict
 
-            # Test plugin update notification settings.
-            elif update_wanted and update_email == "":
-                error_msg_dict['updaterEmail'] = u"If you want to be notified of updates, you must supply an email address."
-                error_msg_dict['showAlertText'] = u"The notification settings that you have entered are invalid.\n\nReason: You must supply a valid notification email address."
-                return False, valuesDict, error_msg_dict
-
-            elif update_wanted and "@" not in update_email:
-                error_msg_dict['updaterEmail'] = u"Valid email addresses have at least one @ symbol in them (foo@bar.com)."
-                error_msg_dict['showAlertText'] = u"The notification settings that you have entered are invalid.\n\nReason: You must supply a valid notification email address."
-                return False, valuesDict, error_msg_dict
-
         except Exception as error:
             self.logger.error(u"Exception in validatePrefsConfigUi API key test. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
@@ -501,23 +461,6 @@ class Plugin(indigo.PluginBase):
         self.logger.debug(u"Refresh all weather data.")
 
         self.refresh_weather_data()
-
-    # =============================================================================
-    def check_version_now(self):
-        """
-        Immediate call to determine if running latest version
-
-        The check_version_now() method will call the Indigo Plugin Update Checker based
-        on a user request.
-
-        -----
-        """
-
-        try:
-            self.updater.checkVersionNow()
-
-        except Exception as error:
-            self.logger.warning(u"Unable to check plugin update status. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
     # =============================================================================
     def comms_kill_all(self):
@@ -809,10 +752,6 @@ class Plugin(indigo.PluginBase):
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
                     return
 
-                # Requests not installed
-                except NameError:
-                    urllib.urlretrieve(source, destination)
-
                 dev.updateStateOnServer('onOffState', value=True, uiValue=u" ")
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
@@ -850,96 +789,89 @@ class Plugin(indigo.PluginBase):
         :param indigo.Device dev:
         """
 
-        try:
+        api_key   = self.pluginPrefs['apiKey']
+        language  = self.pluginPrefs['language']
+        latitude  = dev.pluginProps['latitude']
+        longitude = dev.pluginProps['longitude']
+        units     = self.pluginPrefs['units']
+        location  = (latitude, longitude)
+        comm_timeout = 10
 
-            # Tuple of (lat, long) for tracking locations
-            api_key   = self.pluginPrefs['apiKey']
-            language  = self.pluginPrefs['language']
-            latitude  = dev.pluginProps['latitude']
-            longitude = dev.pluginProps['longitude']
-            units     = self.pluginPrefs['units']
-            location  = (latitude, longitude)
+        # We already have the data; no need to get it again.
+        # if location in self.masterWeatherDict.keys():
+        #     self.logger.debug(u"Location [{0}] already in master weather dictionary.".format(location))
+        #
+        # # Get the data and add it to the masterWeatherDict.
+        # else:
+        if location not in self.masterWeatherDict.keys():
+            url = u'https://api.darksky.net/forecast/{0}/{1},{2}?exclude="minutely"&extend=""&units={3}&lang={4}'.format(api_key, latitude, longitude, units, language)
 
-            if location in self.masterWeatherDict.keys():
-                # We already have the data; no need to get it again.
-                self.logger.debug(u"Location [{0}] already in master weather dictionary.".format(location))
+            # Start download timer.
+            get_data_time = dt.datetime.now()
 
-            else:
-                # Get the data and add it to the masterWeatherDict.
-                url = u'https://api.darksky.net/forecast/{0}/{1},{2}?exclude="minutely"&extend=""&units={3}&lang={4}'.format(api_key, latitude, longitude, units, language)
-
-                self.logger.debug(u"URL for {0}: {1}".format(location, url))
-
-                # Start download timer.
-                get_data_time = dt.datetime.now()
-
+            while True:
                 try:
-                    f = requests.get(url, timeout=20)
-                    simplejson_string = f.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
+                    r = requests.get(url, timeout=20)
+                    r.raise_for_status()
 
-                # If requests is not installed, try urllib2 instead.
-                except NameError:
-                    self.logger.debug(u"Requests module not loading. Trying urllib2 instead.")
-                    try:
-                        # Connect to Dark Sky and retrieve data.
-                        socket.setdefaulttimeout(20)
-                        f = urllib2.urlopen(url)
-                        simplejson_string = f.read()
+                    if r.status_code != 200:
+                        self.logger.debug(u"Status Code: {0}".format(r.status_code))
 
-                    except Exception as error:
-                        if not self.comm_error:
-                            self.logger.warning(u"Unable to reach Dark Sky. Sleeping until next scheduled poll.")
-                            self.logger.debug(u"Unable to reach Dark Sky after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
-                            self.comm_error = True
+                    simplejson_string = r.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
+                    self.comm_error = False
+                    break
 
-                        for dev in indigo.devices.itervalues("self"):
-                            dev.updateStateOnServer("onOffState", value=False, uiValue=u" ")
-                            dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+                # We get a response, but Dark Sky is unhappy
+                # TODO: should these be caught?
+                # except requests.exceptions.HTTPError as sub_error:
+                #    pass
 
-                        return
+                # No connection to Internet, no response from Dark Sky. Let's keep trying.
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as sub_error:
+                    self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
-                # Report results of download timer.
-                data_cycle_time = (dt.datetime.now() - get_data_time)
-                data_cycle_time = (dt.datetime.min + data_cycle_time).time()
+                    if comm_timeout < 900:
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
-                if simplejson_string != "":
-                    self.logger.debug(u"[  {0} download: {1} seconds  ]".format(location, data_cycle_time.strftime('%S.%f')))
+                    else:
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
 
-                # Load the JSON data from the file.
-                try:
-                    parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
+                    time.sleep(comm_timeout)
 
-                except Exception as error:
-                    self.logger.error(u"Unable to decode data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
-                    parsed_simplejson = {}
+                    if comm_timeout < 60:
+                        comm_timeout += 10
+                    else:
+                        comm_timeout = 900
 
-                # Add location JSON to master weather dictionary.
-                self.logger.debug(u"Adding weather data for {0} to Master Weather Dictionary.".format(location))
-                self.masterWeatherDict[location] = parsed_simplejson
-
-                # Increment the call counter
-                self.pluginPrefs['dailyCallCounter'] = f.headers['X-Forecast-API-Calls']
-
-                # We've been successful, mark device online
-                self.comm_error = False
-                dev.updateStateOnServer('onOffState', value=True)
-
-        except Exception as error:
-            if not self.comm_error:
-                self.logger.warning(u"Unable to reach Dark Sky. Sleeping until next scheduled poll.")
-                self.logger.debug(u"Unable to reach Dark Sky after 20 seconds. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
-                self.comm_error = True
-
-            # Unable to fetch the JSON. Mark all devices as 'false'.
-            for dev in indigo.devices.itervalues("self"):
-                if dev.enabled:
-                    # Mark device as off and dim the icon.
-                    dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
                     self.comm_error = True
-                    dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+                    for dev in indigo.devices.itervalues("self"):
+                        dev.updateStateOnServer("onOffState", value=False, uiValue=u"No Comm")
+                        dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
-            self.ds_online = False
-            return {}
+            # # Report results of download timer.
+            # data_cycle_time = (dt.datetime.now() - get_data_time)
+            # data_cycle_time = (dt.datetime.min + data_cycle_time).time()
+            #
+            # if simplejson_string != "":
+            #     self.logger.debug(u"[  {0} download: {1} seconds  ]".format(location, data_cycle_time.strftime('%S.%f')))
+
+            # Load the JSON data from the file.
+            try:
+                parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
+
+            except Exception as error:
+                self.logger.error(u"Unable to decode data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+                parsed_simplejson = {}
+
+            # Add location JSON to master weather dictionary.
+            self.masterWeatherDict[location] = parsed_simplejson
+
+            # Increment the call counter
+            self.pluginPrefs['dailyCallCounter'] = r.headers['X-Forecast-API-Calls']
+
+            # We've been successful, mark device online
+            self.comm_error = False
+            dev.updateStateOnServer('onOffState', value=True)
 
         # We could have come here from several different places. Return to whence we came to further process the weather data.
         self.ds_online = True
@@ -1137,8 +1069,18 @@ class Plugin(indigo.PluginBase):
                         alert_counter += 1
 
                     # Write alert to the log?
+                    # Sample:
+                    # Patchy freezing drizzle is expected this morning, possibly mixed with light snow showers or flurries. With temperatures
+                    # in the lower 30s, any freezing drizzle could cause patchy icy conditions on untreated roadways. Motorists are advised to
+                    # check for the latest forecasts and check road conditions before driving. Temperatures will rise above freezing in many
+                    # areas by midday.
                     if alerts_logging and not alerts_suppressed:
-                        self.logger.info(u"\n{0}".format(alert_array[alert][0]))
+                        alert_text = textwrap.wrap(alert_array[alert][0], 120)
+                        alert_text_wrapped = u""
+                        for _ in alert_text:
+                            alert_text_wrapped += u"{0}\n".format(_)
+
+                        self.logger.info(u"\n{0}".format(alert_text_wrapped))
 
             alerts_states_list.append({'key': 'alertCount', 'value': len(alert_array)})
             dev.updateStatesOnServer(alerts_states_list)
@@ -1820,13 +1762,10 @@ class Plugin(indigo.PluginBase):
                     self.logger.info(u"A device has been created, but is not fully configured. Sleeping for a minute while you finish.")
 
                 elif not dev.enabled:
-                    self.logger.debug(u"{0}: device communication is disabled. Skipping.".format(dev.name))
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"{0}".format("Disabled"))
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
                 elif dev.enabled:
-                    self.logger.debug(u"Processing device: {0}".format(dev.name))
-
                     dev.updateStateOnServer('onOffState', value=True, uiValue=u" ")
 
                     if dev.pluginProps['isWeatherDevice']:
@@ -1886,7 +1825,15 @@ class Plugin(indigo.PluginBase):
                     elif dev.deviceTypeId == 'satelliteImageDownloader':
                         self.get_satellite_image(dev=dev)
 
-            self.logger.debug(u"{0} locations polled: {1}".format(len(self.masterWeatherDict.keys()), self.masterWeatherDict.keys()))
+            # Update last successful poll time
+            self.last_successful_poll = dt.datetime.strftime(dt.datetime.now(), '%Y-%m-%d %H:%M:%S')
+            self.pluginPrefs['lastSuccessfulPoll'] = self.last_successful_poll
+
+            # Update next poll time
+            self.next_poll = dt.datetime.strftime(dt.datetime.now() + self.download_interval, '%Y-%m-%d %H:%M:%S')
+            self.pluginPrefs['nextPoll'] = self.next_poll
+
+            self.logger.info(u"Weather data cycle complete.")
 
         except Exception as error:
             self.logger.error(u"Problem parsing Weather data. Dev: {0} (Line: {1} Error: {2})".format(dev.name, sys.exc_traceback.tb_lineno, error))
@@ -1922,7 +1869,6 @@ class Plugin(indigo.PluginBase):
 
         # Reconstruct the masterTriggerDict in case it has changed.
         self.masterTriggerDict = {unicode(trigger.pluginProps['listOfDevices']): (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
-        self.logger.debug(u"Rebuild Master Trigger Dict: {0}".format(self.masterTriggerDict))
 
         try:
 
