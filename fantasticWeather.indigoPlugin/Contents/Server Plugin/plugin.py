@@ -43,13 +43,15 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO:  What happened here? --> https://forums.indigodomo.com/viewtopic.php?f=285&t=20949&p=172064#p172064
-# TODO:  When no Internet, poll still showing up as successful.
+# TODO: When adding a new device for the first time, if the user selects the
+#  menu item to Update Data Now, the Indigo UI doesn't populate with the
+#  current temperature
 
 # ================================== IMPORTS ==================================
 
 # Built-in modules
 import datetime as dt
+from dateutil.parser import parse
 import logging
 import pytz
 import requests
@@ -83,7 +85,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.03"
+__version__   = "0.2.04"
 
 # =============================================================================
 
@@ -128,15 +130,20 @@ class Plugin(indigo.PluginBase):
         # ========================== API Poll Values ==========================
         last_poll = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
         try:
-            self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S')
+            # self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S')
+            self.last_successful_poll = parse(last_poll)
         except ValueError:
-            self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f')
+            # self.last_successful_poll = dt.datetime.strptime("1970-01-01 00:00:00", '%Y-%m-%d %H:%M:%S.%f')
+            self.last_successful_poll = parse("1970-01-01 00:00:00")
 
         next_poll = self.pluginPrefs.get('nextPoll', "1970-01-01 00:00:00")
         try:
-            self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S')
+            # self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S')
+            self.next_poll = parse(next_poll)
+
         except ValueError:
-            self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S.%f')
+            # self.next_poll = dt.datetime.strptime("1970-01-01 00:00:00", '%Y-%m-%d %H:%M:%S.%')
+            self.next_poll = parse("1970-01-01 00:00:00")
 
         # =========================== Version Check ===========================
         if int(indigo.server.version[0]) >= 7:
@@ -175,6 +182,7 @@ class Plugin(indigo.PluginBase):
         # except:
         #     pass
 
+
         self.pluginIsInitializing = False
 
     def __del__(self):
@@ -185,8 +193,8 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def closedPrefsConfigUi(self, valuesDict, userCancelled):
 
-        if userCancelled:
-            self.logger.debug(u"User prefs dialog cancelled.")
+        # if userCancelled:
+        #     pass
 
         if not userCancelled:
             self.indigo_log_handler.setLevel(int(valuesDict['showDebugLevel']))
@@ -196,11 +204,14 @@ class Plugin(indigo.PluginBase):
             last_poll              = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
 
             try:
-                next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S') + self.download_interval
+                # next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S') + self.download_interval
+                next_poll = parse(last_poll) + self.download_interval
             except ValueError:
-                next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f') + self.download_interval
+                # next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f') + self.download_interval
+                next_poll = parse(last_poll) + self.download_interval
 
-            self.pluginPrefs['nextPoll'] = dt.datetime.strftime(next_poll, '%Y-%m-%d %H:%M:%S')
+            # self.pluginPrefs['nextPoll'] = dt.datetime.strftime(next_poll, '%Y-%m-%d %H:%M:%S')
+            self.pluginPrefs['nextPoll'] = u"{0}".format(next_poll)
 
             # =================== Update Item List Temperature Precision ==================
             # For devices that display the temperature as their main UI state, try to set
@@ -276,7 +287,7 @@ class Plugin(indigo.PluginBase):
             # If new device, lat/long will be zero. so let's start with the lat/long of
             # the Indigo server.
 
-            if valuesDict['latitude'] == "0" or valuesDict['longitude'] == "0":
+            if valuesDict.get('latitude', "0") == "0" or valuesDict.get('longitude', "0") == "0":
                 lat_long = indigo.server.getLatitudeAndLongitude()
                 valuesDict['latitude'] = str(lat_long[0])
                 valuesDict['longitude'] = str(lat_long[1])
@@ -303,9 +314,11 @@ class Plugin(indigo.PluginBase):
                 refresh_time           = self.pluginPrefs.get('downloadInterval', '900')
                 self.download_interval = dt.timedelta(seconds=int(refresh_time))
                 
-                self.last_successful_poll = dt.datetime.strptime(self.pluginPrefs['lastSuccessfulPoll'], '%Y-%m-%d %H:%M:%S')
-                self.next_poll            = dt.datetime.strptime(self.pluginPrefs['nextPoll'], '%Y-%m-%d %H:%M:%S')
-                
+                # self.last_successful_poll = dt.datetime.strptime(self.pluginPrefs['lastSuccessfulPoll'], '%Y-%m-%d %H:%M:%S')
+                self.last_successful_poll = parse(self.pluginPrefs['lastSuccessfulPoll'])
+                # self.next_poll            = dt.datetime.strptime(self.pluginPrefs['nextPoll'], '%Y-%m-%d %H:%M:%S')
+                self.next_poll            = parse(self.pluginPrefs['nextPoll'])
+
                 # If we have reached the time for the next scheduled poll
                 if dt.datetime.now() > self.next_poll:
 
@@ -332,8 +345,6 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def triggerStartProcessing(self, trigger):
 
-        self.logger.debug(u"Starting Trigger: {0}".format(trigger.name))
-
         dev_id = trigger.pluginProps['list_of_devices']
         timer  = trigger.pluginProps.get('offlineTimer', '60')
 
@@ -346,7 +357,8 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def triggerStopProcessing(self, trigger):
 
-        self.logger.debug(u"Stopping {0} trigger.".format(trigger.name))
+        # self.logger.debug(u"Stopping {0} trigger.".format(trigger.name))
+        pass
 
     # =============================================================================
     def validateDeviceConfigUi(self, valuesDict, typeID, devId):
@@ -541,7 +553,7 @@ class Plugin(indigo.PluginBase):
             indigo.server.log(u"Weather data written to: {0}".format(file_name))
 
         except IOError:
-            self.logger.info(u"Unable to write to Indigo Log folder.")
+            self.logger.error(u"Unable to write to Indigo Log folder. Check folder permissions")
 
     # =============================================================================
     def email_forecast(self, dev):
@@ -569,7 +581,8 @@ class Plugin(indigo.PluginBase):
             # If it's a new day, reset the email summary sent flag.
             try:
                 timestamp     = dev.states['weatherSummaryEmailTimestamp']
-                last_sent     = dt.datetime.strptime(timestamp, '%Y-%m-%d')
+                # last_sent     = dt.datetime.strptime(timestamp, '%Y-%m-%d')
+                last_sent     = parse(timestamp)
                 last_sent_day = last_sent.day
 
                 if last_sent_day != dt.datetime.now().day:
@@ -580,7 +593,8 @@ class Plugin(indigo.PluginBase):
 
             # Get the desired summary email time and convert it for test.
             summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
-            summary_time = dt.datetime.strptime(summary_time, '%H:%M')
+            # summary_time = dt.datetime.strptime(summary_time, '%H:%M')
+            summary_time = parse(summary_time)
 
             # Legacy devices had this setting improperly established as a string rather than a bool.
             if isinstance(summary_wanted, basestring):
@@ -664,7 +678,7 @@ class Plugin(indigo.PluginBase):
             self.logger.debug(u"Unable to compile forecast data for {0}. (Line {1}) {2}".format(dev.name, sys.exc_traceback.tb_lineno, error))
 
         except Exception as error:
-            self.logger.warning(u"Unable to send forecast email message. Will keep trying. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            self.logger.error(u"Unable to send forecast email message. Will keep trying. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
     # =============================================================================
     def fix_corrupted_data(self, state_name, val):
@@ -736,8 +750,6 @@ class Plugin(indigo.PluginBase):
 
                 # If requests doesn't work for some reason, revert to urllib.
                 try:
-                    self.logger.debug(u"Source: {0}".format(source))
-                    self.logger.debug(u"Destination: {0}".format(destination))
                     r = requests.get(source, stream=True, timeout=20)
 
                     with open(destination, 'wb') as img:
@@ -746,7 +758,7 @@ class Plugin(indigo.PluginBase):
 
                 except requests.exceptions.ConnectionError:
                     if not self.comm_error:
-                        self.logger.warning(u"Error downloading satellite image. (No comm.)".format(sys.exc_traceback.tb_lineno))
+                        self.logger.error(u"Error downloading satellite image. (No comm.)".format(sys.exc_traceback.tb_lineno))
                         self.comm_error = True
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -758,8 +770,6 @@ class Plugin(indigo.PluginBase):
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
-
-                self.logger.debug(u"[  {0} download: {1} seconds  ]".format(dev.name, data_cycle_time.strftime('%S.%f')))
 
                 self.comm_error = False
                 return
@@ -831,13 +841,15 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
                     if comm_timeout < 900:
-                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
+                        self.logger.error(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
                     else:
-                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
+                        self.logger.error(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
 
                     time.sleep(comm_timeout)
 
+                    # Keep adding 10 seconds to timeout until it reaches one minute.
+                    # Then, jack it up to 15 minutes.
                     if comm_timeout < 60:
                         comm_timeout += 10
                     else:
@@ -847,13 +859,6 @@ class Plugin(indigo.PluginBase):
                     for dev in indigo.devices.itervalues("self"):
                         dev.updateStateOnServer("onOffState", value=False, uiValue=u"No Comm")
                         dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-
-            # # Report results of download timer.
-            # data_cycle_time = (dt.datetime.now() - get_data_time)
-            # data_cycle_time = (dt.datetime.min + data_cycle_time).time()
-            #
-            # if simplejson_string != "":
-            #     self.logger.debug(u"[  {0} download: {1} seconds  ]".format(location, data_cycle_time.strftime('%S.%f')))
 
             # Load the JSON data from the file.
             try:
@@ -894,8 +899,8 @@ class Plugin(indigo.PluginBase):
         :param int triggerId:
         """
 
-        for key, value in valuesDict.iteritems():
-            self.logger.debug(u"{0}: {1}".format(key, value))
+        # for key, value in valuesDict.iteritems():
+        #     self.logger.debug(u"{0}: {1}".format(key, value))
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
 
@@ -916,8 +921,8 @@ class Plugin(indigo.PluginBase):
         :param int triggerId:
         """
 
-        for key, value in valuesDict.iteritems():
-            self.logger.debug(u"{0}: {1}".format(key, value))
+        # for key, value in valuesDict.iteritems():
+        #     self.logger.debug(u"{0}: {1}".format(key, value))
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]
 
@@ -1755,11 +1760,11 @@ class Plugin(indigo.PluginBase):
 
                 if not dev:
                     # There are no FUWU devices, so go to sleep.
-                    self.logger.info(u"There aren't any devices to poll yet. Sleeping.")
+                    self.logger.warning(u"There aren't any devices to poll yet. Sleeping.")
 
                 elif not dev.configured:
                     # A device has been created, but hasn't been fully configured yet.
-                    self.logger.info(u"A device has been created, but is not fully configured. Sleeping for a minute while you finish.")
+                    self.logger.warning(u"A device has been created, but is not fully configured. Sleeping for a minute while you finish.")
 
                 elif not dev.enabled:
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"{0}".format("Disabled"))
@@ -1790,11 +1795,11 @@ class Plugin(indigo.PluginBase):
 
                             good_time = device_epoch <= weather_data_epoch
                             if not good_time:
-                                self.logger.info(u"Latest data are older than data we already have. Skipping {0} update.".format(dev.name))
+                                self.logger.warning(u"Latest data are older than data we already have. Skipping {0} update.".format(dev.name))
 
                         except KeyError:
                             if not self.comm_error:
-                                self.logger.info(u"{0} cannot determine age of data. Skipping until next scheduled poll.".format(dev.name))
+                                self.logger.warning(u"{0} cannot determine age of data. Skipping until next scheduled poll.".format(dev.name))
                             good_time = False
 
                         # If the weather dict is not empty, the data are newer than the data we already have let's
@@ -1887,7 +1892,6 @@ class Plugin(indigo.PluginBase):
                         if indigo.triggers[trigger_id].pluginTypeId == 'weatherSiteOffline':
 
                             offline_delta = dt.timedelta(minutes=int(self.masterTriggerDict.get(unicode(dev.id), ('60', ''))[0]))
-                            self.logger.debug(u"Offline weather location delta: {0}".format(offline_delta))
 
                             # Convert currentObservationEpoch to a localized datetime object
                             current_observation_epoch = float(dev.states['currentObservationEpoch'])

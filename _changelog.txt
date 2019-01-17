@@ -2,6 +2,13 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.04 (beta 11)
+- Fixes bug in plugin initialization for new installs where a new device would
+  not initialize properly.
+- Migrates to the dateutil library from datetime for the majority of string to
+  date operations.
+- Code refinements.
+
 v0.2.03 (beta 11)
 - Pretty prints severe weather alert text when written to the Indigo log.
 - Improves robustness when connection problems occur.
