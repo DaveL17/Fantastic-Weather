@@ -79,6 +79,9 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
            tooltip="Please select the desired frequency for data downloads. Controls how often the plugin will reach out to Dark Sky, and the daily limit for the number of downloads.">
         <Label>Call Interval:</Label>
         <List>
+            <Option value="120">2 Minutes</Option>
+            <Option value="180">3 Minutes</Option>
+            <Option value="240">4 Minutes</Option>
             <Option value="300">5 Minutes</Option>
             <Option value="600">10 Minutes</Option>
             <Option value="900">15 Minutes</Option>

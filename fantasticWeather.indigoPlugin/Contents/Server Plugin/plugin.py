@@ -43,9 +43,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO: When adding a new device for the first time, if the user selects the
-#  menu item to Update Data Now, the Indigo UI doesn't populate with the
-#  current temperature
+# TODO:
 
 # ================================== IMPORTS ==================================
 
@@ -56,16 +54,11 @@ import logging
 import pytz
 import requests
 import simplejson
-# import socket
 import sys
 import textwrap
 import time
-# import urllib   # (satellite imagery fallback)
-# import urllib2  # (weather data fallback)
-# import xml
 
 # Third-party modules
-# from DLFramework import indigoPluginUpdateChecker
 try:
     import indigo
 except ImportError:
@@ -99,7 +92,7 @@ kDefaultPluginPrefs = {
     u'downloadInterval': "900",       # Frequency of weather updates.
     u'itemListTempDecimal': "1",      # Precision for Indigo Item List.
     u'language': "en",                # Language for DS text.
-    u'lastSuccessfulPoll': "1970-01-01 00:00:00",  # Last successful plugin cycle
+    u'lastSuccessfulPoll': "1970-01-01 00:00:00",    # Last successful plugin cycle
     u'launchParameters': "https://www.darksky.net",  # url for launch API button
     u'nextPoll': "",                  # Next plugin cycle
     u'noAlertLogging': False,         # Suppresses "no active alerts" logging.
@@ -130,19 +123,16 @@ class Plugin(indigo.PluginBase):
         # ========================== API Poll Values ==========================
         last_poll = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
         try:
-            # self.last_successful_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S')
             self.last_successful_poll = parse(last_poll)
+
         except ValueError:
-            # self.last_successful_poll = dt.datetime.strptime("1970-01-01 00:00:00", '%Y-%m-%d %H:%M:%S.%f')
             self.last_successful_poll = parse("1970-01-01 00:00:00")
 
         next_poll = self.pluginPrefs.get('nextPoll', "1970-01-01 00:00:00")
         try:
-            # self.next_poll = dt.datetime.strptime(next_poll, '%Y-%m-%d %H:%M:%S')
             self.next_poll = parse(next_poll)
 
         except ValueError:
-            # self.next_poll = dt.datetime.strptime("1970-01-01 00:00:00", '%Y-%m-%d %H:%M:%S.%')
             self.next_poll = parse("1970-01-01 00:00:00")
 
         # =========================== Version Check ===========================
@@ -193,9 +183,6 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def closedPrefsConfigUi(self, valuesDict, userCancelled):
 
-        # if userCancelled:
-        #     pass
-
         if not userCancelled:
             self.indigo_log_handler.setLevel(int(valuesDict['showDebugLevel']))
 
@@ -204,13 +191,11 @@ class Plugin(indigo.PluginBase):
             last_poll              = self.pluginPrefs.get('lastSuccessfulPoll', "1970-01-01 00:00:00")
 
             try:
-                # next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S') + self.download_interval
-                next_poll = parse(last_poll) + self.download_interval
-            except ValueError:
-                # next_poll = dt.datetime.strptime(last_poll, '%Y-%m-%d %H:%M:%S.%f') + self.download_interval
                 next_poll = parse(last_poll) + self.download_interval
 
-            # self.pluginPrefs['nextPoll'] = dt.datetime.strftime(next_poll, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                next_poll = parse(last_poll) + self.download_interval
+
             self.pluginPrefs['nextPoll'] = u"{0}".format(next_poll)
 
             # =================== Update Item List Temperature Precision ==================
@@ -314,9 +299,7 @@ class Plugin(indigo.PluginBase):
                 refresh_time           = self.pluginPrefs.get('downloadInterval', '900')
                 self.download_interval = dt.timedelta(seconds=int(refresh_time))
                 
-                # self.last_successful_poll = dt.datetime.strptime(self.pluginPrefs['lastSuccessfulPoll'], '%Y-%m-%d %H:%M:%S')
                 self.last_successful_poll = parse(self.pluginPrefs['lastSuccessfulPoll'])
-                # self.next_poll            = dt.datetime.strptime(self.pluginPrefs['nextPoll'], '%Y-%m-%d %H:%M:%S')
                 self.next_poll            = parse(self.pluginPrefs['nextPoll'])
 
                 # If we have reached the time for the next scheduled poll
@@ -581,7 +564,6 @@ class Plugin(indigo.PluginBase):
             # If it's a new day, reset the email summary sent flag.
             try:
                 timestamp     = dev.states['weatherSummaryEmailTimestamp']
-                # last_sent     = dt.datetime.strptime(timestamp, '%Y-%m-%d')
                 last_sent     = parse(timestamp)
                 last_sent_day = last_sent.day
 
@@ -593,7 +575,6 @@ class Plugin(indigo.PluginBase):
 
             # Get the desired summary email time and convert it for test.
             summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
-            # summary_time = dt.datetime.strptime(summary_time, '%H:%M')
             summary_time = parse(summary_time)
 
             # Legacy devices had this setting improperly established as a string rather than a bool.
@@ -668,7 +649,8 @@ class Plugin(indigo.PluginBase):
                 dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
 
                 # Set email sent date
-                timestamp = dt.datetime.strftime(dt.datetime.now(), '%Y-%m-%d')
+                now = dt.datetime.now()
+                timestamp = (u"{0:%Y-%m-%d}".format(now))
                 dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
             else:
                 pass
@@ -770,6 +752,7 @@ class Plugin(indigo.PluginBase):
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
+                self.logger.threaddebug(u"Satellite image download time: {0}".format(data_cycle_time))
 
                 self.comm_error = False
                 return
@@ -807,16 +790,12 @@ class Plugin(indigo.PluginBase):
         location  = (latitude, longitude)
         comm_timeout = 10
 
-        # We already have the data; no need to get it again.
-        # if location in self.masterWeatherDict.keys():
-        #     self.logger.debug(u"Location [{0}] already in master weather dictionary.".format(location))
-        #
-        # # Get the data and add it to the masterWeatherDict.
-        # else:
+        # Get the data and add it to the masterWeatherDict.
         if location not in self.masterWeatherDict.keys():
             url = u'https://api.darksky.net/forecast/{0}/{1},{2}?exclude="minutely"&extend=""&units={3}&lang={4}'.format(api_key, latitude, longitude, units, language)
 
             # Start download timer.
+
             get_data_time = dt.datetime.now()
 
             while True:
@@ -860,6 +839,11 @@ class Plugin(indigo.PluginBase):
                         dev.updateStateOnServer("onOffState", value=False, uiValue=u"No Comm")
                         dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
+                # Report results of download timer.
+                data_cycle_time = (dt.datetime.now() - get_data_time)
+                data_cycle_time = (dt.datetime.min + data_cycle_time).time()
+                self.logger.threaddebug(u"Satellite image download time: {0}".format(data_cycle_time))
+
             # Load the JSON data from the file.
             try:
                 parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
@@ -878,7 +862,8 @@ class Plugin(indigo.PluginBase):
             self.comm_error = False
             dev.updateStateOnServer('onOffState', value=True)
 
-        # We could have come here from several different places. Return to whence we came to further process the weather data.
+        # We could have come here from several different places. Return to whence we
+        # came to further process the weather data.
         self.ds_online = True
         return self.masterWeatherDict
 
@@ -899,9 +884,6 @@ class Plugin(indigo.PluginBase):
         :param int triggerId:
         """
 
-        # for key, value in valuesDict.iteritems():
-        #     self.logger.debug(u"{0}: {1}".format(key, value))
-
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
 
     # =============================================================================
@@ -920,9 +902,6 @@ class Plugin(indigo.PluginBase):
         :param str targetId:
         :param int triggerId:
         """
-
-        # for key, value in valuesDict.iteritems():
-        #     self.logger.debug(u"{0}: {1}".format(key, value))
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]
 
@@ -1831,11 +1810,12 @@ class Plugin(indigo.PluginBase):
                         self.get_satellite_image(dev=dev)
 
             # Update last successful poll time
-            self.last_successful_poll = dt.datetime.strftime(dt.datetime.now(), '%Y-%m-%d %H:%M:%S')
+            now = dt.datetime.now()
+            self.last_successful_poll = (u"{0:%Y-%m-%d}".format(now))
             self.pluginPrefs['lastSuccessfulPoll'] = self.last_successful_poll
 
             # Update next poll time
-            self.next_poll = dt.datetime.strftime(dt.datetime.now() + self.download_interval, '%Y-%m-%d %H:%M:%S')
+            self.next_poll = (u"{0:%Y-%m-%d %H:%M:%S}".format(now + self.download_interval))
             self.pluginPrefs['nextPoll'] = self.next_poll
 
             self.logger.info(u"Weather data cycle complete.")
@@ -1895,12 +1875,11 @@ class Plugin(indigo.PluginBase):
 
                             # Convert currentObservationEpoch to a localized datetime object
                             current_observation_epoch = float(dev.states['currentObservationEpoch'])
-
-                            current_observation = time.strftime(time_format, time.localtime(current_observation_epoch))
-                            current_observation = dt.datetime.strptime(current_observation, time_format)
+                            current_observation = time.strftime('%Y-%m-%d %H:%M', time.localtime(current_observation_epoch))
+                            current_observation = parse(current_observation)
 
                             # Time elapsed since last observation
-                            diff = indigo.server.getTime() - current_observation
+                            diff = dt.datetime.now() - current_observation
 
                             # If the observation is older than offline_delta
                             if diff >= offline_delta:
@@ -1910,7 +1889,7 @@ class Plugin(indigo.PluginBase):
                                 minutes, seconds = divmod(remainder, 60)
 
                                 # Note that we leave seconds off, but it could easily be added if needed.
-                                diff_msg = u'{} days, {} hrs, {} mins'.format(days, hours, minutes)
+                                diff_msg = u'{0} days, {1} hrs, {2} mins'.format(days, hours, minutes)
 
                                 dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
                                 dev.updateStateOnServer('onOffState', value='offline')

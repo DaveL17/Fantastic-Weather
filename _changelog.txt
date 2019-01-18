@@ -2,6 +2,10 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.05 (beta 11)
+- Adds additional refresh frequencies of 2, 3, and 4 minutes.
+- Deletes deprecated code.
+
 v0.2.04 (beta 11)
 - Fixes bug in plugin initialization for new installs where a new device would
   not initialize properly.
