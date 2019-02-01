@@ -80,7 +80,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.08"
+__version__   = "0.2.09"
 
 # =============================================================================
 
@@ -234,6 +234,10 @@ class Plugin(indigo.PluginBase):
                             display_value = u""
 
                         dev.updateStateOnServer('onOffState', value=current_on_off_state, uiValue=display_value)
+
+            # Ensure that self.pluginPrefs includes any recent changes.
+            for k in valuesDict:
+                self.pluginPrefs[k] = valuesDict[k]
 
     # =============================================================================
     def deviceStartComm(self, dev):

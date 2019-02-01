@@ -2,6 +2,9 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.09 (beta 11)
+- Syncronize self.pluginPrefs in closedPrefsConfigUi().
+
 v0.2.08 (beta 11)
 - Audits kDefaultPluginPrefs
 
