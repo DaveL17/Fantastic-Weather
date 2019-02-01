@@ -71,7 +71,7 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
         <Label>Next Scheduled Poll:</Label>
     </Field>
 
-    <Field id="dailyCallCounter" type="textfield" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight (UTC).">
+    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight (UTC).">
         <Label>API Calls Today:</Label>
     </Field>
 
@@ -93,7 +93,7 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
         </List>
     </Field>
 
-    <Field id="language" type="menu" defaultValue="es" tooltip="Please select the desired language. Please note that the language setting only affects the data returned by the API.">
+    <Field id="language" type="menu" defaultValue="en" tooltip="Please select the desired language. Please note that the language setting only affects the data returned by the API.">
         <Label>Language:</Label>
         <List>
             <Option value="ar">Arabic</Option>

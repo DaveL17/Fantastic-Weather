@@ -80,30 +80,39 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.06"
+__version__   = "0.2.08"
 
 # =============================================================================
 
 kDefaultPluginPrefs = {
     u'alertLogging': False,           # Write severe weather alerts to the log?
-    u'apiKey': "",                    # DS requires an api key.
+    u'apiKey': "apiKey",              # DS requires an api key.
     u'callCounter': "999",            # DS call limit.
     u'dailyCallCounter': "0",         # Number of API calls today.
     u'dailyCallDay': "1970-01-01",    # API call counter date.
     u'dailyCallLimitReached': False,  # Has the daily call limit been reached?
+    u'dailyIconNames': "",            # Hidden trap of icon names used by the API.
     u'downloadInterval': "900",       # Frequency of weather updates.
+    u'hourlyIconNames': "",           # Hidden trap of icon names used by the API.
     u'itemListTempDecimal': "1",      # Precision for Indigo Item List.
     u'language': "en",                # Language for DS text.
     u'lastSuccessfulPoll': "1970-01-01 00:00:00",    # Last successful plugin cycle
-    u'launchParameters': "https://www.darksky.net",  # url for launch API button
-    u'nextPoll': "",                  # Next plugin cycle
+    u'launchParameters': "https://darksky.net/dev",  # url for launch API button
+    u'nextPoll': "1970-01-01 00:00:00",              # Next plugin cycle
     u'noAlertLogging': False,         # Suppresses "no active alerts" logging.
     u'showDebugLevel': "30",          # Logger level.
     u'uiDateFormat': "YYYY-MM-DD",    # Preferred date format string.
-    u'uiPercentageDecimal': "1",      # Precision for Indigo UI display (humidity).
+    u'uiDistanceDecimal': "0",        # Precision for Indigo UI display (distance).
+    u'uiIndexDecimal': "0",           # Precision for Indigo UI display (index).
+    u'uiPercentageDecimal': "1",      # Precision for Indigo UI display (humidity, etc.)
     u'uiTempDecimal': "1",            # Precision for Indigo UI display (temperature).
     u'uiTimeFormat': "military",      # Preferred time format string.
     u'uiWindDecimal': "1",            # Precision for Indigo UI display (wind).
+    u'uiWindName': "Long",            # Use long or short wind names (i.e., N vs. North)
+    u'units': "auto",                 # Standard, metric, Canadian, UK, etc.
+    u'updaterEmail': "",              # Email address for forecast email (legacy fieldname).
+    u'updaterEmailsEnabled': False,   # Enable/Disable forecast emails.
+    u'weatherIconNames': "",          # Hidden trap of icon names used by the API.
 }
 
 
@@ -212,7 +221,7 @@ class Plugin(indigo.PluginBase):
 
                     # If the device is currently displaying its temperature value, update it to
                     # reflect its new format
-                    if current_on_off_state_ui not in ['Disabled', 'Enabled', '']:
+                    if current_on_off_state_ui not in ('Disabled', 'Enabled', ''):
                         try:
                             units_dict = {'auto': '', 'ca': 'C', 'uk2': 'C', 'us': 'F', 'si': 'C'}
                             units = units_dict[self.pluginPrefs.get('units', '')]
@@ -954,7 +963,7 @@ class Plugin(indigo.PluginBase):
         :param indigo.Device dev:
         """
 
-        alerts_states_list = []
+        alerts_states_list = []  # Alerts_states_list needs to be a list.
 
         try:
             alert_array = []
@@ -970,7 +979,7 @@ class Plugin(indigo.PluginBase):
 
             # ============================= Delete Old Alerts =============================
             for alert_counter in range(1, 6):
-                for state in ['alertDescription', 'alertExpires', 'alertRegions', 'alertSeverity', 'alertTime', 'alertTime', 'alertTitle', 'alertUri']:
+                for state in ('alertDescription', 'alertExpires', 'alertRegions', 'alertSeverity', 'alertTime', 'alertTime', 'alertTitle', 'alertUri'):
                     alerts_states_list.append({'key': '{0}{1}'.format(state, alert_counter), 'value': u" ", 'uiValue': u" "})
 
             # ================================= No Alerts =================================
@@ -2050,7 +2059,7 @@ class Plugin(indigo.PluginBase):
         except KeyError:
             rain_units = dev.pluginProps.get('rainAmountUnits', '')
 
-        if val in ["NA", "N/A", "--", ""]:
+        if val in ("NA", "N/A", "--", ""):
             return val
 
         try:

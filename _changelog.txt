@@ -2,6 +2,16 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.2.08 (beta 11)
+- Audits kDefaultPluginPrefs
+
+v0.2.08 (beta 11)
+- Changes "En/Disable all Fantastic Weather Devices" to "En/Disable all Plugin
+  Devices".
+
+v0.2.07 (beta 11)
+- Changes Python lists to tuples where possible to increase performance.
+
 v0.2.06 (beta 11)
 - Increments version number.
 
