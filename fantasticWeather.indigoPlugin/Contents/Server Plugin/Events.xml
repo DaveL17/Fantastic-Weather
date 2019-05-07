@@ -7,6 +7,7 @@
     <Event id="weatherAlert">
         <Name>Severe Weather Alert</Name>
             <ConfigUI>
+                <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/triggers</SupportURL>
 
                 <Field id="weatherAlertLabel" type="label">
                     <Label>The Dark Sky Plugin can fire a trigger if a weather location has reported at least one severe weather alert.</Label>
@@ -25,6 +26,7 @@
     <Event id="weatherSiteOffline">
         <Name>Weather Location Offline</Name>
             <ConfigUI>
+                <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/triggers</SupportURL>
 
                 <Field id="offlineTimerLabel" type="label">
                     <Label>Enter the number of minutes to use to determine offline status. The plugin will compare the site's latest observation time to the current time and fire the trigger if the difference is greater than the value specified.</Label>

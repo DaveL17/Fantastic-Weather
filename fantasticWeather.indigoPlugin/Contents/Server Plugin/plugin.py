@@ -47,6 +47,8 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 #  the plugin will cycle every 30 seconds and (if info messages) write to the
 #  log.
 
+# TODO: if there are severe weather alerts, add them to the forecast email.
+
 # ================================== IMPORTS ==================================
 
 # Built-in modules
@@ -80,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.09"
+__version__   = "0.2.10"
 
 # =============================================================================
 
@@ -330,6 +332,12 @@ class Plugin(indigo.PluginBase):
             self.logger.debug(u"Stopping Fantastically Useful Weather Utility thread.")
 
     # =============================================================================
+    def sendDevicePing(self, dev_id=0, suppress_logging=False):
+
+        indigo.server.log(u"Fantastic Weather Plugin devices do not support the ping function.")
+        return {'result': 'Failure'}
+
+    # =============================================================================
     def shutdown(self):
 
         self.pluginIsShuttingDown = True
@@ -337,7 +345,8 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def startup(self):
 
-        pass
+        # =========================== Audit Indigo Version ============================
+       self.Fogbert.audit_server_version(min_ver=7)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <PluginConfig>
-
+    <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/configuration</SupportURL>
     <Field id="infoLabel00" type="label">
         <Label>Fantastically Useful Weather Utility</Label>
     </Field>

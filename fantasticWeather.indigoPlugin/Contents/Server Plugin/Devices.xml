@@ -8,7 +8,7 @@
         <Name>Astronomy</Name>
 
         <ConfigUI>
-
+            <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
             <Field id="space00" type="label">
                 <Label>Astronomy information</Label>
             </Field>
@@ -111,6 +111,7 @@
         <Name>Daily Forecast</Name>
 
         <ConfigUI>
+            <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
 
             <Field id="space00" type="label">
                 <Label>Daily Information</Label>
@@ -1300,6 +1301,7 @@ plugin updates within the plugin settings dialog.</Label>
         <Name>Hourly Forecast</Name>
 
         <ConfigUI>
+            <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
 
             <Field id="space00" type="label">
                 <Label>Hourly information</Label>
@@ -4236,6 +4238,7 @@ plugin updates within the plugin settings dialog.</Label>
         <Name>Satellite Image Downloader</Name>
 
         <ConfigUI>
+            <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
 
             <Field id="space00" type="label" fontSize="small">
                 <Label>The image downloader only supports gif, jpg, jpeg, and png extensions. There is no limit to the number of downloader devices you can have.</Label>
@@ -4288,6 +4291,7 @@ file:///Users/username/Desktop/imagefile.png
         <Name>Weather</Name>
 
         <ConfigUI>
+            <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
 
             <Field id="space00" type="label">
                 <Label>Weather information</Label>
