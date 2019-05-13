@@ -2,17 +2,21 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.3.02 (beta 12)
+- Improved handling of bad url messages (Status Code 400).
+
+v0.3.01 (beta 12)
+- Code refinements.
+
 v0.2.10 (beta 11)
 - Ensures that the plugin is compatible with the Indigo server version.
-- Standardizes SupportURL behavior across all plugin functions
+- Standardizes SupportURL behavior across all plugin functions.
 
 v0.2.09 (beta 11)
-- Syncronize self.pluginPrefs in closedPrefsConfigUi().
+- Synchronize self.pluginPrefs in closedPrefsConfigUi().
 
 v0.2.08 (beta 11)
 - Audits kDefaultPluginPrefs
-
-v0.2.08 (beta 11)
 - Changes "En/Disable all Fantastic Weather Devices" to "En/Disable all Plugin
   Devices".
 

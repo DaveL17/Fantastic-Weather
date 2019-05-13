@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.10"
+__version__   = "0.3.02"
 
 # =============================================================================
 
@@ -346,7 +346,7 @@ class Plugin(indigo.PluginBase):
     def startup(self):
 
         # =========================== Audit Indigo Version ============================
-       self.Fogbert.audit_server_version(min_ver=7)
+        self.Fogbert.audit_server_version(min_ver=7)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):
@@ -772,7 +772,7 @@ class Plugin(indigo.PluginBase):
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
-                self.logger.info(u"Satellite image download time: {0}".format(data_cycle_time))
+                self.logger.debug(u"Satellite image download time: {0}".format(data_cycle_time))
 
                 self.comm_error = False
                 return
@@ -824,7 +824,12 @@ class Plugin(indigo.PluginBase):
                     r.raise_for_status()
 
                     if r.status_code != 200:
-                        self.logger.debug(u"Status Code: {0}".format(r.status_code))
+                        if r.status_code == 400:
+                            self.logger.warning(u"Problem communicating with Dark Sky. This condition should clear on its own, but reloading the plugin can often repair the connection.")
+                            self.logger.debug(u"Status Code: {0} Bad URL Request".format(r.status_code))
+                            raise requests.exceptions.ConnectionError
+                        else:
+                            self.logger.debug(u"Status Code: {0}".format(r.status_code))
 
                     simplejson_string = r.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
                     self.comm_error = False
@@ -840,10 +845,10 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
                     if comm_timeout < 900:
-                        self.logger.error(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
                     else:
-                        self.logger.error(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
 
                     time.sleep(comm_timeout)
 
@@ -1747,13 +1752,6 @@ class Plugin(indigo.PluginBase):
         self.date_format       = self.Formatter.dateFormat()
         self.time_format       = self.Formatter.timeFormat()
 
-        # Check to see if the daily call limit has been reached.
-        # try:
-        #
-        #     self.masterWeatherDict = {}
-        #
-        #     for dev in indigo.devices.itervalues("self"):
-
         self.masterWeatherDict = {}
 
         for dev in indigo.devices.itervalues("self"):
@@ -1878,7 +1876,7 @@ class Plugin(indigo.PluginBase):
         -----
         """
 
-        time_format = '%Y-%m-%d %H:%M:%S'
+        # time_format = '%Y-%m-%d %H:%M:%S'
 
         # Reconstruct the masterTriggerDict in case it has changed.
         self.masterTriggerDict = {unicode(trigger.pluginProps['listOfDevices']): (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
