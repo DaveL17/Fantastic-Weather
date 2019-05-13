@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.2.10"
+__version__   = "0.3.01"
 
 # =============================================================================
 
@@ -346,7 +346,7 @@ class Plugin(indigo.PluginBase):
     def startup(self):
 
         # =========================== Audit Indigo Version ============================
-       self.Fogbert.audit_server_version(min_ver=7)
+        self.Fogbert.audit_server_version(min_ver=7)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):
@@ -772,7 +772,7 @@ class Plugin(indigo.PluginBase):
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
-                self.logger.info(u"Satellite image download time: {0}".format(data_cycle_time))
+                self.logger.debug(u"Satellite image download time: {0}".format(data_cycle_time))
 
                 self.comm_error = False
                 return
@@ -1878,7 +1878,7 @@ class Plugin(indigo.PluginBase):
         -----
         """
 
-        time_format = '%Y-%m-%d %H:%M:%S'
+        # time_format = '%Y-%m-%d %H:%M:%S'
 
         # Reconstruct the masterTriggerDict in case it has changed.
         self.masterTriggerDict = {unicode(trigger.pluginProps['listOfDevices']): (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
