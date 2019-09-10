@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.3.02"
+__version__   = "0.3.01"
 
 # =============================================================================
 
@@ -824,12 +824,7 @@ class Plugin(indigo.PluginBase):
                     r.raise_for_status()
 
                     if r.status_code != 200:
-                        if r.status_code == 400:
-                            self.logger.warning(u"Problem communicating with Dark Sky. This condition should clear on its own, but reloading the plugin can often repair the connection.")
-                            self.logger.debug(u"Status Code: {0} Bad URL Request".format(r.status_code))
-                            raise requests.exceptions.ConnectionError
-                        else:
-                            self.logger.debug(u"Status Code: {0}".format(r.status_code))
+                        self.logger.debug(u"Status Code: {0}".format(r.status_code))
 
                     simplejson_string = r.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
                     self.comm_error = False
@@ -845,10 +840,10 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
                     if comm_timeout < 900:
-                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
+                        self.logger.error(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
                     else:
-                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
+                        self.logger.error(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
 
                     time.sleep(comm_timeout)
 
@@ -1751,6 +1746,13 @@ class Plugin(indigo.PluginBase):
 
         self.date_format       = self.Formatter.dateFormat()
         self.time_format       = self.Formatter.timeFormat()
+
+        # Check to see if the daily call limit has been reached.
+        # try:
+        #
+        #     self.masterWeatherDict = {}
+        #
+        #     for dev in indigo.devices.itervalues("self"):
 
         self.masterWeatherDict = {}
 
