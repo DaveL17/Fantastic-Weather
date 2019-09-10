@@ -2,6 +2,9 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.3.02 (beta 12)
+- Improved handling of bad url messages (Status Code 400).
+
 v0.3.01 (beta 12)
 - Code refinements.
 

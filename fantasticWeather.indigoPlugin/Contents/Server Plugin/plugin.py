@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.3.01"
+__version__   = "0.3.02"
 
 # =============================================================================
 
@@ -824,7 +824,12 @@ class Plugin(indigo.PluginBase):
                     r.raise_for_status()
 
                     if r.status_code != 200:
-                        self.logger.debug(u"Status Code: {0}".format(r.status_code))
+                        if r.status_code == 400:
+                            self.logger.warning(u"Problem communicating with Dark Sky. This problem can usually correct itself, but reloading the plugin can often force a repair.")
+                            self.logger.debug(u"Bad URL - Status Code: {0}".format(r.status_code))
+                            raise requests.exceptions.ConnectionError
+                        else:
+                            self.logger.debug(u"Status Code: {0}".format(r.status_code))
 
                     simplejson_string = r.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
                     self.comm_error = False
