@@ -82,7 +82,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.3.02"
+__version__   = "0.3.03"
 
 # =============================================================================
 
@@ -1254,11 +1254,13 @@ class Plugin(indigo.PluginBase):
                     if preferred_time == "time_here":
                         local_time       = time.localtime(float(forecast_time))
 
-                        forecast_day     = time.strftime('%A', local_time)
-                        forecast_hour    = time.strftime('%H:%M', local_time)
-                        forecast_hour_ui = time.strftime(self.time_format, local_time)
+                        forecast_day_long  = time.strftime('%A', local_time)
+                        forecast_day_short = time.strftime('%a', local_time)
+                        forecast_hour      = time.strftime('%H:%M', local_time)
+                        forecast_hour_ui   = time.strftime(self.time_format, local_time)
 
-                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day_long, 'uiValue': forecast_day_long})
+                        hourly_forecast_states_list.append({'key': u"h{0}_day_short".format(fore_counter_text), 'value': forecast_day_short, 'uiValue': forecast_day_short})
                         hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
                         hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
@@ -1266,15 +1268,17 @@ class Plugin(indigo.PluginBase):
                     elif preferred_time == "time_there":
                         aware_time       = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
 
-                        forecast_day     = timezone.normalize(aware_time).strftime("%A")
-                        forecast_hour    = timezone.normalize(aware_time).strftime("%H:%M")
-                        forecast_hour_ui = time.strftime(self.time_format, timezone.normalize(aware_time).timetuple())
+                        forecast_day_long  = timezone.normalize(aware_time).strftime("%A")
+                        forecast_day_short = timezone.normalize(aware_time).strftime("%a")
+                        forecast_hour      = timezone.normalize(aware_time).strftime("%H:%M")
+                        forecast_hour_ui   = time.strftime(self.time_format, timezone.normalize(aware_time).timetuple())
 
                         zone             = dt.datetime.fromtimestamp(forecast_time, timezone)
                         zone_tuple       = zone.timetuple()              # tuple
                         zone_posix       = int(time.mktime(zone_tuple))  # timezone timestamp
 
-                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day_long, 'uiValue': forecast_day_long})
+                        hourly_forecast_states_list.append({'key': u"h{0}_day_short".format(fore_counter_text), 'value': forecast_day_short, 'uiValue': forecast_day_short})
                         hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': zone_posix})
                         hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
 
@@ -1450,12 +1454,14 @@ class Plugin(indigo.PluginBase):
                     # timestamp from DS is always 00:00 localized. If we set it using the
                     # server timezone, it may display the wrong day if the location is ahead of
                     # where we are.
-                    aware_time = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
-                    forecast_date = timezone.normalize(aware_time).strftime('%Y-%m-%d')
-                    forecast_day  = timezone.normalize(aware_time).strftime("%A")
+                    aware_time         = dt.datetime.fromtimestamp(int(forecast_time), tz=pytz.utc)
+                    forecast_date      = timezone.normalize(aware_time).strftime('%Y-%m-%d')
+                    forecast_day_long  = timezone.normalize(aware_time).strftime("%A")
+                    forecast_day_short = timezone.normalize(aware_time).strftime("%a")
 
                     daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
-                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day, 'uiValue': forecast_day})
+                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day_long, 'uiValue': forecast_day_long})
+                    daily_forecast_states_list.append({'key': u"d{0}_day_short".format(fore_counter_text), 'value': forecast_day_short, 'uiValue': forecast_day_short})
 
                     # ================================= Humidity ==================================
                     humidity, humidity_ui = self.fix_corrupted_data(val=humidity * 100)
