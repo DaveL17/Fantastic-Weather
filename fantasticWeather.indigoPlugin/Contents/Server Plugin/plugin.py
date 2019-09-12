@@ -112,7 +112,7 @@ kDefaultPluginPrefs = {
     u'uiWindDecimal': "1",            # Precision for Indigo UI display (wind).
     u'uiWindName': "Long",            # Use long or short wind names (i.e., N vs. North)
     u'units': "auto",                 # Standard, metric, Canadian, UK, etc.
-    u'updaterEmail': "",              # Email address for forecast email (legacy fieldname).
+    u'updaterEmail': "",              # Email address for forecast email (legacy field name).
     u'updaterEmailsEnabled': False,   # Enable/Disable forecast emails.
     u'weatherIconNames': "",          # Hidden trap of icon names used by the API.
 }
@@ -835,13 +835,9 @@ class Plugin(indigo.PluginBase):
                     self.comm_error = False
                     break
 
-                # We get a response, but Dark Sky is unhappy
-                # TODO: should these be caught?
-                # except requests.exceptions.HTTPError as sub_error:
-                #    pass
-
                 # No connection to Internet, no response from Dark Sky. Let's keep trying.
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as sub_error:
+
                     self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
                     if comm_timeout < 900:
