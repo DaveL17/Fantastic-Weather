@@ -43,11 +43,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO:  When the plugin is installed, and there are no plugin devices created,
-#  the plugin will cycle every 30 seconds and (if info messages) write to the
-#  log.
-
-# TODO: if there are severe weather alerts, add them to the forecast email.
+# TODO: None.
 
 # ================================== IMPORTS ==================================
 
@@ -82,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.3.03"
+__version__   = "0.4.01"
 
 # =============================================================================
 
@@ -2142,51 +2138,17 @@ class Plugin(indigo.PluginBase):
         Adjusts the decimal precision of certain wind values for display in control
         pages, etc.
 
+        Credit to Indigo Forum user forestfield for conversion routine.
         -----
 
         :param val:
         """
 
         long_short = self.pluginPrefs.get('uiWindName', 'Long')
-
-        val = round(val)
+        val        = round(val)
 
         if long_short == 'Long':
-            if val in range(0, 22):
-                return u"North"
-            elif val in range(22, 68):
-                return u"Northeast"
-            elif val in range(68, 113):
-                return u"East"
-            elif val in range(113, 158):
-                return u"Southeast"
-            elif val in range(158, 203):
-                return u"South"
-            elif val in range(203, 248):
-                return u"Southwest"
-            elif val in range(248, 293):
-                return u"West"
-            elif val in range(293, 338):
-                return u"Northwest"
-            elif val in range(338, 361):
-                return u"North"
+            return ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'][int(((val + 22.5) % 360) / 45)]
+
         else:
-            if val in range(0, 22):
-                return u"N"
-            elif val in range(22, 68):
-                return u"NE"
-            elif val in range(68, 113):
-                return u"E"
-            elif val in range(113, 158):
-                return u"SE"
-            elif val in range(158, 203):
-                return u"S"
-            elif val in range(203, 248):
-                return u"SW"
-            elif val in range(248, 293):
-                return u"W"
-            elif val in range(293, 338):
-                return u"NW"
-            elif val in range(338, 361):
-                return u"N"
-    # =============================================================================
+            return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][int(((val + 22.5) % 360) / 45)]
