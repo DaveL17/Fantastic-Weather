@@ -78,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.4.01"
+__version__   = "0.5.01"
 
 # =============================================================================
 
@@ -189,10 +189,10 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     # ============================== Indigo Methods ===============================
     # =============================================================================
-    def closedPrefsConfigUi(self, valuesDict, userCancelled):
+    def closedPrefsConfigUi(self, values_dict, user_cancelled):
 
-        if not userCancelled:
-            self.indigo_log_handler.setLevel(int(valuesDict['showDebugLevel']))
+        if not user_cancelled:
+            self.indigo_log_handler.setLevel(int(values_dict['showDebugLevel']))
 
             # ============================= Update Poll Time ==============================
             self.download_interval = dt.timedelta(seconds=int(self.pluginPrefs.get('downloadInterval', '900')))
@@ -234,8 +234,8 @@ class Plugin(indigo.PluginBase):
                         dev.updateStateOnServer('onOffState', value=current_on_off_state, uiValue=display_value)
 
             # Ensure that self.pluginPrefs includes any recent changes.
-            for k in valuesDict:
-                self.pluginPrefs[k] = valuesDict[k]
+            for k in values_dict:
+                self.pluginPrefs[k] = values_dict[k]
 
     # =============================================================================
     def deviceStartComm(self, dev):
@@ -272,25 +272,25 @@ class Plugin(indigo.PluginBase):
         dev.updateStateOnServer('onOffState', value=False, uiValue=u"Disabled")
 
     # =============================================================================
-    def getDeviceConfigUiValues(self, valuesDict, typeId, devId):
+    def getDeviceConfigUiValues(self, values_dict, type_id, dev_id):
 
-        if typeId == 'Daily':
+        if type_id == 'Daily':
             # weatherSummaryEmailTime is set by a generator. We need this bit to pre-
             # populate the control with the default value when a new device is created.
-            if 'weatherSummaryEmailTime' not in valuesDict.keys():
-                valuesDict['weatherSummaryEmailTime'] = "01:00"
+            if 'weatherSummaryEmailTime' not in values_dict.keys():
+                values_dict['weatherSummaryEmailTime'] = "01:00"
 
-        if typeId != 'satelliteImageDownloader':
+        if type_id != 'satelliteImageDownloader':
             # If new device, lat/long will be zero. so let's start with the lat/long of
             # the Indigo server.
 
-            if valuesDict.get('latitude', "0") == "0" or valuesDict.get('longitude', "0") == "0":
+            if values_dict.get('latitude', "0") == "0" or values_dict.get('longitude', "0") == "0":
                 lat_long = indigo.server.getLatitudeAndLongitude()
-                valuesDict['latitude'] = str(lat_long[0])
-                valuesDict['longitude'] = str(lat_long[1])
+                values_dict['latitude'] = str(lat_long[0])
+                values_dict['longitude'] = str(lat_long[1])
                 self.logger.debug(u"Populated lat/long.")
 
-        return valuesDict
+        return values_dict
 
     # =============================================================================
     def getPrefsConfigUiValues(self):
@@ -363,104 +363,119 @@ class Plugin(indigo.PluginBase):
         pass
 
     # =============================================================================
-    def validateDeviceConfigUi(self, valuesDict, typeID, devId):
+    def validateDeviceConfigUi(self, values_dict, type_id, dev_id):
+
+        class DeviceValidationError(Exception):
+            def __init__(self, key=(), alert_text=None, message=u'Error!'):
+                self.key = key
+                self.alert_text = alert_text
+                self.message = message
 
         error_msg_dict = indigo.Dict()
 
-        if valuesDict['isWeatherDevice']:
+        try:
+            if values_dict['isWeatherDevice']:
 
-            # ================================= Latitude ==================================
-            if not -90 <= float(valuesDict['latitude']) <= 90:
-                error_msg_dict['latitude'] = u"The latitude value must be between -90 and 90."
-                error_msg_dict['showAlertText'] = u"Latitude Range Error\n\nThe latitude value must be between -90 and 90"
-                return False, valuesDict, error_msg_dict
+                # ================================= Latitude ==================================
+                if not -90 <= float(values_dict['latitude']) <= 90:
+                    raise DeviceValidationError(key=('latitude', ), alert_text=u"Latitude Range Error\n\nThe latitude value must be between -90 and 90", message=u"The latitude value must be between -90 and 90.")
 
-            # ================================= Longitude =================================
-            if not -180 <= float(valuesDict['longitude']) <= 180:
-                error_msg_dict['longitude'] = u"The longitude value must be between -90 and 90."
-                error_msg_dict['showAlertText'] = u"Latitude Range Error\n\nThe latitude value must be between -180 and 180"
-                return False, valuesDict, error_msg_dict
+                # ================================= Longitude =================================
+                if not -180 <= float(values_dict['longitude']) <= 180:
+                    raise DeviceValidationError(key=('longitude', ), alert_text=u"Latitude Range Error\n\nThe latitude value must be between -90 and 90", message=u"The latitude value must be between -90 and 90.")
 
-        return True
+            return True, values_dict
+
+        except DeviceValidationError as err:
+            for key in err.key:
+                error_msg_dict[key] = err.message
+            if err.alert_text:
+                error_msg_dict['showAlertText'] = err.alert_text
+            return False, values_dict, error_msg_dict
 
     # =============================================================================
-    def validateEventConfigUi(self, valuesDict, typeId, eventId):
+    def validateEventConfigUi(self, values_dict, type_id, event_id):
 
-        dev_id         = valuesDict['list_of_devices']
+        class EventValidationError(Exception):
+            def __init__(self, key=(), alert_text=None, message=u'Error!'):
+                self.key = key
+                self.alert_text = alert_text
+                self.message = message
+
+        dev_id         = values_dict['list_of_devices']
         error_msg_dict = indigo.Dict()
 
-        # Weather Site Offline trigger
-        if typeId == 'weatherSiteOffline':
+        try:
+            # Weather Site Offline trigger
+            if type_id == 'weatherSiteOffline':
 
-            self.masterTriggerDict = {trigger.pluginProps['listOfDevices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
+                self.masterTriggerDict = {trigger.pluginProps['listOfDevices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
 
-            # ======================== Validate Trigger Unique ========================
-            # Limit weather location offline triggers to one per device
-            if dev_id in self.masterTriggerDict.keys() and eventId != self.masterTriggerDict[dev_id][1]:
-                existing_trigger_id = int(self.masterTriggerDict[dev_id][1])
-                error_msg_dict['listOfDevices'] = u"Please select a weather device without an existing offline trigger."
-                error_msg_dict['showAlertText'] = u"There is an existing weather offline trigger for this location." \
-                                                  u"\n\n[{0}]\n\n" \
-                                                  u"You must select a location that does not have an existing trigger.".format(indigo.triggers[existing_trigger_id].name)
-                valuesDict['listOfDevices'] = ''
-                return False, valuesDict, error_msg_dict
+                # ======================== Validate Trigger Unique ========================
+                # Limit weather location offline triggers to one per device
+                if dev_id in self.masterTriggerDict.keys() and event_id != self.masterTriggerDict[dev_id][1]:
+                    existing_trigger_id = int(self.masterTriggerDict[dev_id][1])
+                    values_dict['listOfDevices'] = ''
+                    raise EventValidationError(key=('listOfDevices', ), alert_text=u"There is an existing weather offline trigger for this location.\n\n[{0}]\n\nYou must select a location that does not have an existing trigger.".format(indigo.triggers[existing_trigger_id].name), message=u"Please select a weather device without an existing offline trigger.")
 
-            # ============================ Validate Timer =============================
-            try:
-                if int(valuesDict['offlineTimer']) <= 0:
-                    raise ValueError
+                # ============================ Validate Timer =============================
+                try:
+                    if int(values_dict['offlineTimer']) <= 0:
+                        raise EventValidationError(key=('offlineTimer', ), alert_text=u"Offline Time Error.\n\nYou must enter a valid offline time value. The value must be a positive integer that is greater than zero.", message=u"You must enter a valid time value in minutes (positive integer greater than zero).")
 
-            except ValueError:
-                error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
-                error_msg_dict['showAlertText'] = u"Offline Time Error.\n\nYou must enter a valid offline time value. The value must be a positive integer that is greater than zero."
-                valuesDict['offlineTimer'] = ''
-                return False, valuesDict, error_msg_dict
+                except ValueError:
+                    values_dict['offlineTimer'] = ''
+                    raise EventValidationError(key=('offlineTimer', ), alert_text=u"Offline Time Error.\n\nYou must enter a valid offline time value. The value must be a positive integer that is greater than zero.", message=u"You must enter a valid time value in minutes (positive integer greater than zero).")
 
-        return True, valuesDict
+            return True, values_dict
+
+        except EventValidationError as err:
+            for key in err.key:
+                error_msg_dict[key] = err.message
+            if err.alert_text:
+                error_msg_dict['showAlertText'] = err.alert_text
+            return False, values_dict, error_msg_dict
 
     # =============================================================================
-    def validatePrefsConfigUi(self, valuesDict):
+    def validatePrefsConfigUi(self, values_dict):
 
-        api_key_config      = valuesDict['apiKey']
-        call_counter_config = valuesDict['callCounter']
+        class PluginValidationError(Exception):
+            def __init__(self, key=(), alert_text=None, message=u'Error!'):
+                self.key = key
+                self.alert_text = alert_text
+                self.message = message
+
+        api_key_config      = values_dict['apiKey']
+        call_counter_config = values_dict['callCounter']
         error_msg_dict      = indigo.Dict()
 
         # Test api_keyconfig setting.
         try:
             if len(api_key_config) == 0:
-                # Mouse over text error:
-                error_msg_dict['apiKey'] = u"The plugin requires an API key to function. See help for details."
-                # Screen error:
-                error_msg_dict['showAlertText'] = (u"The API key that you have entered is invalid.\n\n"
-                                                   u"Reason: You have not entered a key value. Valid API keys contain alpha-numeric characters only (no spaces.)")
-                return False, valuesDict, error_msg_dict
+                raise PluginValidationError(key=('apiKey',), alert_text=u"The API key that you have entered is invalid.\n\nReason: You have not entered a key value. Valid API keys contain alpha-numeric characters only (no spaces.)", message=u"The plugin requires an API key to function. See help for details.")
 
             elif " " in api_key_config:
-                error_msg_dict['apiKey'] = u"The API key can't contain a space."
-                error_msg_dict['showAlertText'] = (u"The API key that you have entered is invalid.\n\n"
-                                                   u"Reason: The key you entered contains a space. Valid API keys contain alpha-numeric characters only.")
-                return False, valuesDict, error_msg_dict
+                raise PluginValidationError(key=('apiKey',), alert_text=u"The API key that you have entered is invalid.\n\nReason: The key you entered contains a space. Valid API keys contain alpha-numeric characters only.", message=u"The API key can't contain a space.")
 
-            # Test call limit config setting.
             elif not int(call_counter_config):
-                error_msg_dict['callCounter'] = u"The call counter can only contain integers."
-                error_msg_dict['showAlertText'] = u"The call counter that you have entered is invalid.\n\nReason: Call counters can only contain integers."
-                return False, valuesDict, error_msg_dict
+                raise PluginValidationError(key=('callCounter',), alert_text=u"The call counter that you have entered is invalid.\n\nReason: Call counters can only contain integers.", message=u"The call counter can only contain integers.")
 
             elif call_counter_config < 0:
-                error_msg_dict['callCounter'] = u"The call counter value must be a positive integer."
-                error_msg_dict['showAlertText'] = u"The call counter that you have entered is invalid.\n\nReason: Call counters must be positive integers."
-                return False, valuesDict, error_msg_dict
+                raise PluginValidationError(key=('callCounter',), alert_text=u"The call counter that you have entered is invalid.\n\nReason: Call counters must be positive integers.", message=u"The call counter value must be a positive integer.")
 
-        except Exception as error:
-            self.logger.error(u"Exception in validatePrefsConfigUi API key test. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            return True, values_dict
 
-        return True, valuesDict
+        except PluginValidationError as err:
+            for key in err.key:
+                error_msg_dict[key] = err.message
+            if err.alert_text:
+                error_msg_dict['showAlertText'] = err.alert_text
+            return False, values_dict, error_msg_dict
 
     # =============================================================================
     # ============================== Plugin Methods ===============================
     # =============================================================================
-    def action_refresh_weather(self, valuesDict):
+    def action_refresh_weather(self, values_dict):
         """
         Refresh all weather as a result of an action call
 
@@ -469,7 +484,7 @@ class Plugin(indigo.PluginBase):
 
         -----
 
-        :param indigo.Dict valuesDict:
+        :param indigo.Dict values_dict:
         """
 
         self.logger.debug(u"Refresh all weather data.")
@@ -511,19 +526,19 @@ class Plugin(indigo.PluginBase):
                 self.logger.error(u"Exception when trying to unkill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
 
     # =============================================================================
-    def dark_sky_site(self, valuesDict):
+    def dark_sky_site(self, values_dict):
         """
         Launch a web browser to register for API
 
-        Launch a web browser session with the valuesDict parm containing the target
+        Launch a web browser session with the values_dict parm containing the target
         URL.
 
         -----
 
-        :param indigo.Dict valuesDict:
+        :param indigo.Dict values_dict:
         """
 
-        self.browserOpen(valuesDict['launchParameters'])
+        self.browserOpen(values_dict['launchParameters'])
 
     # =============================================================================
     def dump_the_json(self):
@@ -708,7 +723,7 @@ class Plugin(indigo.PluginBase):
             return -99.0, u"--"
 
     # =============================================================================
-    def generator_time(self, filter="", valuesDict=None, typeId="", targetId=0):
+    def generator_time(self, filter="", values_dict=None, type_id="", target_id=0):
         """
         List of hours generator
 
@@ -717,9 +732,9 @@ class Plugin(indigo.PluginBase):
 
         -----
         :param str filter:
-        :param indigo.Dict valuesDict:
-        :param str typeId:
-        :param int targetId:
+        :param indigo.Dict values_dict:
+        :param str type_id:
+        :param int target_id:
         """
 
         return [(u"{0:02.0f}:00".format(hour), u"{0:02.0f}:00".format(hour)) for hour in range(0, 24)]
@@ -885,7 +900,7 @@ class Plugin(indigo.PluginBase):
         return self.masterWeatherDict
 
     # =============================================================================
-    def list_of_devices(self, filter, valuesDict, targetId, triggerId):
+    def list_of_devices(self, filter, values_dict, target_id, trigger_id):
         """
         Generate list of devices for offline trigger
 
@@ -896,15 +911,15 @@ class Plugin(indigo.PluginBase):
         -----
 
         :param str filter:
-        :param indigo.Dict valuesDict:
-        :param str targetId:
-        :param int triggerId:
+        :param indigo.Dict values_dict:
+        :param str target_id:
+        :param int trigger_id:
         """
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
 
     # =============================================================================
-    def list_of_weather_devices(self, filter, valuesDict, targetId, triggerId):
+    def list_of_weather_devices(self, filter, values_dict, target_id, trigger_id):
         """
         Generate list of devices for severe weather alert trigger
 
@@ -915,9 +930,9 @@ class Plugin(indigo.PluginBase):
         -----
 
         :param str filter:
-        :param indigo.Dict valuesDict:
-        :param str targetId:
-        :param int triggerId:
+        :param indigo.Dict values_dict:
+        :param str target_id:
+        :param int trigger_id:
         """
 
         return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]

@@ -2,6 +2,10 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.5.01 (beta 13)
+- Improvements to device configuration validation.
+- Deprecates matplotlib_version.html.
+
 v0.4.01 (beta 12)
 - Removes all references to legacy version checking.
 
