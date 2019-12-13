@@ -118,4 +118,4 @@ v0.1.02 (beta 2)
 - Fixes missing precipitation type device state for hourly device
 
 v0.1.01 (beta 1)
-- Initial release
+- Initial release.
