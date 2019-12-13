@@ -365,112 +365,83 @@ class Plugin(indigo.PluginBase):
     # =============================================================================
     def validateDeviceConfigUi(self, values_dict, type_id, dev_id):
 
-        class DeviceValidationError(Exception):
-            def __init__(self, key=(), alert_text=None, message=u'Error!'):
-                self.key = key
-                self.alert_text = alert_text
-                self.message = message
-
         error_msg_dict = indigo.Dict()
 
-        try:
-            if values_dict['isWeatherDevice']:
+        if values_dict['isWeatherDevice']:
 
-                # ================================= Latitude ==================================
+            # ================================= Latitude ==================================
+            try:
                 if not -90 <= float(values_dict['latitude']) <= 90:
-                    raise DeviceValidationError(key=('latitude', ), alert_text=u"Latitude Range Error\n\nThe latitude value must be between -90 and 90", message=u"The latitude value must be between -90 and 90.")
+                    error_msg_dict['latitude'] = u"The latitude value must be between -90 and 90."
+            except ValueError:
+                error_msg_dict['latitude'] = u"The latitude value must be between -90 and 90."
 
-                # ================================= Longitude =================================
+            # ================================= Longitude =================================
+            try:
                 if not -180 <= float(values_dict['longitude']) <= 180:
-                    raise DeviceValidationError(key=('longitude', ), alert_text=u"Latitude Range Error\n\nThe latitude value must be between -90 and 90", message=u"The latitude value must be between -90 and 90.")
+                    error_msg_dict['latitude'] = u"The longitude value must be between -180 and 180."
+            except ValueError:
+                error_msg_dict['latitude'] = u"The longitude value must be between -180 and 180."
+
+            if len(error_msg_dict) > 0:
+                return False, values_dict, error_msg_dict
 
             return True, values_dict
-
-        except DeviceValidationError as err:
-            for key in err.key:
-                error_msg_dict[key] = err.message
-            if err.alert_text:
-                error_msg_dict['showAlertText'] = err.alert_text
-            return False, values_dict, error_msg_dict
 
     # =============================================================================
     def validateEventConfigUi(self, values_dict, type_id, event_id):
 
-        class EventValidationError(Exception):
-            def __init__(self, key=(), alert_text=None, message=u'Error!'):
-                self.key = key
-                self.alert_text = alert_text
-                self.message = message
-
         dev_id         = values_dict['list_of_devices']
         error_msg_dict = indigo.Dict()
 
-        try:
-            # Weather Site Offline trigger
-            if type_id == 'weatherSiteOffline':
+        # Weather Site Offline trigger
+        if type_id == 'weatherSiteOffline':
 
-                self.masterTriggerDict = {trigger.pluginProps['listOfDevices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
+            self.masterTriggerDict = {trigger.pluginProps['listOfDevices']: (trigger.pluginProps['offlineTimer'], trigger.id) for trigger in indigo.triggers.iter(filter="self.weatherSiteOffline")}
 
-                # ======================== Validate Trigger Unique ========================
-                # Limit weather location offline triggers to one per device
-                if dev_id in self.masterTriggerDict.keys() and event_id != self.masterTriggerDict[dev_id][1]:
-                    existing_trigger_id = int(self.masterTriggerDict[dev_id][1])
-                    values_dict['listOfDevices'] = ''
-                    raise EventValidationError(key=('listOfDevices', ), alert_text=u"There is an existing weather offline trigger for this location.\n\n[{0}]\n\nYou must select a location that does not have an existing trigger.".format(indigo.triggers[existing_trigger_id].name), message=u"Please select a weather device without an existing offline trigger.")
+            # ======================== Validate Trigger Unique ========================
+            # Limit weather location offline triggers to one per device
+            if dev_id in self.masterTriggerDict.keys() and event_id != self.masterTriggerDict[dev_id][1]:
+                error_msg_dict['listOfDevices'] = u"Please select a weather device without an existing offline trigger."
+                values_dict['listOfDevices'] = ''
 
-                # ============================ Validate Timer =============================
-                try:
-                    if int(values_dict['offlineTimer']) <= 0:
-                        raise EventValidationError(key=('offlineTimer', ), alert_text=u"Offline Time Error.\n\nYou must enter a valid offline time value. The value must be a positive integer that is greater than zero.", message=u"You must enter a valid time value in minutes (positive integer greater than zero).")
+            # ============================ Validate Timer =============================
+            try:
+                if int(values_dict['offlineTimer']) <= 0:
+                    error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
 
-                except ValueError:
-                    values_dict['offlineTimer'] = ''
-                    raise EventValidationError(key=('offlineTimer', ), alert_text=u"Offline Time Error.\n\nYou must enter a valid offline time value. The value must be a positive integer that is greater than zero.", message=u"You must enter a valid time value in minutes (positive integer greater than zero).")
+            except ValueError:
+                error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
+
+            if len(error_msg_dict) > 0:
+                return False, values_dict, error_msg_dict
 
             return True, values_dict
 
-        except EventValidationError as err:
-            for key in err.key:
-                error_msg_dict[key] = err.message
-            if err.alert_text:
-                error_msg_dict['showAlertText'] = err.alert_text
-            return False, values_dict, error_msg_dict
-
     # =============================================================================
     def validatePrefsConfigUi(self, values_dict):
-
-        class PluginValidationError(Exception):
-            def __init__(self, key=(), alert_text=None, message=u'Error!'):
-                self.key = key
-                self.alert_text = alert_text
-                self.message = message
 
         api_key_config      = values_dict['apiKey']
         call_counter_config = values_dict['callCounter']
         error_msg_dict      = indigo.Dict()
 
         # Test api_keyconfig setting.
-        try:
-            if len(api_key_config) == 0:
-                raise PluginValidationError(key=('apiKey',), alert_text=u"The API key that you have entered is invalid.\n\nReason: You have not entered a key value. Valid API keys contain alpha-numeric characters only (no spaces.)", message=u"The plugin requires an API key to function. See help for details.")
+        if len(api_key_config) == 0:
+            error_msg_dict['apiKey'] = u"The plugin requires an API key to function. See help for details."
 
-            elif " " in api_key_config:
-                raise PluginValidationError(key=('apiKey',), alert_text=u"The API key that you have entered is invalid.\n\nReason: The key you entered contains a space. Valid API keys contain alpha-numeric characters only.", message=u"The API key can't contain a space.")
+        elif " " in api_key_config:
+            error_msg_dict['apiKey'] = u"The API key can't contain a space."
 
-            elif not int(call_counter_config):
-                raise PluginValidationError(key=('callCounter',), alert_text=u"The call counter that you have entered is invalid.\n\nReason: Call counters can only contain integers.", message=u"The call counter can only contain integers.")
+        elif not int(call_counter_config):
+            error_msg_dict['callCounter'] = u"The call counter can only contain integers."
 
-            elif call_counter_config < 0:
-                raise PluginValidationError(key=('callCounter',), alert_text=u"The call counter that you have entered is invalid.\n\nReason: Call counters must be positive integers.", message=u"The call counter value must be a positive integer.")
+        elif call_counter_config < 0:
+            error_msg_dict['callCounter'] = u"The call counter value must be a positive integer."
 
-            return True, values_dict
-
-        except PluginValidationError as err:
-            for key in err.key:
-                error_msg_dict[key] = err.message
-            if err.alert_text:
-                error_msg_dict['showAlertText'] = err.alert_text
+        if len(error_msg_dict) > 0:
             return False, values_dict, error_msg_dict
+
+        return True, values_dict
 
     # =============================================================================
     # ============================== Plugin Methods ===============================
