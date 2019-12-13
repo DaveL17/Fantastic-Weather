@@ -414,6 +414,7 @@ class Plugin(indigo.PluginBase):
                 error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
 
             if len(error_msg_dict) > 0:
+                error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need to be corrected. Fields requiring attention will be highlighted."
                 return False, values_dict, error_msg_dict
 
             return True, values_dict
@@ -439,6 +440,7 @@ class Plugin(indigo.PluginBase):
             error_msg_dict['callCounter'] = u"The call counter value must be a positive integer."
 
         if len(error_msg_dict) > 0:
+            error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need to be corrected. Fields requiring attention will be highlighted."
             return False, values_dict, error_msg_dict
 
         return True, values_dict
