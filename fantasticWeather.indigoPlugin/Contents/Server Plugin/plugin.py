@@ -43,7 +43,13 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO: None.
+# TODO: Add a text-based state to the Astronomy devide for moon phase.
+#  The fractional part of the lunation number during the given day: a value of 0
+#  corresponds to a new moon, 0.25 to a first quarter moon, 0.5 to a full moon,
+#  and 0.75 to a last quarter moon. (The ranges in between these represent
+#  waxing crescent, waxing gibbous, waning gibbous, and waning crescent moons,
+#  respectively.)
+# TODO: Add a moon phase icon value (factor of 100 for control page images.)
 
 # ================================== IMPORTS ==================================
 
@@ -78,7 +84,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.5.01"
+__version__   = "0.5.02"
 
 # =============================================================================
 
@@ -367,6 +373,8 @@ class Plugin(indigo.PluginBase):
 
         error_msg_dict = indigo.Dict()
 
+        # We run the same validations for multiple device types. So we use a values_dict
+        # value to determine whether to run these tests.
         if values_dict['isWeatherDevice']:
 
             # ================================= Latitude ==================================
@@ -386,7 +394,7 @@ class Plugin(indigo.PluginBase):
             if len(error_msg_dict) > 0:
                 return False, values_dict, error_msg_dict
 
-            return True, values_dict
+        return True, values_dict
 
     # =============================================================================
     def validateEventConfigUi(self, values_dict, type_id, event_id):
@@ -1104,7 +1112,7 @@ class Plugin(indigo.PluginBase):
             epoch      = self.nested_lookup(weather_data, keys=('currently', 'time'))
             sun_rise   = self.nested_lookup(astronomy_data, keys=('sunriseTime',))
             sun_set    = self.nested_lookup(astronomy_data, keys=('sunsetTime',))
-            moon_phase = self.nested_lookup(astronomy_data, keys=('moonPhase',))
+            moon_phase = float(self.nested_lookup(astronomy_data, keys=('moonPhase',)))
 
             # ============================= Observation Epoch =============================
             current_observation_epoch = int(epoch)
@@ -1145,9 +1153,45 @@ class Plugin(indigo.PluginBase):
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
 
             # ================================ Moon Phase =================================
-            moon_phase, moon_phase_ui = self.fix_corrupted_data(val=float(moon_phase * 100))
+            # Float
+            moon_phase_new, moon_phase_ui = self.fix_corrupted_data(val=moon_phase * 100)
             moon_phase_ui = self.ui_format_percentage(dev=dev, val=moon_phase_ui)
-            astronomy_states_list.append({'key': 'moonPhase', 'value': moon_phase, 'uiValue': moon_phase_ui})
+            astronomy_states_list.append({'key': 'moonPhase', 'value': moon_phase_new, 'uiValue': moon_phase_ui})
+
+            # ============================== Moon Phase Icon ==============================
+            # Integer
+            moon_phase_icon, moon_phase_icon_ui = self.fix_corrupted_data(val=int(moon_phase_new))
+            moon_phase_icon_ui = self.ui_format_percentage(dev=dev, val=moon_phase_icon_ui)
+            astronomy_states_list.append({'key': 'moonPhaseIcon', 'value': moon_phase_icon, 'uiValue': moon_phase_icon_ui})
+
+            # ============================== Moon Phase Name ==============================
+            # String
+            #
+            # moonPhase optional, only on daily
+            # The fractional part of the lunation number during the given day: a value of
+            # 0 corresponds to a new moon, 0.25 to a first quarter moon, 0.5 to a full
+            # moon, and 0.75 to a last quarter moon. (The ranges in between these represent
+            # waxing crescent, waxing gibbous, waning gibbous, and waning crescent moons,
+            # respectively.)  Sources: https://darksky.net/dev/docs and
+            # https://en.wikipedia.org/wiki/Lunar_phase#Phases_of_the_Moon
+
+            criteria = {
+                'New': moon_phase == 0,
+                'Waxing Crescent': 0 < moon_phase < .25,
+                'First Quarter': moon_phase == .25,
+                'Waxing Gibbous': .25 < moon_phase < .50,
+                'Full': moon_phase == .50,
+                'Waning Gibbous': .50 < moon_phase < .75,
+                'Last Quarter': moon_phase == .75,
+                'Waning Crescent': .75 < moon_phase,
+            }
+
+            for k, v in criteria.items():
+                if v:
+                    astronomy_states_list.append({'key': 'moonPhaseName', 'value': k})
+                    break
+                else:
+                    astronomy_states_list.append({'key': 'moonPhaseName', 'value': u'Unknown'})
 
             new_props = dev.pluginProps
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))

@@ -64,6 +64,18 @@
                 <ControlPageLabel>Moon Phase</ControlPageLabel>
             </State>
 
+            <State id="moonPhaseIcon">
+                <ValueType>Integer</ValueType>
+                <TriggerLabel>Moon Phase Icon</TriggerLabel>
+                <ControlPageLabel>Moon Phase Icon</ControlPageLabel>
+            </State>
+
+            <State id="moonPhaseName">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Moon Phase Name</TriggerLabel>
+                <ControlPageLabel>Moon Phase Name</ControlPageLabel>
+            </State>
+
             <State id="sunriseTime">
                 <ValueType>String</ValueType>
                 <TriggerLabel>Sunrise Time</TriggerLabel>
