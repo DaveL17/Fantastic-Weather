@@ -43,13 +43,7 @@ https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 
 # =================================== TO DO ===================================
 
-# TODO: Add a text-based state to the Astronomy devide for moon phase.
-#  The fractional part of the lunation number during the given day: a value of 0
-#  corresponds to a new moon, 0.25 to a first quarter moon, 0.5 to a full moon,
-#  and 0.75 to a last quarter moon. (The ranges in between these represent
-#  waxing crescent, waxing gibbous, waning gibbous, and waning crescent moons,
-#  respectively.)
-# TODO: Add a moon phase icon value (factor of 100 for control page images.)
+# TODO: Nothing
 
 # ================================== IMPORTS ==================================
 
@@ -84,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.5.02"
+__version__   = "0.5.03"
 
 # =============================================================================
 
@@ -1749,7 +1743,7 @@ class Plugin(indigo.PluginBase):
             weather_states_list.append({'key': 'windSpeedIcon', 'value': round(current_wind_speed)})
 
             # ================================ Wind String ================================
-            weather_states_list.append({'key': 'windString', 'value': u"{0} at {1}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
+            weather_states_list.append({'key': 'windString', 'value': u"{0:.0f} at {1}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
 
             new_props = dev.pluginProps
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
