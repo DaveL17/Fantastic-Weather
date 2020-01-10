@@ -1743,7 +1743,7 @@ class Plugin(indigo.PluginBase):
             weather_states_list.append({'key': 'windSpeedIcon', 'value': round(current_wind_speed)})
 
             # ================================ Wind String ================================
-            weather_states_list.append({'key': 'windString', 'value': u"{0:.0f} at {1}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
+            weather_states_list.append({'key': 'windString', 'value': u"{0} at {1:.0f}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
 
             new_props = dev.pluginProps
             new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
