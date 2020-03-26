@@ -78,9 +78,11 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.5.03"
+__version__   = "0.5.04"
 
 # =============================================================================
+min_indigo_version = 7
+min_os_version     = 13
 
 kDefaultPluginPrefs = {
     u'alertLogging': False,           # Write severe weather alerts to the log?
@@ -151,7 +153,6 @@ class Plugin(indigo.PluginBase):
             raise Exception(u"The plugin requires Indigo 7 or later.")
 
         # ========================== Initialize DLFramework ===========================
-
         self.Fogbert   = Dave.Fogbert(self)
         self.Formatter = Dave.Formatter(self)
 
@@ -167,7 +168,6 @@ class Plugin(indigo.PluginBase):
         indigo.server.log(u"{0:*^130}".format(""))
 
         # =============================== Debug Logging ===============================
-
         # Current debug level.
         debug_level = self.pluginPrefs.get('showDebugLevel', '30')
 
@@ -342,7 +342,10 @@ class Plugin(indigo.PluginBase):
     def startup(self):
 
         # =========================== Audit Indigo Version ============================
-        self.Fogbert.audit_server_version(min_ver=7)
+        self.Fogbert.audit_server_version(min_ver=min_indigo_version)
+
+        # =========================== Audit OS Version ============================
+        self.Fogbert.audit_os_version(min_ver=min_os_version)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):
@@ -1354,7 +1357,14 @@ class Plugin(indigo.PluginBase):
 
                     # =============================== Wind Bearing ================================
                     wind_bearing, wind_bearing_ui = self.fix_corrupted_data(val=wind_bearing)
-                    hourly_forecast_states_list.append({'key': u"h{0}_windBearing".format(fore_counter_text), 'value': wind_bearing, 'uiValue': int(float(wind_bearing_ui))})
+                    # We don't need fractional wind speed values for the UI, so we try to fix that
+                    # here.  However, sometimes it comes through as "--" so we need to account for
+                    # that, too.
+                    try:
+                        int(float(wind_bearing_ui))
+                    except ValueError:
+                        pass
+                    hourly_forecast_states_list.append({'key': u"h{0}_windBearing".format(fore_counter_text), 'value': wind_bearing, 'uiValue': wind_bearing_ui})
 
                     # ============================= Wind Bearing Name =============================
                     wind_bearing_name = self.ui_format_wind_name(val=wind_bearing)

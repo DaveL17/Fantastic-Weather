@@ -2,6 +2,9 @@ Fantastic Weather Plugin - Developed by: DaveL17
 
 Note: Fantastic Weather requires Indigo 7
 
+v0.5.04 (beta 13)
+- Adds check to ensure minimum OS requirement is met.
+
 v0.5.03 (beta 13)
 - Changes wind speed value in the wind string state to an integer.
 

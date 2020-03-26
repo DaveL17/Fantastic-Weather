@@ -8,19 +8,22 @@ Indigo plugins with the com.fogbert.indigoPlugin.xxxx bundle identifier.
 """
 
 import ast
-import indigo
 import logging
 import operator as op
 import os
 import platform
 import sys
+try:
+    import indigo
+except ImportError:
+    pass
 
 __author__ = "DaveL17"
 __build__ = "Unused"
-__copyright__ = "Copyright 2017-2019 DaveL17"
+__copyright__ = "Copyright 2017-2020 DaveL17"
 __license__ = "MIT"
 __title__ = "DLFramework"
-__version__ = "0.1.02"
+__version__ = "0.1.03"
 
 
 class Fogbert(object):
@@ -176,6 +179,14 @@ class Fogbert(object):
         ver = self.plugin.versStrToTuple(indigo.server.version)
         if ver[0] < min_ver:
             self.plugin.stopPlugin(u"This plugin requires Indigo version {0} or above.".format(min_ver), isError=True)
+
+    def audit_os_version(self, min_ver):
+
+        # =========================== Audit Operating System Version ============================
+        ver = platform.mac_ver()[0].split('.')
+
+        if int(ver[1]) < min_ver:
+            self.plugin.stopPlugin(u"This plugin requires Mac OS version 10.{0} or above.".format(min_ver), isError=True)
 
 
 class Formatter(object):
