@@ -78,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "0.5.04"
+__version__   = "1.0.01"
 
 # =============================================================================
 min_indigo_version = 7
@@ -646,7 +646,9 @@ class Plugin(indigo.PluginBase):
                 email_body += u"Ozone: {0}{1}\n".format(ozone, dev.pluginProps.get('indexUnits', ''))
                 email_body += u"Pressure: {0}{1}\n".format(pressure, dev.pluginProps.get('pressureUnits', ''))
                 email_body += u"UV: {0}\n".format(uv_index, dev.pluginProps.get('pressureUnits', ''))
-                email_body += u"Visibility: {0}{1}\n\n".format(visibility, dev.pluginProps.get('distanceUnits', ''))
+
+                visibility = round(float(visibility) * 4) / 4  # Round visibility to the nearest quarter unit.
+                email_body += u"Visibility: {0:0.2f}{1}\n\n".format(visibility, dev.pluginProps.get('distanceUnits', ''))
 
                 # Long Range Forecast
                 email_body += u"Long Range Forecast:\n"

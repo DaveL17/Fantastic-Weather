@@ -1,6 +1,14 @@
 Fantastic Weather Plugin - Developed by: DaveL17
 
-Note: Fantastic Weather requires Indigo 7
+Note: Fantastic Weather requires Indigo 7.x
+
+Reminder: The Dark Sky API service is no longer issuing new API keys and
+          existing API keys will cease working in 2021.
+
+v1.0.01
+- Takes plugin out of beta status.
+- Rounds visibility in weather forecast email to the nearest quarter unit
+  (i.e., 7.251 becomes 7.25, 7.38 becomes 7.50.)
 
 v0.5.04 (beta 13)
 - Adds check to ensure minimum OS requirement is met.
