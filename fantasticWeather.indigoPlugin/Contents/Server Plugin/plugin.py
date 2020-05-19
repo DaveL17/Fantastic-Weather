@@ -832,7 +832,7 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug(u"Connection Error: {0}".format(sub_error))
 
                     if comm_timeout < 900:
-                        self.logger.error(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
                     else:
                         self.logger.error(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
