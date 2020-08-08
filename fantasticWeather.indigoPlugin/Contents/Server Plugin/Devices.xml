@@ -82,10 +82,22 @@
                 <ControlPageLabel>Sunrise Time</ControlPageLabel>
             </State>
 
+            <State id="sunriseTimeShort">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Sunrise Time (Short)</TriggerLabel>
+                <ControlPageLabel>Sunrise Time (Short)</ControlPageLabel>
+            </State>
+
             <State id="sunsetTime">
                 <ValueType>String</ValueType>
                 <TriggerLabel>Sunset Time</TriggerLabel>
                 <ControlPageLabel>Sunset Time</ControlPageLabel>
+            </State>
+
+            <State id="sunsetTimeShort">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Sunset Time (Short)</TriggerLabel>
+                <ControlPageLabel>Sunset Time (Short)</ControlPageLabel>
             </State>
 
             <State id="currentObservation">

@@ -8,6 +8,7 @@ Reminder: The Dark Sky API service is no longer issuing new API keys and
 v1.0.02
 - Changes level of "unable to reach" messages from errors to warnings until 15
   minute interval reached.
+- Adds states to display shortened Sunrise (sunRiseShort) and Sunset (sunSetShort).
 
 v1.0.01
 - Takes plugin out of beta status.

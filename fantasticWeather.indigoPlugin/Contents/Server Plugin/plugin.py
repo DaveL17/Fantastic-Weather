@@ -78,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.01"
+__version__   = "1.0.02"
 
 # =============================================================================
 min_indigo_version = 7
@@ -1132,10 +1132,12 @@ class Plugin(indigo.PluginBase):
                 sunrise_local = time.localtime(int(sun_rise))
                 sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_local)
                 astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
+                astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
                 sunset_local  = time.localtime(int(sun_set))
                 sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_local)
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
+                astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
             # Location Time (location timezone)
             elif preferred_time == "time_there":
@@ -1147,9 +1149,11 @@ class Plugin(indigo.PluginBase):
 
                 sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
+                astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
                 sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
+                astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
             # ================================ Moon Phase =================================
             # Float
