@@ -5,6 +5,12 @@ Note: Fantastic Weather requires Indigo 7.x
 Reminder: The Dark Sky API service is no longer issuing new API keys and
           existing API keys will cease working in 2021.
 
+v1.0.04
+- Better integrates DLFramework.
+
+v1.0.03
+- "Unable to reach..." error changed to warning.
+
 v1.0.02
 - Changes level of "unable to reach" messages from errors to warnings until 15
   minute interval reached.

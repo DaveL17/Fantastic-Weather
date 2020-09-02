@@ -54,9 +54,9 @@ import logging
 import pytz
 import requests
 import simplejson
-import sys
 import textwrap
 import time
+import traceback
 
 # Third-party modules
 try:
@@ -78,12 +78,9 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.02"
+__version__   = "1.0.4"
 
 # =============================================================================
-min_indigo_version = 7
-min_os_version     = 13
-
 kDefaultPluginPrefs = {
     u'alertLogging': False,           # Write severe weather alerts to the log?
     u'apiKey': "apiKey",              # DS requires an api key.
@@ -146,12 +143,6 @@ class Plugin(indigo.PluginBase):
         except ValueError:
             self.next_poll = parse("1970-01-01 00:00:00")
 
-        # =============================== Version Check ===============================
-        if int(indigo.server.version[0]) >= 7:
-            pass
-        else:
-            raise Exception(u"The plugin requires Indigo 7 or later.")
-
         # ========================== Initialize DLFramework ===========================
         self.Fogbert   = Dave.Fogbert(self)
         self.Formatter = Dave.Formatter(self)
@@ -164,7 +155,8 @@ class Plugin(indigo.PluginBase):
 
         # Fantastically Useful Weather Utility Attribution and disclaimer.
         indigo.server.log(u"{0:*^130}".format(""))
-        indigo.server.log(u"{0:*^130}".format(" Powered by Dark Sky. This plugin and its author are in no way affiliated with Dark Sky. "))
+        indigo.server.log(u"{0:*^130}".format(" Powered by Dark Sky. This plugin and its author are in no way "
+                                              "affiliated with Dark Sky. "))
         indigo.server.log(u"{0:*^130}".format(""))
 
         # =============================== Debug Logging ===============================
@@ -247,7 +239,10 @@ class Plugin(indigo.PluginBase):
         # For devices that display the temperature as their UI state, try to set them
         # to a value we already have.
         try:
-            display_value = u"{0:.{1}f}{2}".format(dev.states['temperature'], int(self.pluginPrefs['itemListTempDecimal']), dev.pluginProps['temperatureUnits'])
+            display_value = u"{0:.{1}f}{2}".format(dev.states['temperature'],
+                                                   int(self.pluginPrefs['itemListTempDecimal']),
+                                                   dev.pluginProps['temperatureUnits']
+                                                   )
 
         except KeyError:
             display_value = u"Enabled"
@@ -323,8 +318,7 @@ class Plugin(indigo.PluginBase):
                 # Wait 30 seconds before trying again.
                 self.sleep(30)
 
-        except self.StopThread as error:
-            self.logger.debug(u"StopThread: (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+        except self.StopThread:
             self.logger.debug(u"Stopping Fantastically Useful Weather Utility thread.")
 
     # =============================================================================
@@ -342,10 +336,10 @@ class Plugin(indigo.PluginBase):
     def startup(self):
 
         # =========================== Audit Indigo Version ============================
-        self.Fogbert.audit_server_version(min_ver=min_indigo_version)
+        self.Fogbert.audit_server_version(min_ver=7)
 
         # =========================== Audit OS Version ============================
-        self.Fogbert.audit_os_version(min_ver=min_os_version)
+        self.Fogbert.audit_os_version(min_ver=13)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):
@@ -384,9 +378,9 @@ class Plugin(indigo.PluginBase):
             # ================================= Longitude =================================
             try:
                 if not -180 <= float(values_dict['longitude']) <= 180:
-                    error_msg_dict['latitude'] = u"The longitude value must be between -180 and 180."
+                    error_msg_dict['longitude'] = u"The longitude value must be between -180 and 180."
             except ValueError:
-                error_msg_dict['latitude'] = u"The longitude value must be between -180 and 180."
+                error_msg_dict['longitude'] = u"The longitude value must be between -180 and 180."
 
             if len(error_msg_dict) > 0:
                 return False, values_dict, error_msg_dict
@@ -413,13 +407,16 @@ class Plugin(indigo.PluginBase):
             # ============================ Validate Timer =============================
             try:
                 if int(values_dict['offlineTimer']) <= 0:
-                    error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
+                    error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive " \
+                                                     u"integer greater than zero)."
 
             except ValueError:
-                error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer greater than zero)."
+                error_msg_dict['offlineTimer'] = u"You must enter a valid time value in minutes (positive integer " \
+                                                 u"greater than zero)."
 
             if len(error_msg_dict) > 0:
-                error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need to be corrected. Fields requiring attention will be highlighted."
+                error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need " \
+                                                  u"to be corrected. Fields requiring attention will be highlighted."
                 return False, values_dict, error_msg_dict
 
             return True, values_dict
@@ -445,7 +442,8 @@ class Plugin(indigo.PluginBase):
             error_msg_dict['callCounter'] = u"The call counter value must be a positive integer."
 
         if len(error_msg_dict) > 0:
-            error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need to be corrected. Fields requiring attention will be highlighted."
+            error_msg_dict['showAlertText'] = u"Configuration Errors\n\nThere are one or more settings that need to " \
+                                              u"be corrected. Fields requiring attention will be highlighted."
             return False, values_dict, error_msg_dict
 
         return True, values_dict
@@ -483,8 +481,9 @@ class Plugin(indigo.PluginBase):
             try:
                 indigo.device.enable(dev, value=False)
 
-            except Exception as error:
-                self.logger.error(u"Exception when trying to kill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            except Exception:
+                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.logger.error(u"Exception when trying to kill all comms.")
 
     # =============================================================================
     def comms_unkill_all(self):
@@ -500,8 +499,9 @@ class Plugin(indigo.PluginBase):
             try:
                 indigo.device.enable(dev, value=True)
 
-            except Exception as error:
-                self.logger.error(u"Exception when trying to unkill all comms. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            except Exception:
+                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.logger.error(u"Exception when trying to unkill all comms.")
 
     # =============================================================================
     def dark_sky_site(self, values_dict):
@@ -548,6 +548,7 @@ class Plugin(indigo.PluginBase):
             indigo.server.log(u"Weather data written to: {0}".format(file_name))
 
         except IOError:
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
             self.logger.error(u"Unable to write to Indigo Log folder. Check folder permissions")
 
     # =============================================================================
@@ -669,12 +670,14 @@ class Plugin(indigo.PluginBase):
             else:
                 pass
 
-        except (KeyError, IndexError) as error:
+        except (KeyError, IndexError):
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.debug(u"Unable to compile forecast data for {0}.".format(dev.name))
             dev.updateStateOnServer('weatherSummaryEmailSent', value=True, uiValue=u"Err")
-            self.logger.debug(u"Unable to compile forecast data for {0}. (Line {1}) {2}".format(dev.name, sys.exc_traceback.tb_lineno, error))
 
-        except Exception as error:
-            self.logger.error(u"Unable to send forecast email message. Will keep trying. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+        except Exception:
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Unable to send forecast email message. Will keep trying.")
 
     # =============================================================================
     def fix_corrupted_data(self, val):
@@ -751,7 +754,8 @@ class Plugin(indigo.PluginBase):
 
                 except requests.exceptions.ConnectionError:
                     if not self.comm_error:
-                        self.logger.error(u"Error downloading satellite image. (No comm.)".format(sys.exc_traceback.tb_lineno))
+                        self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                        self.logger.error(u"Error downloading satellite image. (No comm.)")
                         self.comm_error = True
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -774,9 +778,10 @@ class Plugin(indigo.PluginBase):
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
                 return False
 
-        except Exception as error:
+        except Exception:
             self.comm_error = True
-            self.logger.error(u"[{0}] Error downloading satellite image. (Line {1}) {2}".format(dev.name, sys.exc_traceback.tb_lineno, error))
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"[{0}] Error downloading satellite image.".format(dev.name))
             dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -827,15 +832,14 @@ class Plugin(indigo.PluginBase):
                     break
 
                 # No connection to Internet, no response from Dark Sky. Let's keep trying.
-                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as sub_error:
-
-                    self.logger.debug(u"Connection Error: {0}".format(sub_error))
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                    self.Fogbert.pluginErrorHandler(traceback.format_exc())
 
                     if comm_timeout < 900:
                         self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
 
                     else:
-                        self.logger.error(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
+                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
 
                     time.sleep(comm_timeout)
 
@@ -860,8 +864,9 @@ class Plugin(indigo.PluginBase):
             try:
                 parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
 
-            except Exception as error:
-                self.logger.error(u"Unable to decode data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            except Exception:
+                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.logger.error(u"Unable to decode data.")
                 parsed_simplejson = {}
 
             # Add location JSON to master weather dictionary.
@@ -1081,8 +1086,9 @@ class Plugin(indigo.PluginBase):
             alerts_states_list.append({'key': 'alertCount', 'value': len(alert_array)})
             dev.updateStatesOnServer(alerts_states_list)
 
-        except Exception as error:
-            self.logger.error(u"Problem parsing weather alert data: (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+        except Exception:
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Problem parsing weather alert data.")
             alerts_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -1205,8 +1211,9 @@ class Plugin(indigo.PluginBase):
             dev.updateStatesOnServer(astronomy_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
-        except Exception as error:
-            self.logger.error(u"Problem parsing astronomy data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+        except Exception:
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Problem parsing astronomy data.")
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -1404,7 +1411,8 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception as error:
-            self.logger.error(u"Problem parsing hourly forecast data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Problem parsing hourly forecast data.")
             hourly_forecast_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStatesOnServer(hourly_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1593,7 +1601,8 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception as error:
-            self.logger.error(u"Problem parsing 10-day forecast data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Problem parsing 10-day forecast data.")
             daily_forecast_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
             dev.updateStatesOnServer(daily_forecast_states_list)
@@ -1771,7 +1780,8 @@ class Plugin(indigo.PluginBase):
             dev.updateStateOnServer('onOffState', value=True, uiValue=u"{0}{1}".format(display_value, dev.pluginProps['temperatureUnits']))
 
         except Exception as error:
-            self.logger.error(u"Problem parsing weather device data. (Line {0}) {1}".format(sys.exc_traceback.tb_lineno, error))
+            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.logger.error(u"Problem parsing weather device data.")
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -1891,8 +1901,9 @@ class Plugin(indigo.PluginBase):
                 self.next_poll = (u"{0:%Y-%m-%d %H:%M:%S}".format(now + self.download_interval))
                 self.pluginPrefs['nextPoll'] = self.next_poll
 
-            except Exception as error:
-                self.logger.error(u"Problem parsing Weather data. Dev: {0} (Line: {1} Error: {2})".format(dev.name, sys.exc_traceback.tb_lineno, error))
+            except Exception:
+                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.logger.error(u"Problem parsing Weather data. Dev: {0}".format(dev.name))
 
         self.logger.info(u"Weather data cycle complete.")
 
@@ -1944,11 +1955,13 @@ class Plugin(indigo.PluginBase):
 
                         if indigo.triggers[trigger_id].pluginTypeId == 'weatherSiteOffline':
 
-                            offline_delta = dt.timedelta(minutes=int(self.masterTriggerDict.get(unicode(dev.id), ('60', ''))[0]))
+                            offline_delta = dt.timedelta(minutes=int(self.masterTriggerDict.get(unicode(dev.id),
+                                                                                                ('60', ''))[0]))
 
                             # Convert currentObservationEpoch to a localized datetime object
                             current_observation_epoch = float(dev.states['currentObservationEpoch'])
-                            current_observation = time.strftime('%Y-%m-%d %H:%M', time.localtime(current_observation_epoch))
+                            current_observation = time.strftime('%Y-%m-%d %H:%M',
+                                                                time.localtime(current_observation_epoch))
                             current_observation = parse(current_observation)
 
                             # Time elapsed since last observation
@@ -1968,7 +1981,8 @@ class Plugin(indigo.PluginBase):
                                 dev.updateStateOnServer('onOffState', value='offline')
 
                                 if indigo.triggers[trigger_id].enabled:
-                                    self.logger.warning(u"{0} location appears to be offline for {1}".format(dev.name, diff_msg))
+                                    self.logger.warning(u"{0} location appears to be offline for {1}".format(dev.name,
+                                                                                                             diff_msg))
                                     indigo.trigger.execute(trigger_id)
 
                             # If the temperature observation is lower than -55
@@ -1977,7 +1991,8 @@ class Plugin(indigo.PluginBase):
                                 dev.updateStateOnServer('onOffState', value='offline')
 
                                 if indigo.triggers[trigger_id].enabled:
-                                    self.logger.warning(u"{0} location appears to be offline (ambient temperature lower than -55).".format(dev.name))
+                                    self.logger.warning(u"{0} location appears to be offline (ambient temperature "
+                                                        u"lower than -55).".format(dev.name))
                                     indigo.trigger.execute(trigger_id)
 
                 # ============================ Severe Weather Alert ============================
