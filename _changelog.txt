@@ -5,6 +5,12 @@ Note: Fantastic Weather requires Indigo 7.x
 Reminder: The Dark Sky API service is no longer issuing new API keys and
           existing API keys will cease working in 2021.
 
+v1.0.06
+- Code refinements.
+
+v1.0.05
+- Further integrates DLFramework.
+
 v1.0.04
 - Better integrates DLFramework.
 

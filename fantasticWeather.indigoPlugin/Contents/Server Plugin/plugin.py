@@ -6,8 +6,7 @@ Fantastically Useful Weather Utility
 plugin.py
 Author: DaveL17
 Credits:
-Update Checker by: berkinet (with additional features by Travis Cook)
-Regression Testing by: Monstergerm
+  Regression Testing by: Monstergerm
 
 The Fantastically Useful Weather Utility plugin downloads JSON data from Dark Sky and parses
 it into custom device states. Theoretically, the user can create an unlimited
@@ -78,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.4"
+__version__   = "1.0.6"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -164,7 +163,8 @@ class Plugin(indigo.PluginBase):
         debug_level = self.pluginPrefs.get('showDebugLevel', '30')
 
         # Set the format and level handlers for the logger
-        self.plugin_file_handler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d\t%(levelname)-10s\t%(name)s.%(funcName)-28s %(msg)s', datefmt='%Y-%m-%d %H:%M:%S'))
+        log_format = '%(asctime)s.%(msecs)03d\t%(levelname)-10s\t%(name)s.%(funcName)-28s %(msg)s'
+        self.plugin_file_handler.setFormatter(logging.Formatter(fmt=log_format, datefmt='%Y-%m-%d %H:%M:%S'))
         self.indigo_log_handler.setLevel(int(debug_level))
 
         # ============================= Remote Debugging ==============================
@@ -305,7 +305,7 @@ class Plugin(indigo.PluginBase):
                 # Load the download interval in case it's changed
                 refresh_time           = self.pluginPrefs.get('downloadInterval', '900')
                 self.download_interval = dt.timedelta(seconds=int(refresh_time))
-                
+
                 self.last_successful_poll = parse(self.pluginPrefs['lastSuccessfulPoll'])
                 self.next_poll            = parse(self.pluginPrefs['nextPoll'])
 
@@ -482,7 +482,7 @@ class Plugin(indigo.PluginBase):
                 indigo.device.enable(dev, value=False)
 
             except Exception:
-                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                 self.logger.error(u"Exception when trying to kill all comms.")
 
     # =============================================================================
@@ -500,7 +500,7 @@ class Plugin(indigo.PluginBase):
                 indigo.device.enable(dev, value=True)
 
             except Exception:
-                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                 self.logger.error(u"Exception when trying to unkill all comms.")
 
     # =============================================================================
@@ -537,18 +537,18 @@ class Plugin(indigo.PluginBase):
 
             with open(file_name, 'w') as logfile:
 
-                logfile.write(u"Dark Sky JSON Data\n".encode('utf-8'))
-                logfile.write(u"Written at: {0}\n".format(dt.datetime.today().strftime('%Y-%m-%d %H:%M')).encode('utf-8'))
+                logfile.write(u"Dark Sky JSON Data\n".encode(encoding='utf-8'))
+                logfile.write(u"Written at: {0}\n".format(dt.datetime.today().strftime(fmt='%Y-%m-%d %H:%M')).encode(encoding='utf-8'))
                 logfile.write(u"{0}{1}".format("=" * 72, '\n').encode('utf-8'))
 
                 for key in self.masterWeatherDict.keys():
-                    logfile.write(u"Location Specified: {0}\n".format(key).encode('utf-8'))
-                    logfile.write(u"{0}\n\n".format(self.masterWeatherDict[key]).encode('utf-8'))
+                    logfile.write(u"Location Specified: {0}\n".format(key).encode(encoding='utf-8'))
+                    logfile.write(u"{0}\n\n".format(self.masterWeatherDict[key]).encode(encoding='utf-8'))
 
             indigo.server.log(u"Weather data written to: {0}".format(file_name))
 
         except IOError:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Unable to write to Indigo Log folder. Check folder permissions")
 
     # =============================================================================
@@ -658,9 +658,13 @@ class Plugin(indigo.PluginBase):
 
                 # Footer
                 email_body += u"{0:-<38}\n".format('')
-                email_body += u"{0}".format(u'This email sent at your request on behalf of the Fantastic Weather Plugin for Indigo.\n\n*** Powered by Dark Sky ***')
+                email_body += u"{0}".format(u'This email sent at your request on behalf of the Fantastic Weather '
+                                            u'Plugin for Indigo.\n\n*** Powered by Dark Sky ***')
 
-                indigo.server.sendEmailTo(self.pluginPrefs['updaterEmail'], subject=u"Daily Weather Summary", body=email_body)
+                indigo.server.sendEmailTo(self.pluginPrefs['updaterEmail'],
+                                          subject=u"Daily Weather Summary",
+                                          body=email_body
+                                          )
                 dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
 
                 # Set email sent date
@@ -671,12 +675,12 @@ class Plugin(indigo.PluginBase):
                 pass
 
         except (KeyError, IndexError):
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.debug(u"Unable to compile forecast data for {0}.".format(dev.name))
             dev.updateStateOnServer('weatherSummaryEmailSent', value=True, uiValue=u"Err")
 
         except Exception:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Unable to send forecast email message. Will keep trying.")
 
     # =============================================================================
@@ -754,7 +758,7 @@ class Plugin(indigo.PluginBase):
 
                 except requests.exceptions.ConnectionError:
                     if not self.comm_error:
-                        self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                        self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                         self.logger.error(u"Error downloading satellite image. (No comm.)")
                         self.comm_error = True
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
@@ -773,14 +777,15 @@ class Plugin(indigo.PluginBase):
                 return
 
             else:
-                self.logger.error(u"The image destination must include one of the approved types (.gif, .jpg, .jpeg, .png)")
+                self.logger.error(u"The image destination must include one of the approved types (.gif, .jpg, .jpeg, "
+                                  u".png)")
                 dev.updateStateOnServer('onOffState', value=False, uiValue=u"Bad Type")
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
                 return False
 
         except Exception:
             self.comm_error = True
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"[{0}] Error downloading satellite image.".format(dev.name))
             dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -808,7 +813,8 @@ class Plugin(indigo.PluginBase):
 
         # Get the data and add it to the masterWeatherDict.
         if location not in self.masterWeatherDict.keys():
-            url = u'https://api.darksky.net/forecast/{0}/{1},{2}?exclude="minutely"&extend=""&units={3}&lang={4}'.format(api_key, latitude, longitude, units, language)
+            source_url = u'https://api.darksky.net/forecast/{0}/{1},{2}?exclude="minutely"&extend=""' \
+                         u'&units={3}&lang={4}'.format(api_key, latitude, longitude, units, language)
 
             # Start download timer.
 
@@ -816,24 +822,26 @@ class Plugin(indigo.PluginBase):
 
             while True:
                 try:
-                    r = requests.get(url, timeout=20)
+                    r = requests.get(url=source_url, timeout=20)
                     r.raise_for_status()
 
                     if r.status_code != 200:
                         if r.status_code == 400:
-                            self.logger.warning(u"Problem communicating with Dark Sky. This problem can usually correct itself, but reloading the plugin can often force a repair.")
+                            self.logger.warning(u"Problem communicating with Dark Sky. This problem can usually "
+                                                u"correct itself, but reloading the plugin can often force a repair.")
                             self.logger.debug(u"Bad URL - Status Code: {0}".format(r.status_code))
                             raise requests.exceptions.ConnectionError
                         else:
                             self.logger.debug(u"Status Code: {0}".format(r.status_code))
 
-                    simplejson_string = r.text  # We convert the file to a json object below, so we don't use requests' built-in decoder.
+                    # We convert the file to a json object below, so we don't use requests' built-in decoder.
+                    simplejson_string = r.text
                     self.comm_error = False
                     break
 
                 # No connection to Internet, no response from Dark Sky. Let's keep trying.
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                    self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                    self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
 
                     if comm_timeout < 900:
                         self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
@@ -865,7 +873,7 @@ class Plugin(indigo.PluginBase):
                 parsed_simplejson = simplejson.loads(simplejson_string, encoding="utf-8")
 
             except Exception:
-                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                 self.logger.error(u"Unable to decode data.")
                 parsed_simplejson = {}
 
@@ -901,7 +909,8 @@ class Plugin(indigo.PluginBase):
         :param int trigger_id:
         """
 
-        return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
+        return self.Fogbert.deviceList(dev_filter='self')
+        # return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self')]
 
     # =============================================================================
     def list_of_weather_devices(self, filter, values_dict, target_id, trigger_id):
@@ -920,7 +929,7 @@ class Plugin(indigo.PluginBase):
         :param int trigger_id:
         """
 
-        return [(dev.id, dev.name) for dev in indigo.devices.itervalues(filter='self.Weather')]
+        return self.Fogbert.deviceList(dev_filter='self.Weather')
 
     # =============================================================================
     def nested_lookup(self, obj, keys, default=u"Not available"):
@@ -983,7 +992,7 @@ class Plugin(indigo.PluginBase):
 
             location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
-            alerts_data  = self.nested_lookup(weather_data, keys=('alerts',))
+            alerts_data  = self.nested_lookup(obj=weather_data, keys=('alerts',))
             preferred_time = dev.pluginProps.get('time_zone', 'time_here')
             timezone = pytz.timezone(weather_data['timezone'])
 
@@ -1040,41 +1049,64 @@ class Plugin(indigo.PluginBase):
                         if preferred_time == "time_here":
 
                             alert_effective_time = time.localtime(int(alert_array[alert][4]))
-                            alert_time    = time.strftime('%Y-%m-%d %H:%M', alert_effective_time)
-                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter), 'value': u"{0}".format(alert_time)})
+                            alert_time    = time.strftime(fmt='%Y-%m-%d %H:%M', t=alert_effective_time)
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter),
+                                                       'value': u"{0}".format(alert_time)})
 
                             alert_expires_time = time.localtime(int(alert_array[alert][1]))
-                            alert_expires = time.strftime('%Y-%m-%d %H:%M', alert_expires_time)
-                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter), 'value': u"{0}".format(alert_expires)})
+                            alert_expires = time.strftime(fmt='%Y-%m-%d %H:%M', t=alert_expires_time)
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter),
+                                                       'value': u"{0}".format(alert_expires)})
 
                         # Location Time (location timezone)
                         elif preferred_time == "time_there":
 
                             alert_effective_time = dt.datetime.fromtimestamp(int(alert_array[alert][4]), tz=pytz.utc)
                             alert_effective_time = timezone.normalize(alert_effective_time)
-                            alert_time = time.strftime("{0} {1}".format(self.date_format, self.time_format), alert_effective_time.timetuple())
-                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter), 'value': u"{0}".format(alert_time)})
+                            alert_time = time.strftime("{0} {1}".format(self.date_format,
+                                                                        self.time_format
+                                                                        ),
+                                                       alert_effective_time.timetuple()
+                                                       )
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter),
+                                                       'value': u"{0}".format(alert_time)})
 
                             alert_expires_time = dt.datetime.fromtimestamp(int(alert_array[alert][1]), tz=pytz.utc)
                             alert_expires_time = timezone.normalize(alert_expires_time)
-                            alert_expires = time.strftime("{0} {1}".format(self.date_format, self.time_format), alert_expires_time.timetuple())
-                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter), 'value': u"{0}".format(alert_expires)})
+                            alert_expires = time.strftime("{0} {1}".format(self.date_format,
+                                                                           self.time_format
+                                                                           ),
+                                                          alert_expires_time.timetuple()
+                                                          )
+                            alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter),
+                                                       'value': u"{0}".format(alert_expires)})
 
                         # ================================ Alert Info =================================
 
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertDescription', alert_counter), 'value': u"{0}".format(alert_array[alert][0])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertRegions', alert_counter), 'value': u"{0}".format(alert_array[alert][2])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertSeverity', alert_counter), 'value': u"{0}".format(alert_array[alert][3])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertTitle', alert_counter), 'value': u"{0}".format(alert_array[alert][5])})
-                        alerts_states_list.append({'key': u"{0}{1}".format('alertUri', alert_counter), 'value': u"{0}".format(alert_array[alert][6])})
+                        alerts_states_list.append({'key': u"{0}{1}".format('alertDescription', alert_counter),
+                                                   'value': u"{0}".format(alert_array[alert][0])}
+                                                  )
+                        alerts_states_list.append({'key': u"{0}{1}".format('alertRegions', alert_counter),
+                                                   'value': u"{0}".format(alert_array[alert][2])}
+                                                  )
+                        alerts_states_list.append({'key': u"{0}{1}".format('alertSeverity', alert_counter),
+                                                   'value': u"{0}".format(alert_array[alert][3])}
+                                                  )
+                        alerts_states_list.append({'key': u"{0}{1}".format('alertTitle', alert_counter),
+                                                   'value': u"{0}".format(alert_array[alert][5])}
+                                                  )
+                        alerts_states_list.append({'key': u"{0}{1}".format('alertUri', alert_counter),
+                                                   'value': u"{0}".format(alert_array[alert][6])}
+                                                  )
                         alert_counter += 1
 
                     # Write alert to the log?
                     # Sample:
-                    # Patchy freezing drizzle is expected this morning, possibly mixed with light snow showers or flurries. With temperatures
-                    # in the lower 30s, any freezing drizzle could cause patchy icy conditions on untreated roadways. Motorists are advised to
-                    # check for the latest forecasts and check road conditions before driving. Temperatures will rise above freezing in many
-                    # areas by midday.
+                    # Patchy freezing drizzle is expected this morning, possibly mixed with light snow showers or
+                    # flurries. With temperatures in the lower 30s, any freezing drizzle could cause patchy icy
+                    # conditions on untreated roadways. Motorists are advised to check for the latest forecasts and
+                    # check road conditions before driving. Temperatures will rise above freezing in many areas by
+                    # midday.
                     if alerts_logging and not alerts_suppressed:
                         alert_text = textwrap.wrap(alert_array[alert][0], 120)
                         alert_text_wrapped = u""
@@ -1087,7 +1119,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStatesOnServer(alerts_states_list)
 
         except Exception:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Problem parsing weather alert data.")
             alerts_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1112,12 +1144,12 @@ class Plugin(indigo.PluginBase):
             weather_data   = self.masterWeatherDict[location]
             astronomy_data = weather_data['daily']['data']
             preferred_time = dev.pluginProps.get('time_zone', 'time_here')
-            timezone = pytz.timezone(weather_data['timezone'])
+            timezone = pytz.timezone(zone=weather_data['timezone'])
 
-            epoch      = self.nested_lookup(weather_data, keys=('currently', 'time'))
-            sun_rise   = self.nested_lookup(astronomy_data, keys=('sunriseTime',))
-            sun_set    = self.nested_lookup(astronomy_data, keys=('sunsetTime',))
-            moon_phase = float(self.nested_lookup(astronomy_data, keys=('moonPhase',)))
+            epoch      = self.nested_lookup(obj=weather_data, keys=('currently', 'time'))
+            sun_rise   = self.nested_lookup(obj=astronomy_data, keys=('sunriseTime',))
+            sun_set    = self.nested_lookup(obj=astronomy_data, keys=('sunsetTime',))
+            moon_phase = float(self.nested_lookup(obj=astronomy_data, keys=('moonPhase',)))
 
             # ============================= Observation Epoch =============================
             current_observation_epoch = int(epoch)
@@ -1141,7 +1173,7 @@ class Plugin(indigo.PluginBase):
                 astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
                 sunset_local  = time.localtime(int(sun_set))
-                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_local)
+                sunset_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunset_local)
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
                 astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
@@ -1150,14 +1182,14 @@ class Plugin(indigo.PluginBase):
                 sunrise_aware = dt.datetime.fromtimestamp(int(sun_rise), tz=pytz.utc)
                 sunset_aware  = dt.datetime.fromtimestamp(int(sun_set), tz=pytz.utc)
 
-                sunrise_normal = timezone.normalize(sunrise_aware)
-                sunset_normal  = timezone.normalize(sunset_aware)
+                sunrise_normal = timezone.normalize(dt=sunrise_aware)
+                sunset_normal  = timezone.normalize(dt=sunset_aware)
 
-                sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_normal.timetuple())
+                sunrise_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunrise_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
                 astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
-                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_normal.timetuple())
+                sunset_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunset_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
                 astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
@@ -1212,7 +1244,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Problem parsing astronomy data.")
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1238,7 +1270,7 @@ class Plugin(indigo.PluginBase):
             weather_data   = self.masterWeatherDict[location]
             forecast_data  = weather_data['hourly']['data']
             preferred_time = dev.pluginProps.get('time_zone', 'time_here')
-            timezone       = pytz.timezone(weather_data['timezone'])
+            timezone       = pytz.timezone(zone=weather_data['timezone'])
 
             # ============================== Hourly Summary ===============================
             hourly_forecast_states_list.append({'key': 'hourly_summary', 'value': self.masterWeatherDict[location]['hourly']['summary']})
@@ -1288,15 +1320,30 @@ class Plugin(indigo.PluginBase):
                     if preferred_time == "time_here":
                         local_time       = time.localtime(float(forecast_time))
 
-                        forecast_day_long  = time.strftime('%A', local_time)
-                        forecast_day_short = time.strftime('%a', local_time)
-                        forecast_hour      = time.strftime('%H:%M', local_time)
-                        forecast_hour_ui   = time.strftime(self.time_format, local_time)
+                        forecast_day_long  = time.strftime(format='%A', t=local_time)
+                        forecast_day_short = time.strftime(format='%a', t=local_time)
+                        forecast_hour      = time.strftime(format='%H:%M', t=local_time)
+                        forecast_hour_ui   = time.strftime(format=self.time_format, t=local_time)
 
-                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text), 'value': forecast_day_long, 'uiValue': forecast_day_long})
-                        hourly_forecast_states_list.append({'key': u"h{0}_day_short".format(fore_counter_text), 'value': forecast_day_short, 'uiValue': forecast_day_short})
-                        hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text), 'value': forecast_time})
-                        hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text), 'value': forecast_hour, 'uiValue': forecast_hour_ui})
+                        hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text),
+                                                            'value': forecast_day_long,
+                                                            'uiValue': forecast_day_long
+                                                            }
+                                                           )
+                        hourly_forecast_states_list.append({'key': u"h{0}_day_short".format(fore_counter_text),
+                                                            'value': forecast_day_short,
+                                                            'uiValue': forecast_day_short
+                                                            }
+                                                           )
+                        hourly_forecast_states_list.append({'key': u"h{0}_epoch".format(fore_counter_text),
+                                                            'value': forecast_time
+                                                            }
+                                                           )
+                        hourly_forecast_states_list.append({'key': u"h{0}_hour".format(fore_counter_text),
+                                                            'value': forecast_hour,
+                                                            'uiValue': forecast_hour_ui
+                                                            }
+                                                           )
 
                     # Location Time (location timezone)
                     elif preferred_time == "time_there":
@@ -1411,7 +1458,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception as error:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Problem parsing hourly forecast data.")
             hourly_forecast_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStatesOnServer(hourly_forecast_states_list)
@@ -1436,7 +1483,7 @@ class Plugin(indigo.PluginBase):
             location      = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data  = self.masterWeatherDict[location]
             forecast_date = self.masterWeatherDict[location]['daily']['data']
-            timezone      = pytz.timezone(weather_data['timezone'])
+            timezone      = pytz.timezone(zone=weather_data['timezone'])
             today_high    = 0
             today_low     = 0
 
@@ -1458,23 +1505,23 @@ class Plugin(indigo.PluginBase):
 
             forecast_counter = 1
             for observation in forecast_date:
-                cloud_cover        = self.nested_lookup(observation, keys=('cloudCover',))
-                forecast_time      = self.nested_lookup(observation, keys=('time',))
-                humidity           = self.nested_lookup(observation, keys=('humidity',))
-                icon               = self.nested_lookup(observation, keys=('icon',))
-                ozone              = self.nested_lookup(observation, keys=('ozone',))
-                precip_probability = self.nested_lookup(observation, keys=('precipProbability',))
-                precip_intensity   = self.nested_lookup(observation, keys=('precipIntensity',))
-                precip_type        = self.nested_lookup(observation, keys=('precipType',))
-                pressure           = self.nested_lookup(observation, keys=('pressure',))
-                summary            = self.nested_lookup(observation, keys=('summary',))
-                temperature_high   = self.nested_lookup(observation, keys=('temperatureHigh',))
-                temperature_low    = self.nested_lookup(observation, keys=('temperatureLow',))
-                uv_index           = self.nested_lookup(observation, keys=('uvIndex',))
-                visibility         = self.nested_lookup(observation, keys=('visibility',))
-                wind_bearing       = self.nested_lookup(observation, keys=('windBearing',))
-                wind_gust          = self.nested_lookup(observation, keys=('windGust',))
-                wind_speed         = self.nested_lookup(observation, keys=('windSpeed',))
+                cloud_cover        = self.nested_lookup(obj=observation, keys=('cloudCover',))
+                forecast_time      = self.nested_lookup(obj=observation, keys=('time',))
+                humidity           = self.nested_lookup(obj=observation, keys=('humidity',))
+                icon               = self.nested_lookup(obj=observation, keys=('icon',))
+                ozone              = self.nested_lookup(obj=observation, keys=('ozone',))
+                precip_probability = self.nested_lookup(obj=observation, keys=('precipProbability',))
+                precip_intensity   = self.nested_lookup(obj=observation, keys=('precipIntensity',))
+                precip_type        = self.nested_lookup(obj=observation, keys=('precipType',))
+                pressure           = self.nested_lookup(obj=observation, keys=('pressure',))
+                summary            = self.nested_lookup(obj=observation, keys=('summary',))
+                temperature_high   = self.nested_lookup(obj=observation, keys=('temperatureHigh',))
+                temperature_low    = self.nested_lookup(obj=observation, keys=('temperatureLow',))
+                uv_index           = self.nested_lookup(obj=observation, keys=('uvIndex',))
+                visibility         = self.nested_lookup(obj=observation, keys=('visibility',))
+                wind_bearing       = self.nested_lookup(obj=observation, keys=('windBearing',))
+                wind_gust          = self.nested_lookup(obj=observation, keys=('windGust',))
+                wind_speed         = self.nested_lookup(obj=observation, keys=('windSpeed',))
 
                 if forecast_counter <= 8:
 
@@ -1489,7 +1536,11 @@ class Plugin(indigo.PluginBase):
                     # ================================ Cloud Cover ================================
                     cloud_cover, cloud_cover_ui = self.fix_corrupted_data(val=cloud_cover * 100)
                     cloud_cover_ui = self.ui_format_percentage(dev=dev, val=cloud_cover_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text), 'value': cloud_cover, 'uiValue': cloud_cover_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_cloudCover".format(fore_counter_text),
+                                                       'value': cloud_cover,
+                                                       'uiValue': cloud_cover_ui
+                                                       }
+                                                      )
 
                     # =========================== Forecast Date and Day ===========================
                     # We set the daily stuff to the location timezone regardless, because the
@@ -1501,53 +1552,97 @@ class Plugin(indigo.PluginBase):
                     forecast_day_long  = timezone.normalize(aware_time).strftime("%A")
                     forecast_day_short = timezone.normalize(aware_time).strftime("%a")
 
-                    daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text), 'value': forecast_date, 'uiValue': forecast_date})
-                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text), 'value': forecast_day_long, 'uiValue': forecast_day_long})
-                    daily_forecast_states_list.append({'key': u"d{0}_day_short".format(fore_counter_text), 'value': forecast_day_short, 'uiValue': forecast_day_short})
+                    daily_forecast_states_list.append({'key': u"d{0}_date".format(fore_counter_text),
+                                                       'value': forecast_date,
+                                                       'uiValue': forecast_date
+                                                       }
+                                                      )
+                    daily_forecast_states_list.append({'key': u"d{0}_day".format(fore_counter_text),
+                                                       'value': forecast_day_long,
+                                                       'uiValue': forecast_day_long
+                                                       }
+                                                      )
+                    daily_forecast_states_list.append({'key': u"d{0}_day_short".format(fore_counter_text),
+                                                       'value': forecast_day_short,
+                                                       'uiValue': forecast_day_short
+                                                       }
+                                                      )
 
                     # ================================= Humidity ==================================
                     humidity, humidity_ui = self.fix_corrupted_data(val=humidity * 100)
                     humidity_ui = self.ui_format_percentage(dev=dev, val=humidity_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_humidity".format(fore_counter_text), 'value': humidity, 'uiValue': humidity_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_humidity".format(fore_counter_text),
+                                                       'value': humidity,
+                                                       'uiValue': humidity_ui
+                                                       }
+                                                      )
 
                     # =================================== Icon ====================================
-                    daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text), 'value': u"{0}".format(icon.replace('-', '_'))})
+                    daily_forecast_states_list.append({'key': u"d{0}_icon".format(fore_counter_text),
+                                                       'value': u"{0}".format(icon.replace('-', '_'))}
+                                                       )
 
                     # =================================== Ozone ===================================
                     ozone, ozone_ui = self.fix_corrupted_data(val=ozone)
                     ozone_ui = self.ui_format_index(dev, val=ozone_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_ozone".format(fore_counter_text), 'value': ozone, 'uiValue': ozone_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_ozone".format(fore_counter_text),
+                                                       'value': ozone,
+                                                       'uiValue': ozone_ui
+                                                       }
+                                                      )
 
                     # ============================= Precip Intensity ==============================
                     precip_intensity, precip_intensity_ui = self.fix_corrupted_data(val=precip_intensity)
                     precip_intensity_ui = self.ui_format_rain(dev=dev, val=precip_intensity_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_precipIntensity".format(fore_counter_text), 'value': precip_intensity, 'uiValue': precip_intensity_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_precipIntensity".format(fore_counter_text),
+                                                       'value': precip_intensity,
+                                                       'uiValue': precip_intensity_ui
+                                                       }
+                                                      )
 
                     # ============================ Precip Probability =============================
                     precip_probability, precip_probability_ui = self.fix_corrupted_data(val=precip_probability * 100)
                     precip_probability_ui = self.ui_format_percentage(dev=dev, val=precip_probability_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_precipChance".format(fore_counter_text), 'value': precip_probability, 'uiValue': precip_probability_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_precipChance".format(fore_counter_text),
+                                                       'value': precip_probability,
+                                                       'uiValue': precip_probability_ui
+                                                       }
+                                                      )
 
                     # ================================ Precip Total ===============================
                     precip_total = precip_intensity * 24
                     precip_total_ui = self.ui_format_rain(dev, val=precip_total)
-                    daily_forecast_states_list.append({'key': u"d{0}_precipTotal".format(fore_counter_text), 'value': precip_total, 'uiValue': precip_total_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_precipTotal".format(fore_counter_text),
+                                                       'value': precip_total,
+                                                       'uiValue': precip_total_ui
+                                                       }
+                                                      )
 
                     # ================================ Precip Type ================================
-                    daily_forecast_states_list.append({'key': u"d{0}_precipType".format(fore_counter_text), 'value': precip_type})
+                    daily_forecast_states_list.append({'key': u"d{0}_precipType".format(fore_counter_text),
+                                                       'value': precip_type})
 
                     # ================================= Pressure ==================================
                     pressure, pressure_ui = self.fix_corrupted_data(val=pressure)
                     pressure_ui = self.ui_format_pressure(dev, val=pressure_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_pressure".format(fore_counter_text), 'value': pressure, 'uiValue': pressure_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_pressure".format(fore_counter_text),
+                                                       'value': pressure,
+                                                       'uiValue': pressure_ui
+                                                       }
+                                                      )
 
                     # ================================== Summary ==================================
-                    daily_forecast_states_list.append({'key': u"d{0}_summary".format(fore_counter_text), 'value': summary})
+                    daily_forecast_states_list.append({'key': u"d{0}_summary".format(fore_counter_text),
+                                                       'value': summary})
 
                     # ============================= Temperature High ==============================
                     temperature_high, temperature_high_ui = self.fix_corrupted_data(val=temperature_high)
                     temperature_high_ui = self.ui_format_temperature(dev, val=temperature_high_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_temperatureHigh".format(fore_counter_text), 'value': temperature_high, 'uiValue': temperature_high_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_temperatureHigh".format(fore_counter_text),
+                                                       'value': temperature_high,
+                                                       'uiValue': temperature_high_ui
+                                                       }
+                                                      )
 
                     if forecast_counter == 1:
                         today_high = round(temperature_high)
@@ -1555,7 +1650,11 @@ class Plugin(indigo.PluginBase):
                     # ============================== Temperature Low ==============================
                     temperature_low, temperature_low_ui = self.fix_corrupted_data(val=temperature_low)
                     temperature_low_ui = self.ui_format_temperature(dev, val=temperature_low_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_temperatureLow".format(fore_counter_text), 'value': temperature_low, 'uiValue': temperature_low_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_temperatureLow".format(fore_counter_text),
+                                                       'value': temperature_low,
+                                                       'uiValue': temperature_low_ui
+                                                       }
+                                                      )
 
                     if forecast_counter == 1:
                         today_low = round(temperature_low)
@@ -1563,45 +1662,72 @@ class Plugin(indigo.PluginBase):
                     # ================================= UV Index ==================================
                     uv_index, uv_index_ui = self.fix_corrupted_data(val=uv_index)
                     uv_index_ui = self.ui_format_index(dev, val=uv_index_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_uvIndex".format(fore_counter_text), 'value': uv_index, 'uiValue': uv_index_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_uvIndex".format(fore_counter_text),
+                                                       'value': uv_index,
+                                                       'uiValue': uv_index_ui
+                                                       }
+                                                      )
 
                     # ================================ Visibility =================================
                     visibility, visibility_ui = self.fix_corrupted_data(val=visibility)
                     visibility_ui = self.ui_format_distance(dev, val=visibility_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_visibility".format(fore_counter_text), 'value': visibility, 'uiValue': visibility_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_visibility".format(fore_counter_text),
+                                                       'value': visibility,
+                                                       'uiValue': visibility_ui
+                                                       }
+                                                      )
 
                     # =============================== Wind Bearing ================================
                     wind_bearing, wind_bearing_ui = self.fix_corrupted_data(val=wind_bearing)
-                    daily_forecast_states_list.append({'key': u"d{0}_windBearing".format(fore_counter_text), 'value': wind_bearing, 'uiValue': int(float(wind_bearing_ui))})
+                    daily_forecast_states_list.append({'key': u"d{0}_windBearing".format(fore_counter_text),
+                                                       'value': wind_bearing,
+                                                       'uiValue': int(float(wind_bearing_ui))
+                                                       }
+                                                      )
 
                     # ============================= Wind Bearing Name =============================
                     wind_bearing_name = self.ui_format_wind_name(val=wind_bearing)
-                    daily_forecast_states_list.append({'key': u"d{0}_windBearingName".format(fore_counter_text), 'value': wind_bearing_name})
+                    daily_forecast_states_list.append({'key': u"d{0}_windBearingName".format(fore_counter_text),
+                                                       'value': wind_bearing_name}
+                                                      )
 
                     # ================================= Wind Gust =================================
                     wind_gust, wind_gust_ui = self.fix_corrupted_data(val=wind_gust)
                     wind_gust_ui = self.ui_format_wind(dev, val=wind_gust_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_windGust".format(fore_counter_text), 'value': wind_gust, 'uiValue': wind_gust_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_windGust".format(fore_counter_text),
+                                                       'value': wind_gust,
+                                                       'uiValue': wind_gust_ui
+                                                       }
+                                                      )
 
                     # ================================ Wind Speed =================================
                     wind_speed, wind_speed_ui = self.fix_corrupted_data(val=wind_speed)
                     wind_speed_ui = self.ui_format_wind(dev, val=wind_speed_ui)
-                    daily_forecast_states_list.append({'key': u"d{0}_windSpeed".format(fore_counter_text), 'value': wind_speed, 'uiValue': wind_speed_ui})
+                    daily_forecast_states_list.append({'key': u"d{0}_windSpeed".format(fore_counter_text),
+                                                       'value': wind_speed,
+                                                       'uiValue': wind_speed_ui
+                                                       }
+                                                      )
 
                     forecast_counter += 1
 
             new_props = dev.pluginProps
-            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')),
+                                                              float(dev.pluginProps.get('longitude', 'long'))
+                                                              )
             dev.replacePluginPropsOnServer(new_props)
 
-            display_value = u"{0}{2}/{1}{2}".format(int(today_high), int(today_low), dev.pluginProps['temperatureUnits'])
+            display_value = u"{0}{2}/{1}{2}".format(int(today_high),
+                                                    int(today_low),
+                                                    dev.pluginProps['temperatureUnits']
+                                                    )
             daily_forecast_states_list.append({'key': 'onOffState', 'value': True, 'uiValue': display_value})
 
             dev.updateStatesOnServer(daily_forecast_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception as error:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Problem parsing 10-day forecast data.")
             daily_forecast_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': u" "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1629,25 +1755,25 @@ class Plugin(indigo.PluginBase):
             location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             weather_data = self.masterWeatherDict[location]
 
-            apparent_temperature = self.nested_lookup(weather_data, keys=('currently', 'apparentTemperature',))
-            cloud_cover          = self.nested_lookup(weather_data, keys=('currently', 'cloudCover',))
-            dew_point            = self.nested_lookup(weather_data, keys=('currently', 'dewPoint',))
-            humidity             = self.nested_lookup(weather_data, keys=('currently', 'humidity',))
-            icon                 = self.nested_lookup(weather_data, keys=('currently', 'icon',))
-            storm_bearing        = self.nested_lookup(weather_data, keys=('currently', 'nearestStormBearing',))
-            storm_distance       = self.nested_lookup(weather_data, keys=('currently', 'nearestStormDistance',))
-            ozone                = self.nested_lookup(weather_data, keys=('currently', 'ozone',))
-            pressure             = self.nested_lookup(weather_data, keys=('currently', 'pressure',))
-            precip_intensity     = self.nested_lookup(weather_data, keys=('currently', 'precipIntensity',))
-            precip_probability   = self.nested_lookup(weather_data, keys=('currently', 'precipProbability',))
-            summary              = self.nested_lookup(weather_data, keys=('currently', 'summary',))
-            temperature          = self.nested_lookup(weather_data, keys=('currently', 'temperature',))
-            epoch                = self.nested_lookup(weather_data, keys=('currently', 'time'))
-            uv                   = self.nested_lookup(weather_data, keys=('currently', 'uvIndex',))
-            visibility           = self.nested_lookup(weather_data, keys=('currently', 'visibility',))
-            wind_bearing         = self.nested_lookup(weather_data, keys=('currently', 'windBearing',))
-            wind_gust            = self.nested_lookup(weather_data, keys=('currently', 'windGust',))
-            wind_speed           = self.nested_lookup(weather_data, keys=('currently', 'windSpeed',))
+            apparent_temperature = self.nested_lookup(obj=weather_data, keys=('currently', 'apparentTemperature',))
+            cloud_cover          = self.nested_lookup(obj=weather_data, keys=('currently', 'cloudCover',))
+            dew_point            = self.nested_lookup(obj=weather_data, keys=('currently', 'dewPoint',))
+            humidity             = self.nested_lookup(obj=weather_data, keys=('currently', 'humidity',))
+            icon                 = self.nested_lookup(obj=weather_data, keys=('currently', 'icon',))
+            storm_bearing        = self.nested_lookup(obj=weather_data, keys=('currently', 'nearestStormBearing',))
+            storm_distance       = self.nested_lookup(obj=weather_data, keys=('currently', 'nearestStormDistance',))
+            ozone                = self.nested_lookup(obj=weather_data, keys=('currently', 'ozone',))
+            pressure             = self.nested_lookup(obj=weather_data, keys=('currently', 'pressure',))
+            precip_intensity     = self.nested_lookup(obj=weather_data, keys=('currently', 'precipIntensity',))
+            precip_probability   = self.nested_lookup(obj=weather_data, keys=('currently', 'precipProbability',))
+            summary              = self.nested_lookup(obj=weather_data, keys=('currently', 'summary',))
+            temperature          = self.nested_lookup(obj=weather_data, keys=('currently', 'temperature',))
+            epoch                = self.nested_lookup(obj=weather_data, keys=('currently', 'time'))
+            uv                   = self.nested_lookup(obj=weather_data, keys=('currently', 'uvIndex',))
+            visibility           = self.nested_lookup(obj=weather_data, keys=('currently', 'visibility',))
+            wind_bearing         = self.nested_lookup(obj=weather_data, keys=('currently', 'windBearing',))
+            wind_gust            = self.nested_lookup(obj=weather_data, keys=('currently', 'windGust',))
+            wind_speed           = self.nested_lookup(obj=weather_data, keys=('currently', 'windSpeed',))
 
             # ================================ Time Epoch =================================
             # (Int) Epoch time of the data.
@@ -1665,7 +1791,11 @@ class Plugin(indigo.PluginBase):
             # ============================= Apparent Temperature ==========================
             apparent_temperature, apparent_temperature_ui = self.fix_corrupted_data(val=apparent_temperature)
             apparent_temperature_ui = self.ui_format_temperature(dev, val=apparent_temperature_ui)
-            weather_states_list.append({'key': 'apparentTemperature', 'value': apparent_temperature, 'uiValue': apparent_temperature_ui})
+            weather_states_list.append({'key': 'apparentTemperature',
+                                        'value': apparent_temperature,
+                                        'uiValue': apparent_temperature_ui
+                                        }
+                                       )
             weather_states_list.append({'key': 'apparentTemperatureIcon', 'value': round(apparent_temperature)})
 
             # ================================ Cloud Cover ================================
@@ -1692,13 +1822,20 @@ class Plugin(indigo.PluginBase):
             # =========================== Nearest Storm Bearing ===========================
             storm_bearing, storm_bearing_ui = self.fix_corrupted_data(val=storm_bearing)
             storm_bearing_ui = self.ui_format_index(dev, val=storm_bearing_ui)
-            weather_states_list.append({'key': 'nearestStormBearing', 'value': storm_bearing, 'uiValue': storm_bearing_ui})
+            weather_states_list.append({'key': 'nearestStormBearing',
+                                        'value': storm_bearing,
+                                        'uiValue': storm_bearing_ui
+                                        }
+                                       )
             weather_states_list.append({'key': 'nearestStormBearingIcon', 'value': storm_bearing})
 
             # ========================== Nearest Storm Distance ===========================
             storm_distance, storm_distance_ui = self.fix_corrupted_data(val=storm_distance)
             storm_distance_ui = self.ui_format_distance(dev, val=storm_distance_ui)
-            weather_states_list.append({'key': 'nearestStormDistance', 'value': storm_distance, 'uiValue': storm_distance_ui})
+            weather_states_list.append({'key': 'nearestStormDistance',
+                                        'value': storm_distance,
+                                        'uiValue': storm_distance_ui}
+                                       )
             weather_states_list.append({'key': 'nearestStormDistanceIcon', 'value': round(storm_distance)})
 
             # =================================== Ozone ===================================
@@ -1716,13 +1853,21 @@ class Plugin(indigo.PluginBase):
             # ============================= Precip Intensity ==============================
             precip_intensity, precip_intensity_ui = self.fix_corrupted_data(val=precip_intensity)
             precip_intensity_ui = self.ui_format_rain(dev=dev, val=precip_intensity_ui)
-            weather_states_list.append({'key': 'precipIntensity', 'value': precip_intensity, 'uiValue': precip_intensity_ui})
+            weather_states_list.append({'key': 'precipIntensity',
+                                        'value': precip_intensity,
+                                        'uiValue': precip_intensity_ui
+                                        }
+                                       )
             weather_states_list.append({'key': 'precipIntensityIcon', 'value': round(precip_intensity)})
 
             # ============================ Precip Probability =============================
             precip_probability, precip_probability_ui = self.fix_corrupted_data(val=float(precip_probability) * 100)
             precip_probability_ui = self.ui_format_percentage(dev=dev, val=precip_probability_ui)
-            weather_states_list.append({'key': 'precipProbability', 'value': precip_probability, 'uiValue': precip_probability_ui})
+            weather_states_list.append({'key': 'precipProbability',
+                                        'value': precip_probability,
+                                        'uiValue': precip_probability_ui
+                                        }
+                                       )
             weather_states_list.append({'key': 'precipProbabilityIcon', 'value': round(precip_probability)})
 
             # ================================== Summary ==================================
@@ -1748,7 +1893,11 @@ class Plugin(indigo.PluginBase):
 
             # =============================== Wind Bearing ================================
             current_wind_bearing, current_wind_bearing_ui = self.fix_corrupted_data(val=wind_bearing)
-            weather_states_list.append({'key': 'windBearing', 'value': current_wind_bearing, 'uiValue': int(float(current_wind_bearing_ui))})
+            weather_states_list.append({'key': 'windBearing',
+                                        'value': current_wind_bearing,
+                                        'uiValue': int(float(current_wind_bearing_ui))
+                                        }
+                                       )
             weather_states_list.append({'key': 'windBearingIcon', 'value': round(current_wind_bearing)})
 
             # ============================= Wind Bearing Name =============================
@@ -1764,23 +1913,37 @@ class Plugin(indigo.PluginBase):
             # ================================ Wind Speed =================================
             current_wind_speed, current_wind_speed_ui = self.fix_corrupted_data(val=wind_speed)
             current_wind_speed_ui = self.ui_format_wind(dev=dev, val=current_wind_speed_ui)
-            weather_states_list.append({'key': 'windSpeed', 'value': current_wind_speed, 'uiValue': current_wind_speed_ui})
+            weather_states_list.append({'key': 'windSpeed',
+                                        'value': current_wind_speed,
+                                        'uiValue': current_wind_speed_ui
+                                        }
+                                       )
             weather_states_list.append({'key': 'windSpeedIcon', 'value': round(current_wind_speed)})
 
             # ================================ Wind String ================================
-            weather_states_list.append({'key': 'windString', 'value': u"{0} at {1:.0f}{2}".format(wind_bearing_name, round(current_wind_speed), dev.pluginProps['windUnits'])})
+            weather_states_list.append({'key': 'windString',
+                                        'value': u"{0} at {1:.0f}{2}".format(wind_bearing_name,
+                                                                             round(current_wind_speed),
+                                                                             dev.pluginProps['windUnits']
+                                                                             )
+                                        }
+                                       )
 
             new_props = dev.pluginProps
-            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')), float(dev.pluginProps.get('longitude', 'long')))
+            new_props['address'] = u"{0:.5f}, {1:.5f}".format(float(dev.pluginProps.get('latitude', 'lat')),
+                                                              float(dev.pluginProps.get('longitude', 'long')))
             dev.replacePluginPropsOnServer(new_props)
 
             dev.updateStatesOnServer(weather_states_list)
             dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensorOn)
             display_value = self.ui_format_item_list_temperature(val=temperature)
-            dev.updateStateOnServer('onOffState', value=True, uiValue=u"{0}{1}".format(display_value, dev.pluginProps['temperatureUnits']))
+            dev.updateStateOnServer('onOffState',
+                                    value=True,
+                                    uiValue=u"{0}{1}".format(display_value, dev.pluginProps['temperatureUnits'])
+                                    )
 
         except Exception as error:
-            self.Fogbert.pluginErrorHandler(traceback.format_exc())
+            self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"Problem parsing weather device data.")
             dev.updateStateOnServer('onOffState', value=False, uiValue=u" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
@@ -1824,7 +1987,8 @@ class Plugin(indigo.PluginBase):
 
                 elif not dev.configured:
                     # A device has been created, but hasn't been fully configured yet.
-                    self.logger.warning(u"A device has been created, but is not fully configured. Sleeping for a minute while you finish.")
+                    self.logger.warning(u"A device has been created, but is not fully configured. Sleeping for a "
+                                        u"minute while you finish.")
 
                 elif not dev.enabled:
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"{0}".format("Disabled"))
@@ -1857,11 +2021,13 @@ class Plugin(indigo.PluginBase):
 
                             good_time = device_epoch <= weather_data_epoch
                             if not good_time:
-                                self.logger.warning(u"Latest data are older than data we already have. Skipping {0} update.".format(dev.name))
+                                self.logger.warning(u"Latest data are older than data we already have. Skipping {0} "
+                                                    u"update.".format(dev.name))
 
                         except KeyError:
                             if not self.comm_error:
-                                self.logger.warning(u"{0} cannot determine age of data. Skipping until next scheduled poll.".format(dev.name))
+                                self.logger.warning(u"{0} cannot determine age of data. Skipping until next scheduled "
+                                                    u"poll.".format(dev.name))
                             good_time = False
 
                         # If the weather dict is not empty, the data are newer than the data we already have let's
@@ -1902,7 +2068,7 @@ class Plugin(indigo.PluginBase):
                 self.pluginPrefs['nextPoll'] = self.next_poll
 
             except Exception:
-                self.Fogbert.pluginErrorHandler(traceback.format_exc())
+                self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                 self.logger.error(u"Problem parsing Weather data. Dev: {0}".format(dev.name))
 
         self.logger.info(u"Weather data cycle complete.")
@@ -1960,8 +2126,8 @@ class Plugin(indigo.PluginBase):
 
                             # Convert currentObservationEpoch to a localized datetime object
                             current_observation_epoch = float(dev.states['currentObservationEpoch'])
-                            current_observation = time.strftime('%Y-%m-%d %H:%M',
-                                                                time.localtime(current_observation_epoch))
+                            current_observation = time.strftime(format='%Y-%m-%d %H:%M',
+                                                                t=time.localtime(current_observation_epoch))
                             current_observation = parse(current_observation)
 
                             # Time elapsed since last observation
