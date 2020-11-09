@@ -77,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.6"
+__version__   = "1.0.7"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -1049,12 +1049,12 @@ class Plugin(indigo.PluginBase):
                         if preferred_time == "time_here":
 
                             alert_effective_time = time.localtime(int(alert_array[alert][4]))
-                            alert_time    = time.strftime(fmt='%Y-%m-%d %H:%M', t=alert_effective_time)
+                            alert_time    = time.strftime('%Y-%m-%d %H:%M', alert_effective_time)
                             alerts_states_list.append({'key': u"{0}{1}".format('alertTime', alert_counter),
                                                        'value': u"{0}".format(alert_time)})
 
                             alert_expires_time = time.localtime(int(alert_array[alert][1]))
-                            alert_expires = time.strftime(fmt='%Y-%m-%d %H:%M', t=alert_expires_time)
+                            alert_expires = time.strftime('%Y-%m-%d %H:%M', alert_expires_time)
                             alerts_states_list.append({'key': u"{0}{1}".format('alertExpires', alert_counter),
                                                        'value': u"{0}".format(alert_expires)})
 
@@ -1173,7 +1173,7 @@ class Plugin(indigo.PluginBase):
                 astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
                 sunset_local  = time.localtime(int(sun_set))
-                sunset_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunset_local)
+                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_local)
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
                 astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
@@ -1185,11 +1185,11 @@ class Plugin(indigo.PluginBase):
                 sunrise_normal = timezone.normalize(dt=sunrise_aware)
                 sunset_normal  = timezone.normalize(dt=sunset_aware)
 
-                sunrise_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunrise_normal.timetuple())
+                sunrise_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunrise_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunriseTime', 'value': sunrise_local})
                 astronomy_states_list.append({'key': 'sunriseTimeShort', 'value': sunrise_local[11:16]})
 
-                sunset_local = time.strftime(format="{0} {1}".format(self.date_format, self.time_format), t=sunset_normal.timetuple())
+                sunset_local = time.strftime("{0} {1}".format(self.date_format, self.time_format), sunset_normal.timetuple())
                 astronomy_states_list.append({'key': 'sunsetTime', 'value': sunset_local})
                 astronomy_states_list.append({'key': 'sunsetTimeShort', 'value': sunset_local[11:16]})
 
@@ -1320,10 +1320,10 @@ class Plugin(indigo.PluginBase):
                     if preferred_time == "time_here":
                         local_time       = time.localtime(float(forecast_time))
 
-                        forecast_day_long  = time.strftime(format='%A', t=local_time)
-                        forecast_day_short = time.strftime(format='%a', t=local_time)
-                        forecast_hour      = time.strftime(format='%H:%M', t=local_time)
-                        forecast_hour_ui   = time.strftime(format=self.time_format, t=local_time)
+                        forecast_day_long  = time.strftime('%A', local_time)
+                        forecast_day_short = time.strftime('%a', local_time)
+                        forecast_hour      = time.strftime('%H:%M', local_time)
+                        forecast_hour_ui   = time.strftime(self.time_format, local_time)
 
                         hourly_forecast_states_list.append({'key': u"h{0}_day".format(fore_counter_text),
                                                             'value': forecast_day_long,
@@ -2126,8 +2126,8 @@ class Plugin(indigo.PluginBase):
 
                             # Convert currentObservationEpoch to a localized datetime object
                             current_observation_epoch = float(dev.states['currentObservationEpoch'])
-                            current_observation = time.strftime(format='%Y-%m-%d %H:%M',
-                                                                t=time.localtime(current_observation_epoch))
+                            current_observation = time.strftime('%Y-%m-%d %H:%M',
+                                                                time.localtime(current_observation_epoch))
                             current_observation = parse(current_observation)
 
                             # Time elapsed since last observation
