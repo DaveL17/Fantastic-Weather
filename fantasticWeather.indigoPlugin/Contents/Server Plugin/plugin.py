@@ -77,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.7"
+__version__   = "1.0.8"
 
 # =============================================================================
 kDefaultPluginPrefs = {

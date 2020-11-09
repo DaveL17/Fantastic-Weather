@@ -6,7 +6,7 @@ Reminder: The Dark Sky API service is no longer issuing new API keys and
           existing API keys will cease working in 2021.
 
 v1.0.08
--
+- Sync with server.
 
 v1.0.07
 - Fixes critical bug in time formatting code.
