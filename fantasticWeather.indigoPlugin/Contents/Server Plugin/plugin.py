@@ -77,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.8"
+__version__   = "1.0.09"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -783,7 +783,8 @@ class Plugin(indigo.PluginBase):
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
                 return False
 
-        except Exception:
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, requests.exceptions.Timeout,
+                Exception):
             self.comm_error = True
             self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
             self.logger.error(u"[{0}] Error downloading satellite image.".format(dev.name))
