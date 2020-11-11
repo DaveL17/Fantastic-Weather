@@ -77,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.09"
+__version__   = "1.0.10"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -758,7 +758,6 @@ class Plugin(indigo.PluginBase):
 
                 except requests.exceptions.ConnectionError:
                     if not self.comm_error:
-                        self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
                         self.logger.error(u"Error downloading satellite image. (No comm.)")
                         self.comm_error = True
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
@@ -842,7 +841,6 @@ class Plugin(indigo.PluginBase):
 
                 # No connection to Internet, no response from Dark Sky. Let's keep trying.
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                    self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
 
                     if comm_timeout < 900:
                         self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
@@ -863,6 +861,9 @@ class Plugin(indigo.PluginBase):
                     for dev in indigo.devices.itervalues("self"):
                         dev.updateStateOnServer("onOffState", value=False, uiValue=u"No Comm")
                         dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+
+                except Exception:
+                    self.Fogbert.pluginErrorHandler(sub_error=traceback.format_exc())
 
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
