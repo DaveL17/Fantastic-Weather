@@ -5,6 +5,9 @@ Note: Fantastic Weather requires Indigo 7.x
 Reminder: The Dark Sky API service is no longer issuing new API keys and
           existing API keys will cease working in 2021.
 
+v1.0.11
+- Better trapping of errors raised by r.requests.raise_for_status().
+
 v1.0.10
 - Removes traceback logging for requests timeout.
 

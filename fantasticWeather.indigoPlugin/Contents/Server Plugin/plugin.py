@@ -77,7 +77,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.10"
+__version__   = "1.0.11"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -751,6 +751,7 @@ class Plugin(indigo.PluginBase):
                 # If requests doesn't work for some reason, revert to urllib.
                 try:
                     r = requests.get(source, stream=True, timeout=20)
+                    r.raise_for_status()
 
                     with open(destination, 'wb') as img:
                         for chunk in r.iter_content(2000):
@@ -840,10 +841,11 @@ class Plugin(indigo.PluginBase):
                     break
 
                 # No connection to Internet, no response from Dark Sky. Let's keep trying.
-                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError):
 
                     if comm_timeout < 900:
-                        self.logger.warning(u"Unable to reach Dark Sky. Retrying in {0} seconds.".format(comm_timeout))
+                        self.logger.warning(u"Unable to make a successful connection to Dark Sky. Retrying in "
+                                            u"{0} seconds.".format(comm_timeout))
 
                     else:
                         self.logger.warning(u"Unable to reach Dark Sky. Retrying in 15 minutes.")
