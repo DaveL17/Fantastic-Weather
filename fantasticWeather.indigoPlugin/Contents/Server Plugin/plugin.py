@@ -68,6 +68,7 @@ except ImportError:
     pass
 
 # My modules
+from Constants import *
 import DLFramework.DLFramework as Dave
 
 # =================================== HEADER ==================================
@@ -76,8 +77,8 @@ __author__    = Dave.__author__
 __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
-__title__     = "Fantastically Useful Weather Utility"
-__version__   = "1.0.11"
+__title__     = u"Fantastically Useful Weather Utility"
+__version__   = u"1.0.13"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -339,7 +340,7 @@ class Plugin(indigo.PluginBase):
         self.Fogbert.audit_server_version(min_ver=7)
 
         # =========================== Audit OS Version ============================
-        self.Fogbert.audit_os_version(min_ver=13)
+        self.Fogbert.audit_os_version(min_ver=10.13)
 
     # =============================================================================
     def triggerStartProcessing(self, trigger):
