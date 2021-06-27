@@ -78,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = u"Fantastically Useful Weather Utility"
-__version__   = u"1.0.13"
+__version__   = u"1.0.14"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -157,6 +157,8 @@ class Plugin(indigo.PluginBase):
         indigo.server.log(u"{0:*^130}".format(""))
         indigo.server.log(u"{0:*^130}".format(" Powered by Dark Sky. This plugin and its author are in no way "
                                               "affiliated with Dark Sky. "))
+        indigo.server.log(u"{0:*^130}".format(" !!!!! WARNING. The Dark Sky API is slated to be discontinued in "
+                                              "2022. !!!!! "))
         indigo.server.log(u"{0:*^130}".format(""))
 
         # =============================== Debug Logging ===============================
