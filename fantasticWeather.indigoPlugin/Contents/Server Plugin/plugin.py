@@ -62,10 +62,10 @@ try:
     import indigo
 except ImportError:
     pass
-try:
-    import pydevd
-except ImportError:
-    pass
+# try:
+#     import pydevd
+# except ImportError:
+#     pass
 
 # My modules
 from Constants import *
@@ -78,7 +78,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = u"Fantastically Useful Weather Utility"
-__version__   = u"1.0.14"
+__version__   = u"1.0.16"
 
 # =============================================================================
 kDefaultPluginPrefs = {
@@ -541,7 +541,7 @@ class Plugin(indigo.PluginBase):
             with open(file_name, 'w') as logfile:
 
                 logfile.write(u"Dark Sky JSON Data\n".encode(encoding='utf-8'))
-                logfile.write(u"Written at: {0}\n".format(dt.datetime.today().strftime(fmt='%Y-%m-%d %H:%M')).encode(encoding='utf-8'))
+                logfile.write(u"Written at: {0}\n".format(dt.datetime.today().strftime('%Y-%m-%d %H:%M')).encode(encoding='utf-8'))
                 logfile.write(u"{0}{1}".format("=" * 72, '\n').encode('utf-8'))
 
                 for key in self.masterWeatherDict.keys():
@@ -767,6 +767,9 @@ class Plugin(indigo.PluginBase):
                     dev.updateStateOnServer('onOffState', value=False, uiValue=u"No comm")
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
                     return
+
+                except requests.exceptions.Timeout:
+                    print u"Error downloading satellite image (server timeout occurred)."
 
                 dev.updateStateOnServer('onOffState', value=True, uiValue=u" ")
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
