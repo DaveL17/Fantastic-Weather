@@ -630,6 +630,10 @@ class Plugin(indigo.PluginBase):
                 wind_name           = self.ui_format_wind_name(val=wind_bearing)
                 wind_speed          = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
 
+                # Adjust for when Dark Sky doesn't send a defined precip type.
+                if precip_type.lower() == "not available":
+                    precip_type = "Precipitation"
+
                 # Heading
                 email_body += u"{0}\n".format(dev.name)
                 email_body += u"{0:-<38}\n\n".format('')
@@ -642,7 +646,7 @@ class Plugin(indigo.PluginBase):
                 # Data
                 email_body += u"High: {0}{1}\n".format(temperature_high, dev.pluginProps.get('temperatureUnits', ''))
                 email_body += u"Low: {0}{1}\n".format(temperature_low, dev.pluginProps.get('temperatureUnits', ''))
-                email_body += u"Chance of {1}: {0}{2} \n".format(precip_probability, precip_type, dev.pluginProps.get('percentageUnits', ''))
+                email_body += u"Chance of {0}: {1}{2} \n".format(precip_type, precip_probability, dev.pluginProps.get('percentageUnits', ''))
                 email_body += u"Total Precipitation: {0:.2f}\n".format(precip_total, dev.pluginProps.get('rainAmountUnits', ''))
                 email_body += u"Winds out of the {0} at {1}{3} -- gusting to {2}{3}\n".format(wind_name, wind_speed, wind_gust, dev.pluginProps.get('windUnits', ''))
                 email_body += u"Clouds: {0}{1}\n".format(cloud_cover, dev.pluginProps.get('percentageUnits', ''))
