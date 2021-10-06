@@ -7,6 +7,7 @@ Reminder: The Dark Sky API service is no longer issuing new API keys and
 
 v1.0.18
 - Fixes bug where email forecast can send "Not available" for the precipitation type.
+- Addresses situation where Dark Sky does not provide the 'x-forecast-api-calls' payload key.
 
 v1.0.16, v1.0.17
 - Bumps version number to force releases sync.

@@ -895,7 +895,7 @@ class Plugin(indigo.PluginBase):
             self.masterWeatherDict[location] = parsed_simplejson
 
             # Increment the call counter
-            self.pluginPrefs['dailyCallCounter'] = r.headers['X-Forecast-API-Calls']
+            self.pluginPrefs['dailyCallCounter'] = r.headers.get('X-Forecast-API-Calls', -1)
 
             # We've been successful, mark device online
             self.comm_error = False
