@@ -3,7 +3,11 @@ Fantastic Weather Plugin - Developed by: DaveL17
 Note: Fantastic Weather requires Indigo 7.x
 
 Reminder: The Dark Sky API service is no longer issuing new API keys and
-          existing API keys will cease working in 2021.
+          existing API keys will cease working in 2022.
+
+v2022.0.1
+- Updates plugin for Indigo 2022.1 and Python 3.
+- Includes 'pytz' module.
 
 v1.0.18
 - Fixes bug where email forecast can send "Not available" for the precipitation type.
@@ -159,8 +163,8 @@ v0.1.07 (beta 7)
 - Adds 'WindString' state to Weather devices 'East at 4.0 mph'.
 - Adds temperatures to Indigo device state list for Daily and Hourly Weather
   devices (modified by temperature display units).
-  - Daily reports daily High/Low (i.e., 72°/32°)
-  - Hourly reports hourly High (i.e., 72°)
+  - "Daily" reports daily High/Low (i.e., 72°/32°)
+  - "Hourly" reports hourly High (i.e., 72°)
 
 (Thanks for forum user Monstergerm for the suggestions and beta testing.)
 

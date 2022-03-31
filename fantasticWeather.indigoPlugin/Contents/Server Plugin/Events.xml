@@ -19,7 +19,6 @@
                     <Label>Location:</Label>
                     <List class="self" filter="self" method="list_of_weather_devices" dynamicReload="true"/>
                 </Field>
-
             </ConfigUI>
     </Event>
 
@@ -45,5 +44,4 @@
 
             </ConfigUI>
     </Event>
-
 </Events>

@@ -236,7 +236,7 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
     </Field>
 
     <Field id="space08" type="label" fontSize="small" alignWithControl="True">
-        <Label>Controls how the plugin displays certain values. With the exception of changes to the Temperature Item List preference, changes will be applied during the next scheduled poll.</Label>
+        <Label>Controls how the plugin displays certain values. Except for changes to the Temperature Item List preference, changes will be applied during the next scheduled poll.</Label>
     </Field>
 
     <Field id="alertLoggingHeaderSpace" type="label" fontSize="mini"/>
