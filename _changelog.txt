@@ -8,6 +8,7 @@ Reminder: The Dark Sky API service is no longer issuing new API keys and
 v2022.0.1
 - Updates plugin for Indigo 2022.1 and Python 3.
 - Includes 'pytz' module.
+- Standardizes Indigo method implementation.
 
 v1.0.18
 - Fixes bug where email forecast can send "Not available" for the precipitation type.
@@ -60,14 +61,12 @@ v1.0.03
 - "Unable to reach..." error changed to warning.
 
 v1.0.02
-- Changes level of "unable to reach" messages from errors to warnings until 15
-  minute interval reached.
+- Changes level of "unable to reach" messages from errors to warnings until 15-minute interval reached.
 - Adds states to display shortened Sunrise (sunRiseShort) and Sunset (sunSetShort).
 
 v1.0.01
 - Takes plugin out of beta status.
-- Rounds visibility in weather forecast email to the nearest quarter unit
-  (i.e., 7.251 becomes 7.25, 7.38 becomes 7.50.)
+- Rounds visibility in weather forecast email to the nearest quarter unit (i.e., 7.251 becomes 7.25, 7.38 becomes 7.50.)
 
 v0.5.04 (beta 13)
 - Adds check to ensure minimum OS requirement is met.
@@ -76,8 +75,7 @@ v0.5.03 (beta 13)
 - Changes wind speed value in the wind string state to an integer.
 
 v0.5.02 (beta 13)
-- Adds custom states to support moon phase image selection and text-based moon
-  phase description.
+- Adds custom states to support moon phase image selection and text-based moon phase description.
 
 v0.5.01 (beta 13)
 - Improvements to device configuration validation.
@@ -87,8 +85,7 @@ v0.4.01 (beta 12)
 - Removes all references to legacy version checking.
 
 v0.3.04 (beta 12)
-- Adds new wind name conversion code.
-  (Credit to forum user forestfield)
+- Adds new wind name conversion code. (Credit to forum user forestfield)
 
 v0.3.03 (beta 12)
 - Adds new Short Day Name to Daily and Hourly Forecast devices.
@@ -110,8 +107,7 @@ v0.2.08 (beta 11)
 - Audits kDefaultPluginPrefs
 
 v0.2.08 (beta 11)
-- Changes "En/Disable all Fantastic Weather Devices" to "En/Disable all Plugin
-  Devices".
+- Changes "En/Disable all Fantastic Weather Devices" to "En/Disable all Plugin Devices".
 
 v0.2.07 (beta 11)
 - Changes Python lists to tuples where possible to increase performance.
@@ -124,10 +120,8 @@ v0.2.05 (beta 11)
 - Deletes deprecated code.
 
 v0.2.04 (beta 11)
-- Fixes bug in plugin initialization for new installs where a new device would
-  not initialize properly.
-- Migrates to the dateutil library from datetime for the majority of string to
-  date operations.
+- Fixes bug in plugin initialization for new installs where a new device would not initialize properly.
+- Migrates to the dateutil library from datetime for the majority of string to date operations.
 - Code refinements.
 
 v0.2.03 (beta 11)
@@ -140,38 +134,34 @@ v0.2.02 (beta 10)
 - Fixes KeyError bug when Fantastic Weather triggers are enabled.
 
 v0.2.01 (beta 10)
-- Adds configuration option for hourly device UI display value.
-  Options: Forecast high temperature [current hour | next hour].
-- Fixes a bug in getDeviceConfigUiValues:
-  AttributeError: 'float' object has no attribute 'keys'.
+- Adds configuration option for hourly device UI display value. Options: Forecast high temperature [current hour |
+  next hour].
+- Fixes a bug in getDeviceConfigUiValues: AttributeError: 'float' object has no attribute 'keys'.
 - Fixes typo in trigger names for hourly devices.
 
 v0.1.08 (beta 8)
-- Fixes bug for latitude/longitude where default values could not be
-  overridden.
+- Fixes bug for latitude/longitude where default values could not be overridden.
 - Refinements to daily forecast email:
-  - Adds long range forecast
-  - Rounds total precipitation to 2 decimal places.
-  - Refines data formatting.
-  - Fixes bug for instances where email sent flag not reset on new day.
+  . Adds long range forecast
+  . Rounds total precipitation to 2 decimal places.
+  . Refines data formatting.
+  . Fixes bug for instances where email sent flag not reset on new day.
 - Hides development fields for icon names in plugin configuration dialog.
 
 v0.1.07 (beta 7)
 - Adds forecast precipitation total state to daily weather devices
-- Adds timezone setting to astronomy, daily, hourly and weather forecast
-  devices.
+- Adds timezone setting to astronomy, daily, hourly and weather forecast devices.
 - Adds 'WindString' state to Weather devices 'East at 4.0 mph'.
-- Adds temperatures to Indigo device state list for Daily and Hourly Weather
-  devices (modified by temperature display units).
-  - "Daily" reports daily High/Low (i.e., 72°/32°)
-  - "Hourly" reports hourly High (i.e., 72°)
+- Adds temperatures to Indigo device state list for Daily and Hourly Weather devices (modified by temperature display
+  units).
+  . "Daily" reports daily High/Low (i.e., 72°/32°)
+  . "Hourly" reports hourly High (i.e., 72°)
 
 (Thanks for forum user Monstergerm for the suggestions and beta testing.)
 
 v0.1.06 (beta 6)
 - Adds additional traps when Dark Sky API is offline.
-- Fixes bug where alertCount state for weather devices was not resetting after
-  severe weather alerts lifted.
+- Fixes bug where alertCount state for weather devices was not resetting after severe weather alerts lifted.
 
 v0.1.05 (beta 5)
 - Adds 'Epoch' state to Hourly forecast device.
@@ -181,8 +171,7 @@ v0.1.04 (beta 4)
 - Adds "Hourly Summary" state to hourly weather devices.
 - Adds plugin configuration option for Long vs. Short wind names.
 - Adds lat/long to Indigo UI Address field for most plugin devices.
-- Fixes bug where global time setting didn't affect Hourly device state UI
-  [h##_hour].
+- Fixes bug where global time setting didn't affect Hourly device state UI [h##_hour].
 
 v0.1.03 (beta 3)
 - Renames menu items from "Dark Sky" to "Fantastic Weather".

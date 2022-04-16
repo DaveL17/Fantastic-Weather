@@ -50,13 +50,10 @@ from dateutil.parser import parse
 # Third-party modules
 try:
     import indigo  # noqa
+#     import pydevd
     import requests
 except ImportError:
     pass
-# try:
-#     import pydevd
-# except ImportError:
-#     pass
 
 # My modules
 import DLFramework.DLFramework as Dave  # noqa
@@ -75,17 +72,13 @@ __version__   = "2022.0.1"
 # =============================================================================
 class Plugin(indigo.PluginBase):
     """
-    Title Placeholder
-
-    Body placeholder
+    Standard Indigo Plugin Class
 
     :param indigo.PluginBase:
     """
     def __init__(self, plugin_id, plugin_display_name, plugin_version, plugin_prefs):
         """
-        Title Placeholder
-
-        Body placeholder
+        Plugin initialization
 
         :param str plugin_id:
         :param str plugin_display_name:
@@ -577,8 +570,7 @@ class Plugin(indigo.PluginBase):
                 indigo.device.enable(dev, value=False)
 
             except Exception:  # noqa
-                self.logger.debug(exc_info=True)
-                self.logger.error("Exception when trying to kill all comms.")
+                self.logger.error("Exception when trying to kill all comms.", exc_info=True)
 
     # =============================================================================
     def comms_unkill_all(self):
@@ -592,8 +584,7 @@ class Plugin(indigo.PluginBase):
                 indigo.device.enable(dev, value=True)
 
             except Exception:  # noqa
-                self.logger.debug(exc_info=True)
-                self.logger.error("Exception when trying to unkill all comms.")
+                self.logger.error("Exception when trying to unkill all comms.", exc_info=True)
 
     # =============================================================================
     def dark_sky_site(self, values_dict=None):
@@ -635,8 +626,9 @@ class Plugin(indigo.PluginBase):
             indigo.server.log(f"Weather data written to: {file_name}")
 
         except IOError:
-            self.logger.debug(exc_info=True)
-            self.logger.error("Unable to write to Indigo Log folder. Check folder permissions")
+            self.logger.error(
+                "Unable to write to Indigo Log folder. Check folder permissions", exc_info=True
+            )
 
     # =============================================================================
     def email_forecast(self, dev):
@@ -785,13 +777,13 @@ class Plugin(indigo.PluginBase):
                 dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
 
         except (KeyError, IndexError):
-            self.logger.debug(exc_info=True)
-            self.logger.debug(f"Unable to compile forecast data for {dev.name}.")
+            self.logger.debug(f"Unable to compile forecast data for {dev.name}.", exc_info=True)
             dev.updateStateOnServer('weatherSummaryEmailSent', value=True, uiValue="Err")
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Unable to send forecast email message. Will keep trying.")
+            self.logger.error(
+                "Unable to send forecast email message. Will keep trying.", exc_info=True
+            )
 
     # =============================================================================
     def fix_corrupted_data(self, val):  # noqa
@@ -902,8 +894,7 @@ class Plugin(indigo.PluginBase):
                 requests.exceptions.Timeout, Exception
         ):
             self.inst_attr['comm_error'] = True
-            self.logger.debug(exc_info=True)
-            self.logger.error(f"[{dev.name}] Error downloading satellite image.")
+            self.logger.error(f"[{dev.name}] Error downloading satellite image.", exc_info=True)
             dev.updateStateOnServer('onOffState', value=False, uiValue="No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -991,7 +982,7 @@ class Plugin(indigo.PluginBase):
                         device.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
                 except Exception:  # noqa
-                    self.logger.debug(exc_info=True)
+                    self.logger.debug("Error obtaining weather data", exc_info=True)
 
                 # Report results of download timer.
                 data_cycle_time = (dt.datetime.now() - get_data_time)
@@ -1004,8 +995,7 @@ class Plugin(indigo.PluginBase):
                 # parsed_json = json.loads(json_string, encoding="utf-8")
 
             except Exception:  # noqa
-                self.logger.debug(exc_info=True)
-                self.logger.error("Unable to decode data.")
+                self.logger.error("Unable to decode data.", exc_info=True)
                 parsed_json = {}
 
             # Add location JSON to master weather dictionary.
@@ -1263,8 +1253,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStatesOnServer(alerts_states_list)
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Problem parsing weather alert data.")
+            self.logger.error("Problem parsing weather alert data.", exc_info=True)
             alerts_states_list.append({'key': 'onOffState', 'value': False, 'uiValue': " "})
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -1427,8 +1416,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Problem parsing astronomy data.")
+            self.logger.error("Problem parsing astronomy data.", exc_info=True)
             dev.updateStateOnServer('onOffState', value=False, uiValue=" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -1764,8 +1752,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Problem parsing hourly forecast data.")
+            self.logger.error("Problem parsing hourly forecast data.", exc_info=True)
             hourly_forecast_states_list.append(
                 {'key': 'onOffState', 'value': False, 'uiValue': " "}
             )
@@ -2088,8 +2075,7 @@ class Plugin(indigo.PluginBase):
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Problem parsing 10-day forecast data.")
+            self.logger.error("Problem parsing 10-day forecast data.", exc_info=True)
             daily_forecast_states_list.append(
                 {'key': 'onOffState', 'value': False, 'uiValue': " "}
             )
@@ -2440,8 +2426,7 @@ class Plugin(indigo.PluginBase):
             )
 
         except Exception:  # noqa
-            self.logger.debug(exc_info=True)
-            self.logger.error("Problem parsing weather device data.")
+            self.logger.error("Problem parsing weather device data.", exc_info=True)
             dev.updateStateOnServer('onOffState', value=False, uiValue=" ")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
 
@@ -2568,8 +2553,7 @@ class Plugin(indigo.PluginBase):
                 self.pluginPrefs['nextPoll'] = f"{next_poll_time:%Y-%m-%d %H:%M:%S}"
 
             except Exception:  # noqa
-                self.logger.debug(exc_info=True)
-                self.logger.error(f"Problem parsing Weather data. Dev: {dev.name}")
+                self.logger.error(f"Problem parsing Weather data. Dev: {dev.name}", exc_info=True)
 
         self.logger.info("Weather data cycle complete.")
 
