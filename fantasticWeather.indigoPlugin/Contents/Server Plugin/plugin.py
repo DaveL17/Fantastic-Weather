@@ -33,7 +33,7 @@ located on GitHub: https://github.com/DaveL17/Fantastic-Weather/blob/master/LICE
 """
 # =================================== TO DO ===================================
 
-# TODO - Nothing
+# TODO - The weather data cycle seems to run even if there are no weather devices created.
 # FIXME - pytz module is required.
 
 # ================================== IMPORTS ==================================
@@ -50,8 +50,8 @@ from dateutil.parser import parse
 # Third-party modules
 try:
     import indigo  # noqa
+    import requests  # noqa
 #     import pydevd
-    import requests
 except ImportError:
     pass
 
@@ -662,8 +662,11 @@ class Plugin(indigo.PluginBase):
                 summary_sent = False
 
             # Get the desired summary email time and convert it for test.
-            summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
-            summary_time = parse(summary_time)
+            try:
+                summary_time = dev.pluginProps.get('weatherSummaryEmailTime', '01:00')
+                summary_time = parse(summary_time)
+            except:
+                raise Exception
 
             # Legacy devices had this setting improperly established as a string rather than a bool.
             if isinstance(summary_wanted, str):
@@ -1400,7 +1403,6 @@ class Plugin(indigo.PluginBase):
             for k, v in criteria.items():
                 if v:
                     astronomy_states_list.append({'key': 'moonPhaseName', 'value': k})
-                    break
                 else:
                     astronomy_states_list.append({'key': 'moonPhaseName', 'value': "Unknown"})
 
