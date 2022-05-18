@@ -7,7 +7,7 @@ Reminder: The Dark Sky API service is no longer issuing new API keys and
 
 v2022.0.1
 - Updates plugin for Indigo 2022.1 and Python 3.
-- Includes 'pytz' module.
+- Includes 'pytz' module (to support Python 3).
 - Standardizes Indigo method implementation.
 
 v1.0.18
