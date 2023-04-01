@@ -4,8 +4,8 @@
 The Fantastic Weather plugin allows users to create weather devices for Indigo by  providing a bridge between the Dark 
 Sky API service and Indigo.
 
-**Dark Sky has been acquired by Apple and is no longer allowing new API sign-ups. The Fantastic Weather plugin will 
-remain in the Plugin Store until the API is sunsetted in 2022.**
+**Dark Sky has been acquired by Apple and the API is no longer supported. Support of the Fantastic Weather Plugin is 
+also ended.**
 
 [Powered by Dark Sky](https://darksky.net/poweredby/)
 

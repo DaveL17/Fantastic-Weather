@@ -7,6 +7,7 @@ Author: DaveL17
 Credits:
   Regression Testing by: Monstergerm
 
+NOTE: THIS DOCUMENTATION IS OUT OF DATE SINCE THE CLOSURE OF DARK SKY.
 The Fantastically Useful Weather Utility plugin downloads JSON data from Dark Sky and parses it into
 custom device states. Theoretically, the user can create an unlimited number of devices representing
 individual observation locations. The Fantastically Useful Weather Utility plugin will update each
@@ -66,7 +67,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2022.0.1"
+__version__   = "2022.0.3"
 
 
 # =============================================================================
@@ -118,24 +119,24 @@ class Plugin(indigo.PluginBase):
         self.inst_attr['date_format'] = self.Formatter.dateFormat()
         self.inst_attr['time_format'] = self.Formatter.timeFormat()
 
-        # Log pluginEnvironment information when plugin is first started
-        self.Fogbert.pluginEnvironment()
-
         # Fantastically Useful Weather Utility Attribution and disclaimer.
-        indigo.server.log('*' * 130)
-        powered = (
-            " Powered by Dark Sky. This plugin and its author are in no way affiliated with Dark "
-            "Sky. "
-        )
-        indigo.server.log(f"{powered:*^130}")
-        warning = " !!!!! WARNING. The Dark Sky API is slated to be discontinued in 2022. !!!!! "
-        indigo.server.log(f"{warning:*^130}")
-        indigo.server.log("*" * 130)
+        # indigo.server.log('*' * 130)
+        # powered = (
+        #     " Powered by Dark Sky. This plugin and its author are in no way affiliated with Dark "
+        #     "Sky. "
+        # )
+        # indigo.server.log(f"{powered:*^130}")
+        # warning = (
+        #     " !!!!! WARNING. The Dark Sky API is slated to be discontinued "
+        #     "March 31, 2023. !!!!! "
+        # )
+        # indigo.server.log(f"{warning:*^130}")
+        # indigo.server.log("*" * 130)
 
         # =============================== Debug Logging ===============================
         # Set the format and level handlers for the logger
         debug_level = self.pluginPrefs.get('showDebugLevel', '30')
-        log_format = '%(asctime)s.%(msecs)03d\t%(levelname)-10s\t%(name)s.%(funcName)-28s %(msg)s'
+        log_format = '%(asctime)s.%(msecs)03d\t%(levelname)-10s\t%(name)s.%(funcName)-28s %(message)s'
         self.plugin_file_handler.setFormatter(
             logging.Formatter(fmt=log_format, datefmt='%Y-%m-%d %H:%M:%S')
         )
@@ -152,6 +153,12 @@ class Plugin(indigo.PluginBase):
         #     )
         # except:
         #     pass
+
+    def log_plugin_environment(self):
+        """
+        Log pluginEnvironment information when plugin is first started
+        """
+        self.Fogbert.pluginEnvironment()
 
     # =============================================================================
     def __del__(self):
@@ -681,37 +688,40 @@ class Plugin(indigo.PluginBase):
                 elif summary_sent.lower() == "true":
                     summary_sent = True
 
-            # If an email summary is wanted but not yet sent, and we have
-            # reached the desired time of day.
+            # If an email summary is wanted but not yet sent, and we have reached the desired time of day.
             if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour:
                 cloud_cover = int(self.nested_lookup(forecast_day, keys=('cloudCover',)) * 100)
                 forecast_time = self.nested_lookup(forecast_day, keys=('time',))
                 forecast_day_name = time.strftime('%A', time.localtime(float(forecast_time)))
                 humidity = int(self.nested_lookup(forecast_day, keys=('humidity',)) * 100)
-                long_range_forecast = (
-                    self.masterWeatherDict[location]['daily'].get('summary', 'Not available.')
-                )
-                ozone = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
+                long_range_forecast = (self.masterWeatherDict[location]['daily'].get('summary', 'Not available.'))
                 precip_intensity = self.nested_lookup(forecast_day, keys=('precipIntensity',))
-                precip_probability = (
-                    int(self.nested_lookup(forecast_day, keys=('precipProbability',)) * 100)
-                )
-                precip_total = precip_intensity * 24
+                precip_probability = (int(self.nested_lookup(forecast_day, keys=('precipProbability',)) * 100))
                 precip_type = self.nested_lookup(forecast_day, keys=('precipType',))
                 pressure = int(round(self.nested_lookup(forecast_day, keys=('pressure',))))
                 summary = self.nested_lookup(forecast_day, keys=('summary',))
-                temperature_high = (
-                    int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',))))
-                )
-                temperature_low = (
-                    int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',))))
-                )
+                temperature_high = (int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',)))))
+                temperature_low = (int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',)))))
                 uv_index = self.nested_lookup(forecast_day, keys=('uvIndex',))
                 visibility = self.nested_lookup(forecast_day, keys=('visibility',))
                 wind_bearing = self.nested_lookup(forecast_day, keys=('windBearing',))
                 wind_gust = int(round(self.nested_lookup(forecast_day, keys=('windGust',))))
                 wind_name = self.ui_format_wind_name(val=wind_bearing)
                 wind_speed  = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
+
+                # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
+                # Adjust for when ozone is "Not available."
+                try:
+                    ozone = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
+                except (ValueError, TypeError):
+                    ozone = "Not available."
+
+                # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
+                # Adjust for when ozone is "Not available."
+                try:
+                    precip_total = precip_intensity * 24
+                except (ValueError, TypeError):
+                    precip_total = "Not available."
 
                 # Adjust for when Dark Sky doesn't send a defined precip type.
                 if precip_type.lower() == "not available":
@@ -724,7 +734,7 @@ class Plugin(indigo.PluginBase):
                 # Day
                 email_body += f"{forecast_day_name} Forecast:\n"
                 email_body += "-" * 38
-                email_body += f"{summary}\n\n"
+                email_body += f"\n{summary}\n\n"
 
                 # Data
                 email_body += (
@@ -758,14 +768,14 @@ class Plugin(indigo.PluginBase):
                 # Long Range Forecast
                 email_body += "Long Range Forecast:\n"
                 email_body += "-" * 38
-                email_body += f"{long_range_forecast}\n\n"
+                email_body += f"\n{long_range_forecast}\n\n"
 
                 # Footer
-                email_body += "-" * 38
-                email_body += (
-                    "This email sent at your request on behalf of the Fantastic Weather Plugin for "
-                    "Indigo.\n\n*** Powered by Dark Sky ***"
-                )
+                # email_body += "-" * 38
+                # email_body += (
+                #     "\nThis email sent at your request on behalf of the Fantastic Weather Plugin "
+                #     "for Indigo.\n\n*** Powered by Dark Sky ***"
+                # )
 
                 indigo.server.sendEmailTo(
                     self.pluginPrefs['updaterEmail'],
@@ -922,8 +932,12 @@ class Plugin(indigo.PluginBase):
 
         # Get the data and add it to the masterWeatherDict.
         if location not in self.masterWeatherDict:
+            # source_url = (
+            #     f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}?"
+            #     f"exclude='minutely'&extend=''&units={units}&lang={language}"
+            # )
             source_url = (
-                f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}?"
+                f"https://dev.pirateweather.net/forecast/{api_key}/{latitude},{longitude}?"
                 f"exclude='minutely'&extend=''&units={units}&lang={language}"
             )
 
@@ -941,7 +955,7 @@ class Plugin(indigo.PluginBase):
                             self.logger.debug(f"Status Code: {r.status_code}")
                         else:
                             self.logger.warning(
-                                "Problem communicating with Dark Sky. This problem can usually "
+                                "Problem communicating with API. This problem can usually "
                                 "correct itself, but reloading the plugin can often force a "
                                 "repair."
                             )
@@ -954,7 +968,7 @@ class Plugin(indigo.PluginBase):
                     self.inst_attr['comm_error'] = False
                     break
 
-                # No connection to Internet, no response from Dark Sky. Let's keep trying.
+                # No connection to Internet, no response from API. Let's keep trying.
                 except (
                         requests.exceptions.ConnectionError,
                         requests.exceptions.Timeout,
@@ -963,12 +977,12 @@ class Plugin(indigo.PluginBase):
 
                     if comm_timeout < 900:
                         self.logger.warning(
-                            f"Unable to make a successful connection to Dark Sky. Retrying in "
+                            f"Unable to make a successful connection to API. Retrying in "
                             f"{comm_timeout} seconds."
                         )
 
                     else:
-                        self.logger.warning("Unable to reach Dark Sky. Retrying in 15 minutes.")
+                        self.logger.warning("Unable to reach API. Retrying in 15 minutes.")
 
                     time.sleep(comm_timeout)
 
@@ -1266,7 +1280,7 @@ class Plugin(indigo.PluginBase):
         Parse astronomy data to devices
 
         The parse_astronomy_data() method takes astronomy data and parses it to device states. See
-        Dark Sky API for value meaning.
+        API for value meaning.
 
         :param indigo.Device dev:
         """
@@ -1428,7 +1442,7 @@ class Plugin(indigo.PluginBase):
         Parse hourly forecast data to devices
 
         The parse_hourly_forecast_data() method takes hourly weather forecast data and parses it to
-        device states. See Dark Sky API for value meaning.
+        device states. See API for value meaning.
 
         :param indigo.Device dev:
         """
@@ -1767,7 +1781,7 @@ class Plugin(indigo.PluginBase):
         Parse 10-day forecast data to devices
 
         The parse_daily_forecast_data() method takes 10-day forecast data and parses it to device
-        states. See Dark Sky API for value meaning.
+        states. See API for value meaning.
 
         :param indigo.Device dev:
         """
@@ -2091,7 +2105,7 @@ class Plugin(indigo.PluginBase):
         Parse weather data to devices
 
         The parse_current_weather_data() method takes weather data and parses it to Weather Device
-        states. See Dark Sky API for value meaning.
+        states. See API for value meaning.
 
         :param indigo.Device dev:
         """
