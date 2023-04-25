@@ -67,7 +67,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2022.0.3"
+__version__   = "2022.0.4"
 
 
 # =============================================================================
@@ -594,7 +594,7 @@ class Plugin(indigo.PluginBase):
                 self.logger.error("Exception when trying to unkill all comms.", exc_info=True)
 
     # =============================================================================
-    def dark_sky_site(self, values_dict=None):
+    def pirate_weather_site(self, values_dict=None):
         """
         Launch a web browser to register for API
 
@@ -932,17 +932,12 @@ class Plugin(indigo.PluginBase):
 
         # Get the data and add it to the masterWeatherDict.
         if location not in self.masterWeatherDict:
-            # source_url = (
-            #     f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}?"
-            #     f"exclude='minutely'&extend=''&units={units}&lang={language}"
-            # )
             source_url = (
-                f"https://dev.pirateweather.net/forecast/{api_key}/{latitude},{longitude}?"
+                f"https://api.pirateweather.net/forecast/{api_key}/{latitude},{longitude}?"
                 f"exclude='minutely'&extend=''&units={units}&lang={language}"
             )
 
             # Start download timer.
-
             get_data_time = dt.datetime.now()
 
             while True:

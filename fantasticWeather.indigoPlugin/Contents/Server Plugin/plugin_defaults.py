@@ -11,7 +11,7 @@ kDefaultPluginPrefs = {
     'itemListTempDecimal': "1",      # Precision for Indigo Item List.
     'language': "en",                # Language for DS text.
     'lastSuccessfulPoll': "1970-01-01 00:00:00",    # Last successful plugin cycle
-    'launchParameters': "https://darksky.net/dev",  # url for launch API button
+    'launchParameters': "https://pirate-weather.apiable.io",  # url for launch API button
     'nextPoll': "1970-01-01 00:00:00",              # Next plugin cycle
     'noAlertLogging': False,         # Suppresses "no active alerts" logging.
     'showDebugLevel': "30",          # Logger level.

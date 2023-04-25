@@ -1,4 +1,8 @@
-#### Reminder: Support for the Dark Sky Weather API has ended.
+#### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
+
+### v2022.0.4
+- Updates `plugin_defaults.py` to remove reference to Dark Sky API lookup.
+- Updates core API URL to reflect the new endpoint `https://api.pirateweather.net`.
 
 ### v2022.0.3
 - Switches the plugin API to Pirate Weather.

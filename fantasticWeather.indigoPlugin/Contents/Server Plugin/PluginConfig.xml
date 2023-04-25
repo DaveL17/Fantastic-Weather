@@ -51,8 +51,8 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
 
     <Field id="launchDS" type="button">
         <Label/>
-        <Title>Sign Up For a Key at Dark Sky</Title>
-        <CallbackMethod>dark_sky_site</CallbackMethod>
+        <Title>Sign Up For a Key at Pirate Weather</Title>
+        <CallbackMethod>pirate_weather_site</CallbackMethod>
     </Field>
 
     <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Dark Sky API Key (required).">

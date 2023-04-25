@@ -6,6 +6,3 @@ Sky API service and Indigo.
 
 **Dark Sky has been acquired by Apple and the API is no longer supported. Support of the Fantastic Weather Plugin is 
 also ended.**
-
-[Powered by Dark Sky](https://darksky.net/poweredby/)
-
