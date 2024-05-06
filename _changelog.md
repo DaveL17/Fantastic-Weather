@@ -1,5 +1,12 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2022.0.6
+- Minor edit to Config UI dialog.
+- Fixes minor bug that appended pressure units to UV index in forecast emails.
+
+### v2022.0.5
+- Improves handling of `precip_type` when payload returns `None`.
+
 ### v2022.0.4
 - Updates `plugin_defaults.py` to remove reference to Dark Sky API lookup.
 - Updates core API URL to reflect the new endpoint `https://api.pirateweather.net`.

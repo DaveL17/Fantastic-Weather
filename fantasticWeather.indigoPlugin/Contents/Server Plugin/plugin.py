@@ -67,7 +67,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2022.0.4"
+__version__   = "2022.0.5"
 
 
 # =============================================================================
@@ -724,8 +724,8 @@ class Plugin(indigo.PluginBase):
                     precip_total = "Not available."
 
                 # Adjust for when Dark Sky doesn't send a defined precip type.
-                if precip_type.lower() == "not available":
-                    precip_type = "Precipitation"
+                if not precip_type or precip_type.lower() in ("not available", "none"):
+                    precip_type = "precipitation"
 
                 # Heading
                 email_body += f"{dev.name}\n"
@@ -744,7 +744,9 @@ class Plugin(indigo.PluginBase):
                     f"Low: {temperature_low}{dev.pluginProps.get('temperatureUnits', '')}\n"
                 )
                 percent_units = dev.pluginProps.get('percentageUnits', '')
+
                 email_body += f"Chance of {precip_type}: {precip_probability}{percent_units} \n"
+
                 email_body += (
                     f"Total Precipitation: {precip_total:.2f}"
                     f"{dev.pluginProps.get('rainAmountUnits', '')}\n"
@@ -758,7 +760,7 @@ class Plugin(indigo.PluginBase):
                 email_body += f"Humidity: {humidity}{dev.pluginProps.get('percentageUnits', '')}\n"
                 email_body += f"Ozone: {ozone}{dev.pluginProps.get('indexUnits', '')}\n"
                 email_body += f"Pressure: {pressure}{dev.pluginProps.get('pressureUnits', '')}\n"
-                email_body += f"UV: {uv_index}{dev.pluginProps.get('pressureUnits', '')}\n"
+                email_body += f"UV: {uv_index}\n"
 
                 # Round visibility to the nearest quarter unit.
                 visibility = round(float(visibility) * 4) / 4

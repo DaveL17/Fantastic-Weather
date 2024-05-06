@@ -273,7 +273,7 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
     <Field id="separator02" type="separator"/>
 
     <Field id="space05" type="label" fontSize="small" alignWithControl="True">
-        <Label>If enabled and configured, you can receive a daily email with the day's weather forecast. The feature requires a Fantastic Weather Daily Forecast device to be configured and enabled.</Label>
+        <Label>If enabled and configured, you can receive a daily email with the day's weather forecast. The feature requires a valid email address and a Fantastic Weather Daily Forecast device to be configured and enabled.</Label>
     </Field>
 
     <Field id="updaterEmailsEnabled" type="checkbox" defaultValue="false"
