@@ -52,7 +52,6 @@ from dateutil.parser import parse
 try:
     import indigo  # noqa
     import requests  # noqa
-#     import pydevd
 except ImportError:
     pass
 
@@ -67,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2022.0.6"
+__version__   = "2022.0.7"
 
 
 # =============================================================================
@@ -119,20 +118,6 @@ class Plugin(indigo.PluginBase):
         self.inst_attr['date_format'] = self.Formatter.dateFormat()
         self.inst_attr['time_format'] = self.Formatter.timeFormat()
 
-        # Fantastically Useful Weather Utility Attribution and disclaimer.
-        # indigo.server.log('*' * 130)
-        # powered = (
-        #     " Powered by Dark Sky. This plugin and its author are in no way affiliated with Dark "
-        #     "Sky. "
-        # )
-        # indigo.server.log(f"{powered:*^130}")
-        # warning = (
-        #     " !!!!! WARNING. The Dark Sky API is slated to be discontinued "
-        #     "March 31, 2023. !!!!! "
-        # )
-        # indigo.server.log(f"{warning:*^130}")
-        # indigo.server.log("*" * 130)
-
         # =============================== Debug Logging ===============================
         # Set the format and level handlers for the logger
         debug_level = self.pluginPrefs.get('showDebugLevel', '30')
@@ -141,18 +126,6 @@ class Plugin(indigo.PluginBase):
             logging.Formatter(fmt=log_format, datefmt='%Y-%m-%d %H:%M:%S')
         )
         self.indigo_log_handler.setLevel(int(debug_level))
-
-        # ============================= Remote Debugging ==============================
-        # try:
-        #     pydevd.settrace(
-        #         'localhost',
-        #         port=5678,
-        #         stdoutToServer=True,
-        #         stderrToServer=True,
-        #         suspend=False
-        #     )
-        # except:
-        #     pass
 
     def log_plugin_environment(self):
         """
@@ -2370,13 +2343,11 @@ class Plugin(indigo.PluginBase):
             )
 
             # =============================== Wind Bearing ================================
-            current_wind_bearing, current_wind_bearing_ui = (
-                self.fix_corrupted_data(val=wind_bearing)
-            )
+            current_wind_bearing, current_wind_bearing_ui = self.fix_corrupted_data(val=wind_bearing)
             weather_states_list.append(
                 {'key': 'windBearing',
                  'value': current_wind_bearing,
-                 'uiValue': int(float(current_wind_bearing_ui))
+                 'uiValue': current_wind_bearing_ui
                  }
             )
             weather_states_list.append(
