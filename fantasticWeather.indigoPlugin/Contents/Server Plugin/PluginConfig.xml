@@ -287,6 +287,12 @@ This plugin and its author are in no way affiliated with the Dark Sky service.</
         <Label>Email address:</Label>
     </Field>
 
+    <Field id="EmailDevice" type="menu"
+           tooltip="Please select your Indigo Email+ outgoing email device">
+        <Label>Email device:</Label>
+        <List class="indigo.devices" filter="com.indigodomo.email"/>
+    </Field>
+
     <!-- Debugging Template -->
     <Template file="DLFramework/template_debugging.xml" />
 

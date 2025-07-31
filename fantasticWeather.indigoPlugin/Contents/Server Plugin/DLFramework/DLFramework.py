@@ -21,10 +21,10 @@ except ImportError:
 # =================================== HEADER ==================================
 __author__ = "DaveL17"
 __build__ = "Unused"
-__copyright__ = "Copyright 2024 DaveL17"
+__copyright__ = "Copyright 2025 DaveL17"
 __license__ = "MIT"
 __title__ = "DLFramework"
-__version__ = "0.1.08"
+__version__ = "0.1.09"
 
 # supported operators for eval expressions
 OPERATORS = {
@@ -65,6 +65,7 @@ class Fogbert:
         self.plugin.plugin_file_handler.setFormatter(logging.Formatter(fmt=LOG_FORMAT, datefmt='%Y-%m-%d %H:%M:%S'))
 
     def environment(self) -> str:
+        """PLACEHOLDER"""
         self.plugin.logger.debug("DLFramework pluginEnvironment method called.")
         environment_state = ""
         spacer = " " * 35
@@ -130,28 +131,28 @@ class Fogbert:
         self.plugin.logger.critical("!" * 80)
 
     # =============================================================================
-    def convertDebugLevel(self, debug_val: str = "") -> int:  # noqa
-        """
-        The convertDebugLevel method is used to standardize the various implementations of debug level settings across
-        plugins. Its main purpose is to convert an old string-based setting to account for older plugin versions. Over
-        time, this method will become obsolete and should be deprecated.
-
-        :param str debug_val:
-        :return:
-        """
-        self.plugin.logger.debug("DLFramework convertDebugLevel method called.")
-
-        # If the debug value is High/Medium/Low, it is the old style. Covert it to 3/2/1
-        if debug_val in ["High", "Medium", "Low"]:
-            match debug_val:
-                case "High":
-                    debug_val = 3
-                case "Medium":
-                    debug_val = 2
-                case _:
-                    debug_val = 1
-
-        return debug_val
+    # def convertDebugLevel(self, debug_val: str = "") -> int:  # noqa
+    #     """
+    #     The convertDebugLevel method is used to standardize the various implementations of debug level settings across
+    #     plugins. Its main purpose is to convert an old string-based setting to account for older plugin versions. Over
+    #     time, this method will become obsolete and should be deprecated.
+    #
+    #     :param str debug_val:
+    #     :return:
+    #     """
+    #     self.plugin.logger.debug("DLFramework convertDebugLevel method called.")
+    #
+    #     # If the debug value is High/Medium/Low, it is the old style. Covert it to 3/2/1
+    #     if debug_val in ["High", "Medium", "Low"]:
+    #         match debug_val:
+    #             case "High":
+    #                 return 3
+    #             case "Medium":
+    #                 return 2
+    #             case _:
+    #                 return 1
+    #     else:
+    #         return 1
 
     # =============================================================================
     @staticmethod
@@ -297,7 +298,7 @@ class Fogbert:
         self.plugin.logger.debug("Indigo server version OK.")
 
     # =============================================================================
-    def audit_os_version(self, min_ver: int = 0) -> None:
+    def audit_os_version(self, min_ver: float = 0) -> None:
         """
         Audit Operating System Version
 
@@ -368,65 +369,66 @@ class Formatter:
 
 
 # =============================================================================
-class evalExpr:  # noqa
-    """
-    The evalExpr method evaluates mathematical expressions that are passed as strings and returns a numerical result.
-
-    This code is licensed under an MIT-compatible license.
-    credit: jfs @ https://stackoverflow.com/a/9558001/2827397
-    """
-
-    # =============================================================================
-    def __init__(self, plugin):
-        """
-        Title Placeholder
-
-        Body placeholder
-
-        :param plugin:
-        :return:
-        """
-        self.plugin = plugin
-        self.pluginPrefs = plugin.pluginPrefs
-
-    # =============================================================================
-    def eval_expr(self, expr: int):
-        """
-        Title Placeholder
-
-        Body placeholder
-
-        :param str expr:
-        :return:
-        """
-        return self.__eval(ast.parse(expr, mode='eval').body)
-
-    # =============================================================================
-    def __eval(self, node):
-        """
-        Title Placeholder
-
-        Body placeholder
-
-        :param node:
-        :return:
-        """
-
-        # See https://stackoverflow.com/q/71353183/2827397 (and the accompanying answer) for an explanation of the code
-        # inspection warnings thrown by this method.
-        try:
-            if isinstance(node, ast.Num):  # <number>
-                value = node.n
-            elif isinstance(node, ast.BinOp):  # <left> <operator> <right>
-                value = OPERATORS.get(type(node.op))(self.__eval(node.left), self.__eval(node.right))  # noqa
-            elif isinstance(node, ast.UnaryOp):  # <operator> <operand> e.g., -1
-                value = OPERATORS.get(type(node.op))(self.__eval(node.operand))  # noqa
-            else:
-                raise TypeError(node)
-            if not value:
-                # value will be none if the operator provided is not in the "approved" OPERATORS.
-                raise TypeError(node)
-
-            return value
-        except (TypeError, KeyError):
-            self.plugin.logger.critical("That expression is not allowed.")
+# class evalExpr:  # noqa
+#     """
+#     The evalExpr method evaluates mathematical expressions that are passed as strings and returns a numerical result.
+#
+#     This code is licensed under an MIT-compatible license.
+#     credit: jfs @ https://stackoverflow.com/a/9558001/2827397
+#     """
+#
+#     # =============================================================================
+#     def __init__(self, plugin):
+#         """
+#         Title Placeholder
+#
+#         Body placeholder
+#
+#         :param plugin:
+#         :return:
+#         """
+#         self.plugin = plugin
+#         self.pluginPrefs = plugin.pluginPrefs
+#
+#     # =============================================================================
+#     def eval_expr(self, expr: int):
+#         """
+#         Title Placeholder
+#
+#         Body placeholder
+#
+#         :param str expr:
+#         :return:
+#         """
+#         return self.__eval(ast.parse(expr, mode='eval').body)
+#
+#     # =============================================================================
+#     def __eval(self, node):
+#         """
+#         Title Placeholder
+#
+#         Body placeholder
+#
+#         :param node:
+#         :return:
+#         """
+#
+#         # See https://stackoverflow.com/q/71353183/2827397 (and the accompanying answer) for an explanation of the code
+#         # inspection warnings thrown by this method.
+#         try:
+#             if isinstance(node, ast.Constant):  # <number>
+#                 value = node.value
+#             elif isinstance(node, ast.BinOp):  # <left> <operator> <right>
+#                 value = OPERATORS.get(type(node.op))(self.__eval(node.left), self.__eval(node.right))  # noqa
+#             elif isinstance(node, ast.UnaryOp):  # <operator> <operand> e.g., -1
+#                 value = OPERATORS.get(type(node.op))(self.__eval(node.operand))  # noqa
+#             else:
+#                 raise TypeError(node)
+#             if not value:
+#                 # value will be none if the operator provided is not in the "approved" OPERATORS.
+#                 raise TypeError(node)
+#
+#             return value
+#         except (TypeError, KeyError):
+#             self.plugin.logger.critical("That expression is not allowed.")
+#             return None

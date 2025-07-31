@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.1.2
+- Changes email summary to html format.
+- Adds menu item to force summary emails to be sent. 
+- Code clean up.
+
 ### v2022.0.6
 - Minor edit to Config UI dialog.
 - Fixes minor bug that appended pressure units to UV index in forecast emails.

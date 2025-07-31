@@ -23,6 +23,11 @@
         <CallbackMethod>refresh_weather_data</CallbackMethod>
     </MenuItem>
 
+    <MenuItem id="send_weather_emails">
+        <Name>Send Weather Emails</Name>
+        <CallbackMethod>send_weather_emails</CallbackMethod>
+    </MenuItem>
+
     <MenuItem id="dumpTheXML">
         <Name>Write Weather Data to File</Name>
         <CallbackMethod>dump_the_json</CallbackMethod>

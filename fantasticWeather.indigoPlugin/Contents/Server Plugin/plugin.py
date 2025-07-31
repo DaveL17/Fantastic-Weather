@@ -32,10 +32,6 @@ Service located at: https://www.darksky.net
 For information regarding the use of this plugin, see the license located in the plugin package or
 located on GitHub: https://github.com/DaveL17/Fantastic-Weather/blob/master/LICENSE
 """
-# =================================== TO DO ===================================
-
-# TODO - The weather data cycle seems to run even if there are no weather devices created.
-# FIXME - pytz module is required.
 
 # ================================== IMPORTS ==================================
 
@@ -66,7 +62,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2022.0.7"
+__version__   = "2025.1.2"
 
 
 # =============================================================================
@@ -599,7 +595,7 @@ class Plugin(indigo.PluginBase):
                 logfile.write(f"Written at: {dt.datetime.today().strftime('%Y-%m-%d %H:%M')}\n")
                 logfile.write(f"{'=' * 72}\n")
 
-                for key in self.masterWeatherDict:
+                for key in self.masterWeatherDict.items():
                     logfile.write(f"Location Specified: {key}\n")
                     logfile.write(f"{self.masterWeatherDict[key]}\n\n")
 
@@ -611,7 +607,7 @@ class Plugin(indigo.PluginBase):
             )
 
     # =============================================================================
-    def email_forecast(self, dev):
+    def email_forecast(self, dev, force=False):
         """
         Email forecast information
 
@@ -619,12 +615,10 @@ class Plugin(indigo.PluginBase):
         to the user based on the email address specified for plugin update notifications.
 
         :param indigo.Device dev:
+        :param bool force:
         """
-        email_body = ""
-
         try:
-            location = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-
+            location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
             forecast_day   = self.masterWeatherDict[location]['daily']['data'][0]
             summary_wanted = dev.pluginProps.get('weatherSummaryEmail', '')
             summary_sent   = dev.states.get('weatherSummaryEmailSent', False)
@@ -662,25 +656,25 @@ class Plugin(indigo.PluginBase):
                     summary_sent = True
 
             # If an email summary is wanted but not yet sent, and we have reached the desired time of day.
-            if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour:
-                cloud_cover = int(self.nested_lookup(forecast_day, keys=('cloudCover',)) * 100)
-                forecast_time = self.nested_lookup(forecast_day, keys=('time',))
-                forecast_day_name = time.strftime('%A', time.localtime(float(forecast_time)))
-                humidity = int(self.nested_lookup(forecast_day, keys=('humidity',)) * 100)
-                long_range_forecast = (self.masterWeatherDict[location]['daily'].get('summary', 'Not available.'))
-                precip_intensity = self.nested_lookup(forecast_day, keys=('precipIntensity',))
-                precip_probability = (int(self.nested_lookup(forecast_day, keys=('precipProbability',)) * 100))
-                precip_type = self.nested_lookup(forecast_day, keys=('precipType',))
-                pressure = int(round(self.nested_lookup(forecast_day, keys=('pressure',))))
-                summary = self.nested_lookup(forecast_day, keys=('summary',))
-                temperature_high = (int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',)))))
-                temperature_low = (int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',)))))
-                uv_index = self.nested_lookup(forecast_day, keys=('uvIndex',))
-                visibility = self.nested_lookup(forecast_day, keys=('visibility',))
-                wind_bearing = self.nested_lookup(forecast_day, keys=('windBearing',))
-                wind_gust = int(round(self.nested_lookup(forecast_day, keys=('windGust',))))
-                wind_name = self.ui_format_wind_name(val=wind_bearing)
-                wind_speed  = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
+            if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour or force:
+                cloud_cover         = int(self.nested_lookup(forecast_day, keys=('cloudCover',)) * 100)
+                forecast_time       = self.nested_lookup(forecast_day, keys=('time',))
+                forecast_day_name   = time.strftime('%A', time.localtime(float(forecast_time)))
+                humidity            = int(self.nested_lookup(forecast_day, keys=('humidity',)) * 100)
+                long_range_forecast = self.masterWeatherDict[location]['daily'].get('summary', 'Not available.')
+                precip_intensity    = self.nested_lookup(forecast_day, keys=('precipIntensity',))
+                precip_probability  = int(self.nested_lookup(forecast_day, keys=('precipProbability',)) * 100)
+                precip_type         = self.nested_lookup(forecast_day, keys=('precipType',))
+                pressure            = int(round(self.nested_lookup(forecast_day, keys=('pressure',))))
+                summary             = self.nested_lookup(forecast_day, keys=('summary',))
+                temperature_high    = int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',))))
+                temperature_low     = int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',))))
+                uv_index            = self.nested_lookup(forecast_day, keys=('uvIndex',))
+                visibility          = self.nested_lookup(forecast_day, keys=('visibility',))
+                wind_bearing        = self.nested_lookup(forecast_day, keys=('windBearing',))
+                wind_gust           = int(round(self.nested_lookup(forecast_day, keys=('windGust',))))
+                wind_name           = self.ui_format_wind_name(val=wind_bearing)
+                wind_speed          = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
 
                 # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
                 # Adjust for when ozone is "Not available."
@@ -700,69 +694,50 @@ class Plugin(indigo.PluginBase):
                 if not precip_type or precip_type.lower() in ("not available", "none"):
                     precip_type = "precipitation"
 
-                # Heading
-                email_body += f"{dev.name}\n"
-                email_body += f"{'-' * 38}\n\n"
+                new_email_body = f'''
+                    <table style="font-family: Arial, sans-serif">
+                      <thead>
+                        <tr style="background: grey; color: white; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{dev.name}</td></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">High: </td>       <td>{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Low: </td>        <td>{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Humidity: </td>   <td>{humidity}%</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Precip: </td>     <td>Chance of {precip_type}: {precip_probability}{dev.pluginProps.get('percentageUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Total Precip</td> <td>{precip_total:.2f}{dev.pluginProps.get('rainAmountUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Winds: </td>      <td>Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Clouds: </td>     <td>{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Pressure: </td>   <td>{pressure}{dev.pluginProps.get('pressureUnits', '')}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">UV: </td><td>{uv_index}</td></tr>
+                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td></tr>
+                        <tr style="background: lightgrey; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{forecast_day_name} Forecast:</td></tr>
+                        <tr><td colspan="2" style="padding-left: 0; padding-bottom: 3px; padding-left: 5px;">{summary}</td></tr>
+                        <tr style="background: lightgrey; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">Long Range Forecast:</td></tr>
+                        <tr><td colspan="2" style="padding-left: 0; padding-bottom: 3px; padding-left: 5px;">{long_range_forecast}</td></tr>
+                      </tbody>
+                    </table>
+                '''
 
-                # Day
-                email_body += f"{forecast_day_name} Forecast:\n"
-                email_body += "-" * 38
-                email_body += f"\n{summary}\n\n"
+                # Send the message
+                plugin = indigo.server.getPlugin("com.indigodomo.email")
+                if plugin.isEnabled():
+                    plugin.executeAction(
+                        "sendEmail",
+                        deviceId=int(self.pluginPrefs['EmailDevice']),
+                        props={
+                            "emailTo": self.pluginPrefs['updaterEmail'],
+                            "emailSubject": "Daily Weather Summary",
+                            'emailFormat': 'html',
+                            "emailMessage": new_email_body,
+                        },
+                    )
+                    dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
 
-                # Data
-                email_body += (
-                    f"High: {temperature_high}{dev.pluginProps.get('temperatureUnits', '')}\n"
-                )
-                email_body += (
-                    f"Low: {temperature_low}{dev.pluginProps.get('temperatureUnits', '')}\n"
-                )
-                percent_units = dev.pluginProps.get('percentageUnits', '')
-
-                email_body += f"Chance of {precip_type}: {precip_probability}{percent_units} \n"
-
-                email_body += (
-                    f"Total Precipitation: {precip_total:.2f}"
-                    f"{dev.pluginProps.get('rainAmountUnits', '')}\n"
-                )
-                email_body += (
-                    f"Winds out of the {wind_name} at {wind_speed}"
-                    f"{dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust}"
-                    f"{dev.pluginProps.get('windUnits', '')}\n"
-                )
-                email_body += f"Clouds: {cloud_cover}{dev.pluginProps.get('percentageUnits', '')}\n"
-                email_body += f"Humidity: {humidity}{dev.pluginProps.get('percentageUnits', '')}\n"
-                email_body += f"Ozone: {ozone}{dev.pluginProps.get('indexUnits', '')}\n"
-                email_body += f"Pressure: {pressure}{dev.pluginProps.get('pressureUnits', '')}\n"
-                email_body += f"UV: {uv_index}\n"
-
-                # Round visibility to the nearest quarter unit.
-                visibility = round(float(visibility) * 4) / 4
-                email_body += (f"Visibility: {visibility:0.2f}"
-                               f"{dev.pluginProps.get('distanceUnits', '')}\n\n")
-
-                # Long Range Forecast
-                email_body += "Long Range Forecast:\n"
-                email_body += "-" * 38
-                email_body += f"\n{long_range_forecast}\n\n"
-
-                # Footer
-                # email_body += "-" * 38
-                # email_body += (
-                #     "\nThis email sent at your request on behalf of the Fantastic Weather Plugin "
-                #     "for Indigo.\n\n*** Powered by Dark Sky ***"
-                # )
-
-                indigo.server.sendEmailTo(
-                    self.pluginPrefs['updaterEmail'],
-                    subject="Daily Weather Summary",
-                    body=email_body
-                )
-                dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
-
-                # Set email sent date
-                now = dt.datetime.now()
-                timestamp = f"{now:%Y-%m-%d}"
-                dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
+                    # Set email sent date
+                    now = dt.datetime.now()
+                    timestamp = f"{now:%Y-%m-%d}"
+                    dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
 
         except (KeyError, IndexError):
             self.logger.debug(f"Unable to compile forecast data for {dev.name}.", exc_info=True)
@@ -850,32 +825,30 @@ class Plugin(indigo.PluginBase):
                         self.inst_attr['comm_error'] = True
                     dev.updateStateOnServer('onOffState', value=False, uiValue="No comm")
                     dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-                    return
+                    return True
 
                 except requests.exceptions.Timeout:
-                    self.logger.warning(
-                        "Error downloading satellite image (server timeout occurred)."
-                    )
+                    self.logger.warning("Error downloading satellite image (server timeout occurred).")
+                    return False
 
                 dev.updateStateOnServer('onOffState', value=True, uiValue=" ")
                 dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOn)
 
                 # Report results of download timer.
-                data_cycle_time = (dt.datetime.now() - get_data_time)
+                data_cycle_time = dt.datetime.now() - get_data_time
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
                 self.logger.debug(f"Satellite image download time: {data_cycle_time}")
 
                 self.inst_attr['comm_error'] = False
-                return
+                return True
 
-            else:
-                self.logger.error(
-                    "The image destination must include one of these types (.gif, .jpg, .jpeg, "
-                    ".png)"
-                )
-                dev.updateStateOnServer('onOffState', value=False, uiValue="Bad Type")
-                dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
-                return False
+            self.logger.error(
+                "The image destination must include one of these types (.gif, .jpg, .jpeg, "
+                ".png)"
+            )
+            dev.updateStateOnServer('onOffState', value=False, uiValue="Bad Type")
+            dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+            return False
 
         except (
                 requests.exceptions.ConnectionError, requests.exceptions.HTTPError,
@@ -885,6 +858,7 @@ class Plugin(indigo.PluginBase):
             self.logger.error(f"[{dev.name}] Error downloading satellite image.", exc_info=True)
             dev.updateStateOnServer('onOffState', value=False, uiValue="No comm")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
+            return True
 
     # =============================================================================
     def get_weather_data(self, dev=None):
@@ -972,7 +946,7 @@ class Plugin(indigo.PluginBase):
                     self.logger.debug("Error obtaining weather data", exc_info=True)
 
                 # Report results of download timer.
-                data_cycle_time = (dt.datetime.now() - get_data_time)
+                data_cycle_time = dt.datetime.now() - get_data_time
                 data_cycle_time = (dt.datetime.min + data_cycle_time).time()
                 self.logger.threaddebug(f"Satellite image download time: {data_cycle_time}")
 
@@ -1083,17 +1057,17 @@ class Plugin(indigo.PluginBase):
         try:
             alert_array = []
             # Whether to log alerts
-            alerts_logging    = self.pluginPrefs.get('alertLogging', True)
+            alerts_logging     = self.pluginPrefs.get('alertLogging', True)
             # Suppress alert messages for dev
-            alerts_suppressed = dev.pluginProps.get('suppressWeatherAlerts', False)
+            alerts_suppressed  = dev.pluginProps.get('suppressWeatherAlerts', False)
             # Suppress 'No Alert' messages
             no_alerts_logging  = self.pluginPrefs.get('noAlertLogging', False)
 
-            location     = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
-            weather_data = self.masterWeatherDict[location]
-            alerts_data  = self.nested_lookup(obj=weather_data, keys=('alerts',))
-            preferred_time = dev.pluginProps.get('time_zone', 'time_here')
-            timezone = pytz.timezone(weather_data['timezone'])
+            location: tuple    = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+            weather_data: dict = self.masterWeatherDict[location]
+            alerts_data: dict  = self.nested_lookup(obj=weather_data, keys=('alerts',))
+            preferred_time     = dev.pluginProps.get('time_zone', 'time_here')
+            timezone           = pytz.timezone(weather_data['timezone'])
 
             # ============================= Delete Old Alerts =============================
             for alert_counter in range(1, 6):
@@ -2476,9 +2450,7 @@ class Plugin(indigo.PluginBase):
 
                             # If we don't know the age of the data, we don't update.
                             try:
-                                weather_data_epoch = int(
-                                    self.masterWeatherDict[location]['currently']['time']
-                                )
+                                weather_data_epoch = int(self.masterWeatherDict[location]['currently']['time'])
 
                             except ValueError:
                                 weather_data_epoch = 0
@@ -2540,6 +2512,13 @@ class Plugin(indigo.PluginBase):
                 self.logger.error(f"Problem parsing Weather data. Dev: {dev.name}", exc_info=True)
 
         self.logger.info("Weather data cycle complete.")
+
+    # =============================================================================
+    def send_weather_emails(self):
+        """ placeholder"""
+        for dev in indigo.devices.iter("self"):
+            if dev.deviceTypeId == "Daily" and dev.enabled:
+                self.email_forecast(dev, force=True)
 
     # =============================================================================
     def trigger_processing(self):
@@ -2606,26 +2585,19 @@ class Plugin(indigo.PluginBase):
                                 hours, remainder = divmod(remainder, 60 * 60)
                                 minutes, seconds = divmod(remainder, 60)
 
-                                # Note that we leave seconds off, but it could easily be added if
-                                # needed.
+                                # Note that we leave seconds off, but it could easily be added if needed.
                                 diff_msg = f"{days} days, {hours} hrs, {minutes} mins"
 
-                                dev.updateStateImageOnServer(
-                                    indigo.kStateImageSel.TemperatureSensor
-                                )
+                                dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
                                 dev.updateStateOnServer('onOffState', value='offline')
 
                                 if indigo.triggers[trigger_id].enabled:
-                                    self.logger.warning(
-                                        f"{dev.name} location appears to be offline for {diff_msg}"
-                                    )
+                                    self.logger.warning(f"{dev.name} location appears to be offline for {diff_msg}")
                                     indigo.trigger.execute(trigger_id)
 
                             # If the temperature observation is lower than -55
                             elif dev.states['temperature'] <= -55.0:
-                                dev.updateStateImageOnServer(
-                                    indigo.kStateImageSel.TemperatureSensor
-                                )
+                                dev.updateStateImageOnServer(indigo.kStateImageSel.TemperatureSensor)
                                 dev.updateStateOnServer('onOffState', value='offline')
 
                                 if indigo.triggers[trigger_id].enabled:
