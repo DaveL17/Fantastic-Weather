@@ -8,7 +8,7 @@ Credits:
   Regression Testing by: Monstergerm
 
 NOTE: THIS DOCUMENTATION IS OUT OF DATE SINCE THE CLOSURE OF DARK SKY.
-The Fantastically Useful Weather Utility plugin downloads JSON data from Dark Sky and parses it into
+The Fantastically Useful Weather Utility plugin downloads JSON data from Pireate Weather and parses it into
 custom device states. Theoretically, the user can create an unlimited number of devices representing
 individual observation locations. The Fantastically Useful Weather Utility plugin will update each
 custom device found in the device dictionary incrementally.
@@ -676,15 +676,16 @@ class Plugin(indigo.PluginBase):
                 wind_name           = self.ui_format_wind_name(val=wind_bearing)
                 wind_speed          = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
 
-                # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
-                # Adjust for when ozone is "Not available."
-                try:
-                    ozone = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
-                except (ValueError, TypeError):
-                    ozone = "Not available."
+                # FIXME is this the best approach?  (to keep doing one-off T/E blocks? Shutting down ozone here
+                #   because it's not currently supported in the forecast day endpoint.
+                # # Adjust for when ozone is "Not available."
+                # try:
+                #     ozone = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
+                # except (ValueError, TypeError):
+                #     ozone = "Not available."
 
                 # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
-                # Adjust for when ozone is "Not available."
+                # Adjust for when precip intensity is "Not available."
                 try:
                     precip_total = precip_intensity * 24
                 except (ValueError, TypeError):
@@ -707,7 +708,6 @@ class Plugin(indigo.PluginBase):
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">Total Precip</td> <td>{precip_total:.2f}{dev.pluginProps.get('rainAmountUnits', '')}</td></tr>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">Winds: </td>      <td>Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}</td></tr>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">Clouds: </td>     <td>{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">Pressure: </td>   <td>{pressure}{dev.pluginProps.get('pressureUnits', '')}</td></tr>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">UV: </td><td>{uv_index}</td></tr>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td></tr>
@@ -718,6 +718,8 @@ class Plugin(indigo.PluginBase):
                       </tbody>
                     </table>
                 '''
+                        # FIXME shutting down ozone here because it's not currently supported in the forecast day endpoint.
+                        # <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
 
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")

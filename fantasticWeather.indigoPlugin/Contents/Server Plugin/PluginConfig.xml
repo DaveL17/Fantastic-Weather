@@ -10,9 +10,7 @@
     </Field>
 
     <Field id="termsOfService" type="label" fontSize="mini">
-        <Label>Powered by Dark Sky
-https://darksky.net/poweredby/
-This plugin and its author are in no way affiliated with the Dark Sky service.</Label>
+        <Label>Powered by Pirate Weather</Label>
     </Field>
 
 <!--Hidden Controls-->
