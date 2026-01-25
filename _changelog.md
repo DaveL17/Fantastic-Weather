@@ -1,5 +1,8 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.0
+- Changes email summary to html format.
+
 ### v2025.1.2
 - Changes email summary to html format.
 - Adds menu item to force summary emails to be sent. 

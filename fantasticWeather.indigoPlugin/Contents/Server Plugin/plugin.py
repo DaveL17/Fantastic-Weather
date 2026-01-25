@@ -8,7 +8,7 @@ Credits:
   Regression Testing by: Monstergerm
 
 NOTE: THIS DOCUMENTATION IS OUT OF DATE SINCE THE CLOSURE OF DARK SKY.
-The Fantastically Useful Weather Utility plugin downloads JSON data from Pireate Weather and parses it into
+The Fantastically Useful Weather Utility plugin downloads JSON data from Pirate Weather and parses it into
 custom device states. Theoretically, the user can create an unlimited number of devices representing
 individual observation locations. The Fantastically Useful Weather Utility plugin will update each
 custom device found in the device dictionary incrementally.
@@ -698,7 +698,7 @@ class Plugin(indigo.PluginBase):
                 new_email_body = f'''
                     <table style="font-family: Arial, sans-serif">
                       <thead>
-                        <tr style="background: grey; color: white; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{dev.name}</td></tr>
+                        <tr style="background: lightgrey; color: white; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{dev.name}</td></tr>
                       </thead>
                       <tbody>
                         <tr><td style="padding-bottom: 3px; padding-left: 5px;">High: </td>       <td>{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}</td></tr>
@@ -718,8 +718,8 @@ class Plugin(indigo.PluginBase):
                       </tbody>
                     </table>
                 '''
-                        # FIXME shutting down ozone here because it's not currently supported in the forecast day endpoint.
-                        # <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
+                # FIXME shutting down ozone here because it's not currently supported in the forecast day endpoint.
+                # <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
 
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
