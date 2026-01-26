@@ -62,7 +62,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.1.2"
+__version__   = "2025.2.0"
 
 
 # =============================================================================
@@ -696,39 +696,72 @@ class Plugin(indigo.PluginBase):
                     precip_type = "precipitation"
 
                 new_email_body = f'''
-                    <table style="font-family: Arial, sans-serif">
-                      <thead>
-                        <tr style="background: lightgrey; color: white; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{dev.name}</td></tr>
-                      </thead>
-                      <tbody>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">High: </td>       <td>{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Low: </td>        <td>{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Humidity: </td>   <td>{humidity}%</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Precip: </td>     <td>Chance of {precip_type}: {precip_probability}{dev.pluginProps.get('percentageUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Total Precip</td> <td>{precip_total:.2f}{dev.pluginProps.get('rainAmountUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Winds: </td>      <td>Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Clouds: </td>     <td>{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Pressure: </td>   <td>{pressure}{dev.pluginProps.get('pressureUnits', '')}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">UV: </td><td>{uv_index}</td></tr>
-                        <tr><td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td></tr>
-                        <tr style="background: lightgrey; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">{forecast_day_name} Forecast:</td></tr>
-                        <tr><td colspan="2" style="padding-left: 0; padding-bottom: 3px; padding-left: 5px;">{summary}</td></tr>
-                        <tr style="background: lightgrey; padding-bottom: 3px; padding-left: 5px;"><td colspan="2">Long Range Forecast:</td></tr>
-                        <tr><td colspan="2" style="padding-left: 0; padding-bottom: 3px; padding-left: 5px;">{long_range_forecast}</td></tr>
-                      </tbody>
+                    <table>
+                        <tr style="padding-bottom: 3px;">
+                            <td colspan="2" style="border-bottom: solid 1px;">{dev.name}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">High: </td>       
+                            <td>{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Low: </td>        
+                            <td>{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Humidity: </td>   
+                            <td>{humidity}%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Precip: </td>     
+                            <td>Chance of {precip_type}: {precip_probability}{dev.pluginProps.get('percentageUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Total Precip</td> 
+                            <td>{precip_total:.2f}{dev.pluginProps.get('rainAmountUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Winds: </td>      
+                            <td>Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Clouds: </td>     
+                            <td>{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Pressure: </td>   
+                            <td>{pressure}{dev.pluginProps.get('pressureUnits', '')}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">UV: 
+                            </td><td>{uv_index}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> 
+                            <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td>
+                        </tr>
+                        <tr padding-bottom: 3px;>
+                            <td colspan="2" style="border-bottom: solid 1px;">{forecast_day_name} Forecast:</td></tr>
+                        <tr>
+                            <td colspan="2" style="padding-bottom: 3px; padding-left: 5px;">{summary}</td>
+                        </tr>
+                        <tr padding-bottom: 3px;">
+                            <td colspan="2";" style="border-bottom: solid 1px;">Long Range Forecast:</td></tr>
+                        <tr>
+                            <td colspan="2" style="padding-bottom: 3px; padding-left: 5px;">{long_range_forecast}</td>
+                        </tr>
                     </table>
                 '''
-                # FIXME shutting down ozone here because it's not currently supported in the forecast day endpoint.
-                # <tr><td style="padding-bottom: 3px; padding-left: 5px;">Ozone: </td>      <td>{ozone}{dev.pluginProps.get('indexUnits', '')}</td></tr>
 
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
+                address = self.substitute(self.pluginPrefs['updaterEmail']) # supports substitutions
                 if plugin.isEnabled():
                     plugin.executeAction(
                         "sendEmail",
                         deviceId=int(self.pluginPrefs['EmailDevice']),
                         props={
-                            "emailTo": self.pluginPrefs['updaterEmail'],
+                            "emailTo": address,
                             "emailSubject": "Daily Weather Summary",
                             'emailFormat': 'html',
                             "emailMessage": new_email_body,
