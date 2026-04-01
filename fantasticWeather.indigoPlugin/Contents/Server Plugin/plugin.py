@@ -595,7 +595,7 @@ class Plugin(indigo.PluginBase):
                 logfile.write(f"Written at: {dt.datetime.today().strftime('%Y-%m-%d %H:%M')}\n")
                 logfile.write(f"{'=' * 72}\n")
 
-                for key in self.masterWeatherDict.items():
+                for key in self.masterWeatherDict:
                     logfile.write(f"Location Specified: {key}\n")
                     logfile.write(f"{self.masterWeatherDict[key]}\n\n")
 

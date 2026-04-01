@@ -78,31 +78,37 @@ class TestMenuItems(APIBase):
     def test_comms_unkill_all(self):
         """Enable all plugin devices via the Indigo Web Server API."""
         result = execute_action("comms_unkill_all", msg="test_comms_unkill_all")
+        self.assertIsInstance(result, httpx.Response, "The enable plugin devices request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The enable plugin devices menu item call was not successful.")
 
     def test_comms_kill_all(self):
         """Disable all plugin devices via the Indigo Web Server API."""
         result = execute_action("comms_kill_all", msg="test_comms_kill_all")
+        self.assertIsInstance(result, httpx.Response, "The disable plugin devices request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The disable plugin devices menu item call was not successful.")
 
     def test_log_plugin_environment(self):
         """Display plugin information via the Indigo Web Server API."""
         result = execute_action("log_plugin_environment", msg="test_log_plugin_environment")
+        self.assertIsInstance(result, httpx.Response, "The display plugin information request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The display plugin information menu item call was not successful.")
 
     def test_refresh_weather_data(self):
         """Refresh weather data via the Indigo Web Server API."""
         result = execute_action("refresh_weather_data", msg="test_refresh_weather_data")
+        self.assertIsInstance(result, httpx.Response, "The refresh weather data request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The refresh weather data menu item call was not successful.")
 
     def test_send_weather_emails(self):
         """Send weather emails via the Indigo Web Server API."""
         result = execute_action("send_weather_emails", msg="test_send_weather_emails")
+        self.assertIsInstance(result, httpx.Response, "The send weather emails request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The send weather emails menu item call was not successful.")
 
     def test_dump_the_json(self):
         """Write weather data to file via the Indigo Web Server API."""
         result = execute_action("dump_the_json", msg="test_dump_the_json")
+        self.assertIsInstance(result, httpx.Response, "The write weather data to file request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The write weather data to file menu item call was not successful.")
 
 
@@ -123,6 +129,7 @@ class TestEvents(APIBase):
         """
         trigger_id = int(os.getenv("TRIGGER_WEATHER_ALERT_ID"))
         result = execute_trigger(trigger_id, msg="test_weather_alert")
+        self.assertIsInstance(result, httpx.Response, "The weather alert trigger request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The weather alert trigger execution was not successful.")
 
     def test_weather_site_offline(self):
@@ -133,6 +140,7 @@ class TestEvents(APIBase):
         """
         trigger_id = int(os.getenv("TRIGGER_SITE_OFFLINE_ID"))
         result = execute_trigger(trigger_id, msg="test_weather_site_offline")
+        self.assertIsInstance(result, httpx.Response, "The weather site offline trigger request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The weather site offline trigger execution was not successful.")
 
 
@@ -148,4 +156,6 @@ class TestActions(APIBase):
     def test_refresh_weather_data(self):
         """Refresh weather data via the Indigo Web Server API."""
         result = execute_action("refresh_weather_data", msg="test_refresh_weather_data")
+        self.assertIsInstance(result, httpx.Response,
+                              "The refresh weather data action request failed with an exception.")
         self.assertEqual(result.status_code, 200, "The refresh weather data action call was not successful.")
