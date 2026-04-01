@@ -39,6 +39,29 @@ def execute_action(action_id: str, msg: str = "test-plugin") -> bool | httpx.Res
         return False
 
 
+def execute_trigger(trigger_id: int, msg: str = "test-plugin") -> bool | httpx.Response:
+    """Post an indigo.trigger.execute command to the Indigo Web Server API.
+
+    Args:
+        trigger_id (int): The Indigo trigger object ID to execute.
+        msg (str): The message ID to include in the request.
+
+    Returns:
+        bool | httpx.Response: The HTTP response, or False if the request failed.
+    """
+    try:
+        message = {
+            "id": f"{msg}",
+            "message": "indigo.trigger.execute",
+            "objectId": trigger_id,
+        }
+        url = f"{URL_PREFIX}/v2/api/command/?api-key={GOOD_API_KEY}"
+        return httpx.post(url, json=message, verify=False, timeout=30)
+    except Exception as e:
+        print(f"API Error {e}")
+        return False
+
+
 # ===================================== simpleeval.py =====================================
 class TestMenuItems(APIBase):
     """ Note that the API doesn't expose menu items so we add hidden actions in `Actions.xml` that call the same
@@ -82,6 +105,35 @@ class TestMenuItems(APIBase):
         """Post a dump_the_json command to the Indigo Web Server."""
         result = execute_action("dump_the_json", msg="test_dump_the_json")
         self.assertEqual(result.status_code, 200, "The write weather data to file menu item call was not successful.")
+
+
+# ===================================== Events =====================================
+class TestEvents(APIBase):
+    """Tests for plugin events (triggers) defined in Events.xml."""
+
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+    def test_weather_alert(self):
+        """Fire the Severe Weather Alert trigger via the Indigo Web Server API.
+
+        Requires .env entry:
+            TRIGGER_WEATHER_ALERT_ID=<trigger object id>
+        """
+        trigger_id = int(os.getenv("TRIGGER_WEATHER_ALERT_ID"))
+        result = execute_trigger(trigger_id, msg="test_weather_alert")
+        self.assertEqual(result.status_code, 200, "The weather alert trigger execution was not successful.")
+
+    def test_weather_site_offline(self):
+        """Fire the Weather Location Offline trigger via the Indigo Web Server API.
+
+        Requires .env entry:
+            TRIGGER_SITE_OFFLINE_ID=<trigger object id>
+        """
+        trigger_id = int(os.getenv("TRIGGER_SITE_OFFLINE_ID"))
+        result = execute_trigger(trigger_id, msg="test_weather_site_offline")
+        self.assertEqual(result.status_code, 200, "The weather site offline trigger execution was not successful.")
 
 
 # ===================================== Actions =====================================

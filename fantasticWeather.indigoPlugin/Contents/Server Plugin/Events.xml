@@ -41,7 +41,6 @@
                     <Label>Location:</Label>
                     <List class="self" filter="self" method="list_of_devices" dynamicReload="true"/>
                 </Field>
-
             </ConfigUI>
     </Event>
 </Events>
