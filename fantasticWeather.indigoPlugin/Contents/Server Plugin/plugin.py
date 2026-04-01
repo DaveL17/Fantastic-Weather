@@ -123,7 +123,7 @@ class Plugin(indigo.PluginBase):
         )
         self.indigo_log_handler.setLevel(int(debug_level))
 
-    def log_plugin_environment(self):
+    def log_plugin_environment(self, values_dict=None):  # noqa
         """
         Log pluginEnvironment information when plugin is first started
         """
@@ -535,7 +535,7 @@ class Plugin(indigo.PluginBase):
         self.refresh_weather_data()
 
     # =============================================================================
-    def comms_kill_all(self):
+    def comms_kill_all(self, values_dict=None):  # noqa
         """
         Disable all plugin devices
 
@@ -549,7 +549,7 @@ class Plugin(indigo.PluginBase):
                 self.logger.error("Exception when trying to kill all comms.", exc_info=True)
 
     # =============================================================================
-    def comms_unkill_all(self):
+    def comms_unkill_all(self, values_dict=None):  # noqa
         """
         Enable all plugin devices
 
@@ -574,7 +574,7 @@ class Plugin(indigo.PluginBase):
         self.browserOpen(values_dict['launchParameters'])
 
     # =============================================================================
-    def dump_the_json(self):
+    def dump_the_json(self, values_dict=None):  # noqa
         """
         Dump copy of weather JSON to file
 
@@ -2549,7 +2549,7 @@ class Plugin(indigo.PluginBase):
         self.logger.info("Weather data cycle complete.")
 
     # =============================================================================
-    def send_weather_emails(self):
+    def send_weather_emails(self, values_dict=None):  # noqa
         """ placeholder"""
         for dev in indigo.devices.iter("self"):
             if dev.deviceTypeId == "Daily" and dev.enabled:

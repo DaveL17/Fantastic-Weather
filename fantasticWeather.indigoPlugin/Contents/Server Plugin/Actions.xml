@@ -4,4 +4,30 @@
         <Name>Refresh Weather Data</Name>
         <CallbackMethod>action_refresh_weather</CallbackMethod>
     </Action>
+
+    <!-- Hidden Actions for unit testing -->
+    <Action id="comms_unkill_all" hidden="true">
+        <Name>Enable All Plugin Devices</Name>
+        <CallbackMethod>comms_unkill_all</CallbackMethod>
+    </Action>
+
+    <Action id="comms_kill_all" hidden="true">
+        <Name>Disable All Plugin Devices</Name>
+        <CallbackMethod>comms_kill_all</CallbackMethod>
+    </Action>
+
+    <Action id="log_plugin_environment" hidden="true">
+        <Name>Display Plugin Information</Name>
+        <CallbackMethod>log_plugin_environment</CallbackMethod>
+    </Action>
+
+    <Action id="send_weather_emails" hidden="true">
+        <Name>Send Weather Emails</Name>
+        <CallbackMethod>send_weather_emails</CallbackMethod>
+    </Action>
+
+    <Action id="dump_the_json" hidden="true">
+        <Name>Write Weather Data to File</Name>
+        <CallbackMethod>dump_the_json</CallbackMethod>
+    </Action>
 </Actions>
