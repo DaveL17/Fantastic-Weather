@@ -64,45 +64,44 @@ def execute_trigger(trigger_id: int, msg: str = "test-plugin") -> bool | httpx.R
 
 # ===================================== simpleeval.py =====================================
 class TestMenuItems(APIBase):
-    """ Note that the API doesn't expose menu items so we add hidden actions in `Actions.xml` that call the same
-    method(s) that the menu item calls. The result is the same."""
+    """Tests for plugin menu items.
+
+    The API doesn't expose menu items directly, so hidden actions in Actions.xml are used
+    to call the same callback methods. The result is equivalent.
+    """
+
     @classmethod
     def setUpClass(cls):
+        """Skip APIBase setup; tests use module-level env vars via execute_action."""
         pass
 
-    # Enable all plugin devices
     def test_comms_unkill_all(self):
-        """Post a dev.enabled() command to the Indigo Web Server."""
+        """Enable all plugin devices via the Indigo Web Server API."""
         result = execute_action("comms_unkill_all", msg="test_comms_unkill_all")
         self.assertEqual(result.status_code, 200, "The enable plugin devices menu item call was not successful.")
 
-    # Disable all plugin devices.
     def test_comms_kill_all(self):
-        """Post a dev.enabled() command to the Indigo Web Server."""
+        """Disable all plugin devices via the Indigo Web Server API."""
         result = execute_action("comms_kill_all", msg="test_comms_kill_all")
         self.assertEqual(result.status_code, 200, "The disable plugin devices menu item call was not successful.")
 
-    # Display plugin information.
     def test_log_plugin_environment(self):
-        """Post a log_plugin_environment command to the Indigo Web Server."""
+        """Display plugin information via the Indigo Web Server API."""
         result = execute_action("log_plugin_environment", msg="test_log_plugin_environment")
         self.assertEqual(result.status_code, 200, "The display plugin information menu item call was not successful.")
 
-    # Refresh weather data.
     def test_refresh_weather_data(self):
-        """Post a refresh_weather_data command to the Indigo Web Server."""
+        """Refresh weather data via the Indigo Web Server API."""
         result = execute_action("refresh_weather_data", msg="test_refresh_weather_data")
         self.assertEqual(result.status_code, 200, "The refresh weather data menu item call was not successful.")
 
-    # Send weather emails.
     def test_send_weather_emails(self):
-        """Post a send_weather_emails command to the Indigo Web Server."""
+        """Send weather emails via the Indigo Web Server API."""
         result = execute_action("send_weather_emails", msg="test_send_weather_emails")
         self.assertEqual(result.status_code, 200, "The send weather emails menu item call was not successful.")
 
-    # Write weather data to file.
     def test_dump_the_json(self):
-        """Post a dump_the_json command to the Indigo Web Server."""
+        """Write weather data to file via the Indigo Web Server API."""
         result = execute_action("dump_the_json", msg="test_dump_the_json")
         self.assertEqual(result.status_code, 200, "The write weather data to file menu item call was not successful.")
 
@@ -113,6 +112,7 @@ class TestEvents(APIBase):
 
     @classmethod
     def setUpClass(cls):
+        """Skip APIBase setup; tests use module-level env vars via execute_trigger."""
         pass
 
     def test_weather_alert(self):
@@ -139,12 +139,13 @@ class TestEvents(APIBase):
 # ===================================== Actions =====================================
 class TestActions(APIBase):
     """Tests for plugin actions defined in Actions.xml."""
+
     @classmethod
     def setUpClass(cls):
+        """Skip APIBase setup; tests use module-level env vars via execute_action."""
         pass
 
-    # Refresh weather data.
     def test_refresh_weather_data(self):
-        """Post a refresh_weather_data action command to the Indigo Web Server."""
+        """Refresh weather data via the Indigo Web Server API."""
         result = execute_action("refresh_weather_data", msg="test_refresh_weather_data")
         self.assertEqual(result.status_code, 200, "The refresh weather data action call was not successful.")
