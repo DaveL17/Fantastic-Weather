@@ -23,7 +23,7 @@
                 <Label>Longitude:</Label>
             </Field>
 
-            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="true">
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
@@ -45,13 +45,13 @@
                 <Label>Percentage:</Label>
             </Field>
 
-            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+            <Field id="space08" type="label" fontSize="small" alignWithControl="true">
                 <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
 
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="true">
             </Field>
 
         </ConfigUI>
@@ -151,7 +151,7 @@
                 <Label>Longitude:</Label>
             </Field>
 
-            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="true">
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
@@ -189,7 +189,7 @@
                 <Label>Wind:</Label>
             </Field>
 
-            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+            <Field id="space08" type="label" fontSize="small" alignWithControl="true">
                 <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
@@ -220,7 +220,7 @@ plugin updates within the plugin settings dialog.</Label>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
 
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="true">
             </Field>
 
         </ConfigUI>
@@ -1389,7 +1389,7 @@ plugin updates within the plugin settings dialog.</Label>
                 <Label>Longitude:</Label>
             </Field>
 
-            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="true">
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
@@ -1443,13 +1443,13 @@ plugin updates within the plugin settings dialog.</Label>
                 <Label>Wind:</Label>
             </Field>
 
-            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+            <Field id="space08" type="label" fontSize="small" alignWithControl="true">
                 <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
 
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="true">
             </Field>
 
         </ConfigUI>
@@ -4466,7 +4466,7 @@ plugin updates within the plugin settings dialog.</Label>
                 <Label>Source Location:</Label>
             </Field>
 
-            <Field id="sourceExamples" type="label" fontSize="small" alignWithControl="True">
+            <Field id="sourceExamples" type="label" fontSize="small" alignWithControl="true">
                 <Label>Examples:
 http://www.website.com/imagefile.png
 file:///Users/username/Desktop/imagefile.png
@@ -4478,14 +4478,14 @@ file:///Users/username/Desktop/imagefile.png
                 <Label>Destination Location:</Label>
             </Field>
 
-            <Field id="destinationExamples" type="label" fontSize="small" alignWithControl="True">
+            <Field id="destinationExamples" type="label" fontSize="small" alignWithControl="true">
                 <Label>Example:
 /Users/username/Desktop/imagefile.png</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="false" hidden="true"/>
 
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="true">
             </Field>
 
         </ConfigUI>
@@ -4523,7 +4523,7 @@ file:///Users/username/Desktop/imagefile.png
                 <Label>Longitude:</Label>
             </Field>
 
-            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="True">
+            <Field id="latLongLabel" type="label" fontSize="small" alignWithControl="true">
                 <Label>The plugin reads the latitude and longitude from the Indigo server. You can override these values to add other locations.</Label>
             </Field>
 
@@ -4569,7 +4569,7 @@ file:///Users/username/Desktop/imagefile.png
                 <Label>Wind:</Label>
             </Field>
 
-            <Field id="space08" type="label" fontSize="small" alignWithControl="True">
+            <Field id="space08" type="label" fontSize="small" alignWithControl="true">
                 <Label>Controls how values will be displayed on control pages, etc. These settings do not affect the underlying value of the data point.</Label>
             </Field>
 
@@ -4578,13 +4578,13 @@ file:///Users/username/Desktop/imagefile.png
                 <Description>Suppress Severe Weather Alerts:</Description>
             </Field>
 
-            <Field id="space11" type="label" fontSize="small" alignWithControl="True">
+            <Field id="space11" type="label" fontSize="small" alignWithControl="true">
                 <Label>If severe weather alert logging is enabled, checking this box will suppress alerts for this device only.</Label>
             </Field>
 
             <Field id="isWeatherDevice" type="checkbox" defaultValue="true" hidden="true"/>
 
-            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="True">
+            <Field id="deviceVersion" type="textfield" defaultValue="1" hidden="true">
             </Field>
 
         </ConfigUI>
