@@ -6,13 +6,17 @@ Menu Items are tested by referencing hidden Actions which have the same callback
 import dotenv
 import httpx
 import os
+import textwrap
 from tests.shared import APIBase # noqa
+from tests.shared.utils import run_host_script
 
 dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 GOOD_API_KEY = os.getenv("GOOD_API_KEY")
 PLUGIN_ID    = os.getenv("PLUGIN_ID")
 URL_PREFIX   = os.getenv("URL_PREFIX")
+LATITUDE = os.getenv("LATITUDE")
+LONGITUDE = os.getenv("LONGITUDE")
 
 
 def execute_action(action_id: str, msg: str = "test-plugin") -> bool | httpx.Response:
@@ -62,7 +66,7 @@ def execute_trigger(trigger_id: int, msg: str = "test-plugin") -> bool | httpx.R
         return False
 
 
-# ===================================== simpleeval.py =====================================
+# ===================================== Menu Items =====================================
 class TestMenuItems(APIBase):
     """Tests for plugin menu items.
 
@@ -169,3 +173,68 @@ class TestActions(APIBase):
                               "The refresh weather data action request failed with an exception.")
         self.assertEqual(result.status_code, 200,
                          f"The refresh weather data action call was not successful: {result.text}")
+
+# ===================================== Devices =====================================
+class TestDevices(APIBase):
+    """Tests for plugin devices defined in Devices.xml."""
+
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+    # ==================================== Astronomy Device ====================================
+    def test_astronomy_device_creation(self):
+        """Verify that an Astronomy device can be created and deleted via the Indigo API."""
+        plugin_id = f"'{PLUGIN_ID}'"
+        my_name   = "'fw_unit_test_astronomy_device'"
+        my_props  = {'latitude':        LATITUDE,
+                     'longitude':       LONGITUDE,
+                     'time_zone':       'time_here',
+                     'percentageUnits': '%',
+                     'isWeatherDevice': True}
+        host_script = textwrap.dedent(f"""\
+            try:
+                import time
+                indigo.device.create(protocol=indigo.kProtocol.Plugin,
+                    name={my_name},
+                    description='Unit test Astronomy device',
+                    pluginId={plugin_id},
+                    deviceTypeId='Astronomy',
+                    props={my_props},
+                    folder=1476713640
+                )
+                time.sleep(1)
+                return True
+            except:
+                return False
+        """)
+        run_host_script(host_script)
+        self.assertTrue(host_script, "Device creation successful.")
+
+        # Confirm the device was created
+        host_script = textwrap.dedent(f"""\
+            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
+                return True
+            else:
+                return False
+        """)
+        self.assertTrue(host_script, "Could not confirm the device was created.")
+
+        # Delete the test device
+        host_script = textwrap.dedent(f"""\
+            try:
+                indigo.device.delete({my_name})
+                return True
+            except:
+                return False
+        """)
+        run_host_script(host_script)
+        self.assertTrue(host_script, "Device deletion failed.")
+
+    # ====================================== Daily Device ======================================
+
+    # ===================================== Hourly Device ======================================
+
+    # ============================ Satellite Image Downloader Device ===========================
+
+    # ===================================== Weather Device =====================================
