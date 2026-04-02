@@ -12,11 +12,13 @@ from tests.shared.utils import run_host_script
 
 dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
-GOOD_API_KEY = os.getenv("GOOD_API_KEY")
-PLUGIN_ID    = os.getenv("PLUGIN_ID")
-URL_PREFIX   = os.getenv("URL_PREFIX")
-LATITUDE = os.getenv("LATITUDE")
-LONGITUDE = os.getenv("LONGITUDE")
+GOOD_API_KEY  = os.getenv("GOOD_API_KEY")
+PLUGIN_ID     = os.getenv("PLUGIN_ID")
+URL_PREFIX    = os.getenv("URL_PREFIX")
+LATITUDE      = os.getenv("LATITUDE")
+LONGITUDE     = os.getenv("LONGITUDE")
+IMAGE_URL     = os.getenv("IMAGE_URL")
+DEVICE_FOLDER = int(os.getenv("DEVICE_FOLDER", 0))
 
 
 def execute_action(action_id: str, msg: str = "test-plugin") -> bool | httpx.Response:
@@ -174,6 +176,7 @@ class TestActions(APIBase):
         self.assertEqual(result.status_code, 200,
                          f"The refresh weather data action call was not successful: {result.text}")
 
+
 # ===================================== Devices =====================================
 class TestDevices(APIBase):
     """Tests for plugin devices defined in Devices.xml."""
@@ -182,221 +185,119 @@ class TestDevices(APIBase):
     def setUpClass(cls):
         pass
 
+    @staticmethod
+    def payload(name: str = "", device_type_id: str = "", props: dict = None):
+        """Generate a payload for creating devices via the Indigo Web Server API."""
+        return textwrap.dedent(f"""\
+            try:
+                import time
+                indigo.device.create(protocol=indigo.kProtocol.Plugin,
+                    name={name},
+                    description='Fantastic Weather unit test device',
+                    pluginId={PLUGIN_ID},
+                    deviceTypeId='{device_type_id}',
+                    props={props},
+                    folder={DEVICE_FOLDER}
+                )
+                time.sleep(1)
+                return True
+            except:
+                return False
+        """)
+
+    @staticmethod
+    def confirm_creation(name: str = ""):
+        """Confirm the device was created"""
+        return textwrap.dedent(f"""\
+            if {name} in [dev.name for dev in indigo.devices.iter({PLUGIN_ID})]:
+                return True
+            else:
+                return False
+        """)
+
+    @staticmethod
+    def delete_device(name: str = ""):
+        """Delete the device via the Indigo Web Server API."""
+        return textwrap.dedent(f"""\
+                    try:
+                        indigo.device.delete({name})
+                        return True
+                    except:
+                        return False
+                """)
+
+    def create_and_delete_device(self, name: str, device_type_id: str, props: dict):
+        """Create a plugin device, confirm it exists, then delete it.
+
+        Args:
+            name (str): The quoted device name string passed to the host script.
+            device_type_id (str): The Indigo device type ID from Devices.xml.
+            props (dict): The device props dict passed to the host script.
+        """
+        host_script = self.payload(name, device_type_id, props)
+        run_host_script(host_script)
+        self.assertTrue(host_script, "Device creation successful.")
+
+        host_script = self.confirm_creation(name)
+        self.assertTrue(host_script, "Could not confirm the device was created.")
+
+        host_script = self.delete_device(name)
+        run_host_script(host_script)
+        self.assertTrue(host_script, "Device deletion failed.")
+
     # ==================================== Astronomy Device ====================================
     def test_astronomy_device_creation(self):
         """Verify that an Astronomy device can be created and deleted via the Indigo API."""
-        plugin_id = f"'{PLUGIN_ID}'"
-        my_name   = "'fw_unit_test_astronomy_device'"
         my_props  = {'latitude':        LATITUDE,
                      'longitude':       LONGITUDE,
                      'time_zone':       'time_here',
                      'percentageUnits': '%',
                      'isWeatherDevice': True}
-        host_script = textwrap.dedent(f"""\
-            try:
-                import time
-                indigo.device.create(protocol=indigo.kProtocol.Plugin,
-                    name={my_name},
-                    description='Unit test Astronomy device',
-                    pluginId={plugin_id},
-                    deviceTypeId='Astronomy',
-                    props={my_props},
-                    folder=1476713640
-                )
-                time.sleep(1)
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device creation successful.")
-
-        # Confirm the device was created
-        host_script = textwrap.dedent(f"""\
-            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
-                return True
-            else:
-                return False
-        """)
-        self.assertTrue(host_script, "Could not confirm the device was created.")
-
-        # Delete the test device
-        host_script = textwrap.dedent(f"""\
-            try:
-                indigo.device.delete({my_name})
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device deletion failed.")
+        self.create_and_delete_device("'fw_unit_test_astronomy_device'", 'Astronomy', my_props)
 
     # ====================================== Daily Device ======================================
-
     def test_daily_device_creation(self):
         """Verify that a Daily Forecast device can be created and deleted via the Indigo API."""
-        plugin_id = f"'{PLUGIN_ID}'"
-        my_name   = "'fw_unit_test_daily_device'"
-        my_props  = {'latitude':        LATITUDE,
-                     'longitude':       LONGITUDE,
-                     'distanceUnits':   ' mi.',
-                     'indexUnits':      ' ',
-                     'percentageUnits': '%',
-                     'pressureUnits':   ' mb',
-                     'rainAmountUnits': ' in.',
+        my_props  = {'latitude':         LATITUDE,
+                     'longitude':        LONGITUDE,
+                     'distanceUnits':    ' mi.',
+                     'indexUnits':       ' ',
+                     'percentageUnits':  '%',
+                     'pressureUnits':    ' mb',
+                     'rainAmountUnits':  ' in.',
                      'temperatureUnits': '°',
-                     'windUnits':       ' mph',
-                     'isWeatherDevice': True}
-        host_script = textwrap.dedent(f"""\
-            try:
-                import time
-                indigo.device.create(protocol=indigo.kProtocol.Plugin,
-                    name={my_name},
-                    description='Unit test Daily Forecast device',
-                    pluginId={plugin_id},
-                    deviceTypeId='Daily',
-                    props={my_props},
-                    folder=1476713640
-                )
-                time.sleep(1)
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device creation successful.")
-
-        # Confirm the device was created
-        host_script = textwrap.dedent(f"""\
-            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
-                return True
-            else:
-                return False
-        """)
-        self.assertTrue(host_script, "Could not confirm the device was created.")
-
-        # Delete the test device
-        host_script = textwrap.dedent(f"""\
-            try:
-                indigo.device.delete({my_name})
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device deletion failed.")
+                     'windUnits':        ' mph',
+                     'isWeatherDevice':  True}
+        self.create_and_delete_device("'fw_unit_test_daily_device'", 'Daily', my_props)
 
     # ===================================== Hourly Device ======================================
-
     def test_hourly_device_creation(self):
         """Verify that an Hourly Forecast device can be created and deleted via the Indigo API."""
-        plugin_id = f"'{PLUGIN_ID}'"
-        my_name   = "'fw_unit_test_hourly_device'"
-        my_props  = {'latitude':        LATITUDE,
-                     'longitude':       LONGITUDE,
-                     'time_zone':       'time_here',
-                     'ui_display':      '001',
-                     'distanceUnits':   ' mi.',
-                     'indexUnits':      ' ',
-                     'pressureUnits':   ' mb',
-                     'percentageUnits': '%',
-                     'rainUnits':       ' in.',
+        my_props  = {'latitude':         LATITUDE,
+                     'longitude':        LONGITUDE,
+                     'time_zone':        'time_here',
+                     'ui_display':       '001',
+                     'distanceUnits':    ' mi.',
+                     'indexUnits':       ' ',
+                     'pressureUnits':    ' mb',
+                     'percentageUnits':  '%',
+                     'rainUnits':        ' in.',
                      'temperatureUnits': '°',
-                     'windUnits':       ' mph',
-                     'isWeatherDevice': True}
-        host_script = textwrap.dedent(f"""\
-            try:
-                import time
-                indigo.device.create(protocol=indigo.kProtocol.Plugin,
-                    name={my_name},
-                    description='Unit test Hourly Forecast device',
-                    pluginId={plugin_id},
-                    deviceTypeId='Hourly',
-                    props={my_props},
-                    folder=1476713640
-                )
-                time.sleep(1)
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device creation successful.")
-
-        # Confirm the device was created
-        host_script = textwrap.dedent(f"""\
-            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
-                return True
-            else:
-                return False
-        """)
-        self.assertTrue(host_script, "Could not confirm the device was created.")
-
-        # Delete the test device
-        host_script = textwrap.dedent(f"""\
-            try:
-                indigo.device.delete({my_name})
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device deletion failed.")
+                     'windUnits':        ' mph',
+                     'isWeatherDevice':  True}
+        self.create_and_delete_device("'fw_unit_test_hourly_device'", 'Hourly', my_props)
 
     # ============================ Satellite Image Downloader Device ===========================
-
     def test_satellite_image_downloader_device_creation(self):
         """Verify that a Satellite Image Downloader device can be created and deleted via the Indigo API."""
-        plugin_id = f"'{PLUGIN_ID}'"
-        my_name   = "'fw_unit_test_satellite_device'"
-        my_props  = {'imageSourceLocation':      'http://www.url.com/imagefile.png',
+        my_props  = {'imageSourceLocation':      IMAGE_URL,
                      'imageDestinationLocation': '/tmp/fw_unit_test_image.png',
                      'isWeatherDevice':          False}
-        host_script = textwrap.dedent(f"""\
-            try:
-                import time
-                indigo.device.create(protocol=indigo.kProtocol.Plugin,
-                    name={my_name},
-                    description='Unit test Satellite Image Downloader device',
-                    pluginId={plugin_id},
-                    deviceTypeId='satelliteImageDownloader',
-                    props={my_props},
-                    folder=1476713640
-                )
-                time.sleep(1)
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device creation successful.")
-
-        # Confirm the device was created
-        host_script = textwrap.dedent(f"""\
-            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
-                return True
-            else:
-                return False
-        """)
-        self.assertTrue(host_script, "Could not confirm the device was created.")
-
-        # Delete the test device
-        host_script = textwrap.dedent(f"""\
-            try:
-                indigo.device.delete({my_name})
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device deletion failed.")
+        self.create_and_delete_device("'fw_unit_test_satellite_device'", 'satelliteImageDownloader', my_props)
 
     # ===================================== Weather Device =====================================
-
     def test_weather_device_creation(self):
         """Verify that a Weather device can be created and deleted via the Indigo API."""
-        plugin_id = f"'{PLUGIN_ID}'"
-        my_name   = "'fw_unit_test_weather_device'"
         my_props  = {'latitude':              LATITUDE,
                      'longitude':             LONGITUDE,
                      'time_zone':             'time_here',
@@ -409,41 +310,4 @@ class TestDevices(APIBase):
                      'windUnits':             ' mph',
                      'suppressWeatherAlerts': False,
                      'isWeatherDevice':       True}
-        host_script = textwrap.dedent(f"""\
-            try:
-                import time
-                indigo.device.create(protocol=indigo.kProtocol.Plugin,
-                    name={my_name},
-                    description='Unit test Weather device',
-                    pluginId={plugin_id},
-                    deviceTypeId='Weather',
-                    props={my_props},
-                    folder=1476713640
-                )
-                time.sleep(1)
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device creation successful.")
-
-        # Confirm the device was created
-        host_script = textwrap.dedent(f"""\
-            if {my_name} in [dev.name for dev in indigo.devices.iter({plugin_id})]:
-                return True
-            else:
-                return False
-        """)
-        self.assertTrue(host_script, "Could not confirm the device was created.")
-
-        # Delete the test device
-        host_script = textwrap.dedent(f"""\
-            try:
-                indigo.device.delete({my_name})
-                return True
-            except:
-                return False
-        """)
-        run_host_script(host_script)
-        self.assertTrue(host_script, "Device deletion failed.")
+        self.create_and_delete_device("'fw_unit_test_weather_device'", 'Weather', my_props)
