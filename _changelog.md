@@ -1,7 +1,13 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
 ### v2025.2.1
-- 
+- Fixes bug where `nextPoll` time was not updated correctly when a `ValueError` occurred during poll time parsing.
+- Fixes bug where trigger device ID was compared as a string instead of an integer, causing offline triggers to never fire.
+- Fixes bug where poll timestamps were updated inside the per-device exception handler, preventing updates when any device raised an error.
+- Fixes bug where moon phase name logic could append multiple or incorrect entries to the state list.
+- Fixes incorrect plugin prop key (`listOfDevices` → `list_of_devices`) in trigger handling.
+- Improves return type annotations for `validateDeviceConfigUi` and `validateEventConfigUi`.
+- Improves type hints for `ui_format_item_list_temperature` and `ui_format_rain` to accept `float` values.
 
 ### v2025.2.0
 - Changes email summary to html format.
