@@ -1,5 +1,9 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.2
+- Fixes bug where corrupted wind bearing data (`"--"`) caused a `ValueError` when parsing daily forecast device states.
+- Code cleanup.
+
 ### v2025.2.1
 - Fixes bug where `nextPoll` time was not updated correctly when a `ValueError` occurred during poll time parsing.
 - Fixes bug where trigger device ID was compared as a string instead of an integer, causing offline triggers to never fire.
@@ -10,14 +14,14 @@
 - Improves type hints for `ui_format_item_list_temperature` and `ui_format_rain` to accept `float` values.
 
 ### v2025.2.0
-- Changes email summary to html format.
+- Changes email summary to HTML format.
 
 ### v2025.1.2
-- Changes email summary to html format.
+- Changes email summary to HTML format.
 - Adds menu item to force summary emails to be sent. 
 - Code clean up.
 
-### v2022.0.6
+### v2022.0.6 [released]
 - Minor edit to Config UI dialog.
 - Fixes minor bug that appended pressure units to UV index in forecast emails.
 
@@ -36,7 +40,7 @@
 
 ### v2022.0.2
 - Updates documentation to latest API sunset date of 2023-03-31.
-- Adds `_to_do_list.md` and changes changelog to markdown.
+- Adds `_to_do_list.md` and changes changelog to Markdown.
 - Moves plugin environment logging to plugin menu item (log only on request).
 - Fixes bug in construction of forecast email body text.
 

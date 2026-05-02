@@ -63,7 +63,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.1"
+__version__   = "2025.2.2"
 
 
 # =============================================================================
@@ -987,7 +987,6 @@ class Plugin(indigo.PluginBase):
             # Load the JSON data from the file.
             try:
                 parsed_json = json.loads(json_string)
-                # parsed_json = json.loads(json_string, encoding="utf-8")
 
             except Exception:  # noqa
                 self.logger.error("Unable to decode data.", exc_info=True)
@@ -2013,7 +2012,7 @@ class Plugin(indigo.PluginBase):
                     daily_forecast_states_list.append(
                         {'key': f"d{fore_counter_text}_windBearing",
                          'value': wind_bearing,
-                         'uiValue': int(float(wind_bearing_ui))
+                         'uiValue': int(float(wind_bearing_ui)) if wind_bearing_ui != "--" else wind_bearing_ui
                          }
                     )
 
@@ -2497,7 +2496,7 @@ class Plugin(indigo.PluginBase):
                             if not self.inst_attr['comm_error']:
                                 self.logger.warning(
                                     f"{dev.name} cannot determine age of data. Skipping until next "
-                                    f"scheduled  poll."
+                                    f"scheduled poll."
                                 )
                             good_time = False
 
