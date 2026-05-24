@@ -39,7 +39,9 @@ located on GitHub: https://github.com/DaveL17/Fantastic-Weather/blob/master/LICE
 import datetime as dt
 import logging
 import json
+import os
 import textwrap
+import urllib.parse
 import time
 from typing import Any
 import pytz
@@ -63,7 +65,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.2"
+__version__   = "2025.2.3"
 
 
 # =============================================================================
@@ -404,21 +406,68 @@ class Plugin(indigo.PluginBase):
         # determine whether to run these tests.
         if values_dict['isWeatherDevice']:
 
-            # ================================= Latitude ==================================
+            # ===================================== Latitude =====================================
             try:
                 if not -90 <= float(values_dict['latitude']) <= 90:
                     error_msg_dict['latitude'] = "The latitude value must be between -90 and 90."
             except ValueError:
                 error_msg_dict['latitude'] = "The latitude value must be between -90 and 90."
 
-            # ================================= Longitude =================================
+            # ===================================== Longitude =====================================
             try:
                 if not -180 <= float(values_dict['longitude']) <= 180:
-                    error_msg_dict['longitude'] = (
-                        "The longitude value must be between -180 and 180."
-                    )
+                    error_msg_dict['longitude'] = "The longitude value must be between -180 and 180."
             except ValueError:
                 error_msg_dict['longitude'] = "The longitude value must be between -180 and 180."
+
+        # ===================================== Image Downloader =====================================
+        if type_id == "satelliteImageDownloader":
+            destination: str = values_dict['imageDestinationLocation']
+            dest_dir: str = os.path.dirname(destination)
+            source: str = values_dict['imageSourceLocation']
+
+            # ===================================== Image Source =====================================
+            if not source.strip():
+                error_msg_dict['imageSourceLocation'] = "The source location must not be empty."
+
+            else:
+                parsed = urllib.parse.urlparse(source)
+                is_url = parsed.scheme in ("http", "https", "ftp")
+                if is_url:
+                    # Only validate URL structure; do not attempt a connection check at config time.
+                    if not parsed.netloc:
+                        error_msg_dict['imageSourceLocation'] = (
+                            "The source URL does not appear to be valid (missing host)."
+                        )
+                else:
+                    # Treat as a local file path.
+                    if not os.path.isfile(source):
+                        error_msg_dict['imageSourceLocation'] = (
+                            f"The source '{source}' does not exist or is not a file."
+                        )
+
+            # ===================================== Image Destination =====================================
+            # The destination location must include a valid image file extension. We do not actually test the file when
+            # saving it.
+            if not destination.strip():
+                error_msg_dict['imageDestinationLocation'] = "The destination location must not be empty."
+
+            elif not destination.endswith((".gif", ".jpg", ".jpeg", ".png")):
+                error_msg_dict['imageDestinationLocation'] = (
+                    "The destination location must end with '.gif', '.jpg', '.jpeg', or '.png'"
+                )
+
+            # Check file path is valid (only when a non-empty destination was provided).
+            elif not os.path.isdir(dest_dir):
+                error_msg_dict['imageDestinationLocation'] = (
+                    f"The destination directory '{dest_dir}' does not exist."
+                )
+
+            # Confirm we have access to the save folder location.
+            elif not os.access(dest_dir, os.W_OK):
+                error_msg_dict['imageDestinationLocation'] = (
+                    f"The plugin does not have permission to write to '{dest_dir}'."
+                )
 
             if len(error_msg_dict) > 0:
                 return False, values_dict, error_msg_dict
@@ -878,10 +927,7 @@ class Plugin(indigo.PluginBase):
                 self.inst_attr['comm_error'] = False
                 return True
 
-            self.logger.error(
-                "The image destination must include one of these types (.gif, .jpg, .jpeg, "
-                ".png)"
-            )
+            self.logger.error("The image destination must include one of these types (.gif, .jpg, .jpeg, .png)")
             dev.updateStateOnServer('onOffState', value=False, uiValue="Bad Type")
             dev.updateStateImageOnServer(indigo.kStateImageSel.SensorOff)
             return False
@@ -940,7 +986,7 @@ class Plugin(indigo.PluginBase):
 
                     r.raise_for_status()
 
-                    # We convert the file to a json object below, so we don't use requests'
+                    # We convert the file to a JSON object below, so we don't use requests'
                     # built-in decoder.
                     json_string = r.text
                     self.inst_attr['comm_error'] = False

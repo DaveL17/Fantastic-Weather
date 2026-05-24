@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.3
+- Adds validation for satellite image downloader source and destination locations in device config UI.
+  - Source: checks for non-empty value; validates URL structure (no network check) or confirms local file exists.
+  - Destination: checks for non-empty value, valid image file extension, existing parent directory, and write permission.
+
 ### v2025.2.2
 - Fixes bug where corrupted wind bearing data (`"--"`) caused a `ValueError` when parsing daily forecast device states.
 - Code cleanup.
