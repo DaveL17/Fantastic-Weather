@@ -36,6 +36,7 @@ located on GitHub: https://github.com/DaveL17/Fantastic-Weather/blob/master/LICE
 # ================================== IMPORTS ==================================
 
 # Built-in modules
+import bisect
 import datetime as dt
 import logging
 import json
@@ -65,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.3"
+__version__   = "2025.2.4"
 
 
 # =============================================================================
@@ -726,20 +727,23 @@ class Plugin(indigo.PluginBase):
                 wind_name           = self.ui_format_wind_name(val=wind_bearing)
                 wind_speed          = int(round(self.nested_lookup(forecast_day, keys=('windSpeed',))))
 
-                # FIXME is this the best approach?  (to keep doing one-off T/E blocks? Shutting down ozone here
-                #   because it's not currently supported in the forecast day endpoint.
-                # # Adjust for when ozone is "Not available."
-                # try:
-                #     ozone = int(round(self.nested_lookup(forecast_day, keys=('ozone',))))
-                # except (ValueError, TypeError):
-                #     ozone = "Not available."
-
-                # FIXME is this the best approach?  (to keep doing one-off T/E blocks?
                 # Adjust for when precip intensity is "Not available."
                 try:
                     precip_total = precip_intensity * 24
                 except (ValueError, TypeError):
                     precip_total = "Not available."
+
+                # Add categories based on UV index value
+                # | 1 - 2 | 3 - 4 - 5 | 6 - 7 | 8 - 9 - 10 | 11+        |
+                # | Low   | Moderate  | High  | Very High  | Extreme    |
+                # | Safe  | Protection Needed | Extra Protection Needed |
+                index_thresholds = [3, 6, 8, 11]
+                index_categories = ["Low", "Moderate", "High", "Very High", "Extreme"]
+                uv_category = index_categories[bisect.bisect_right(index_thresholds, uv_index)]
+
+                action_thresholds = [3, 8]
+                action_categories = ["Safe", "Protection Needed", "Extra Protection Needed"]
+                action_category = action_categories[bisect.bisect_right(action_thresholds, uv_index)]
 
                 # Adjust for when Dark Sky doesn't send a defined precip type.
                 if not precip_type or precip_type.lower() in ("not available", "none"):
@@ -784,7 +788,7 @@ class Plugin(indigo.PluginBase):
                         </tr>
                         <tr>
                             <td style="padding-bottom: 3px; padding-left: 5px;">UV: 
-                            </td><td>{uv_index}</td>
+                            </td><td>{uv_category} - {action_category} ({uv_index})</td>
                         </tr>
                         <tr>
                             <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> 

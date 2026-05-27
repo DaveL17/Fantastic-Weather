@@ -1,5 +1,8 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.4
+- Adds UV index and action category states.
+
 ### v2025.2.3
 - Adds validation for satellite image downloader source and destination locations in device config UI.
   - Source: checks for non-empty value; validates URL structure (no network check) or confirms local file exists.
