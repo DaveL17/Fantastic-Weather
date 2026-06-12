@@ -1,9 +1,13 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.5
+- Guards UV index bisect lookup against non-numeric values returned by the API.
+- Strips whitespace from substituted forecast email address before sending.
+
 ### v2025.2.4
 - Adds UV index and action category states.
 
-### v2025.2.3
+### v2025.2.3 [released]
 - Adds validation for satellite image downloader source and destination locations in device config UI.
   - Source: checks for non-empty value; validates URL structure (no network check) or confirms local file exists.
   - Destination: checks for non-empty value, valid image file extension, existing parent directory, and write permission.

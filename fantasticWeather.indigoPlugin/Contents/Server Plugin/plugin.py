@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.4"
+__version__   = "2025.2.5"
 
 
 # =============================================================================
@@ -737,13 +737,17 @@ class Plugin(indigo.PluginBase):
                 # | 1 - 2 | 3 - 4 - 5 | 6 - 7 | 8 - 9 - 10 | 11+        |
                 # | Low   | Moderate  | High  | Very High  | Extreme    |
                 # | Safe  | Protection Needed | Extra Protection Needed |
-                index_thresholds = [3, 6, 8, 11]
-                index_categories = ["Low", "Moderate", "High", "Very High", "Extreme"]
-                uv_category = index_categories[bisect.bisect_right(index_thresholds, uv_index)]
+                if isinstance(uv_index, (int, float)):
+                    index_thresholds = [3, 6, 8, 11]
+                    index_categories = ["Low", "Moderate", "High", "Very High", "Extreme"]
+                    uv_category = index_categories[bisect.bisect_right(index_thresholds, uv_index)]
 
-                action_thresholds = [3, 8]
-                action_categories = ["Safe", "Protection Needed", "Extra Protection Needed"]
-                action_category = action_categories[bisect.bisect_right(action_thresholds, uv_index)]
+                    action_thresholds = [3, 8]
+                    action_categories = ["Safe", "Protection Needed", "Extra Protection Needed"]
+                    action_category = action_categories[bisect.bisect_right(action_thresholds, uv_index)]
+                else:
+                    uv_category = uv_index
+                    action_category = ""
 
                 # Adjust for when Dark Sky doesn't send a defined precip type.
                 if not precip_type or precip_type.lower() in ("not available", "none"):
@@ -788,7 +792,7 @@ class Plugin(indigo.PluginBase):
                         </tr>
                         <tr>
                             <td style="padding-bottom: 3px; padding-left: 5px;">UV: 
-                            </td><td>{uv_category} - {action_category} ({uv_index})</td>
+                            </td><td>{f"{uv_category} - {action_category} ({uv_index})" if action_category else uv_category}</td>
                         </tr>
                         <tr>
                             <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> 
@@ -809,7 +813,7 @@ class Plugin(indigo.PluginBase):
 
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
-                address = self.substitute(self.pluginPrefs['updaterEmail'])  # supports substitutions
+                address = self.substitute(self.pluginPrefs['updaterEmail']).strip()  # supports substitutions
                 if plugin.isEnabled():
                     plugin.executeAction(
                         "sendEmail",
