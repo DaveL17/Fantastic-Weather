@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.5"
+__version__   = "2025.2.6"
 
 
 # =============================================================================
@@ -722,6 +722,8 @@ class Plugin(indigo.PluginBase):
                 temperature_low     = int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',))))
                 uv_index            = self.nested_lookup(forecast_day, keys=('uvIndex',))
                 visibility          = self.nested_lookup(forecast_day, keys=('visibility',))
+                weather_data        = self.masterWeatherDict[location]
+                alerts_data         = self.nested_lookup(obj=weather_data, keys=('alerts',))
                 wind_bearing        = self.nested_lookup(forecast_day, keys=('windBearing',))
                 wind_gust           = int(round(self.nested_lookup(forecast_day, keys=('windGust',))))
                 wind_name           = self.ui_format_wind_name(val=wind_bearing)
@@ -753,6 +755,26 @@ class Plugin(indigo.PluginBase):
                 if not precip_type or precip_type.lower() in ("not available", "none"):
                     precip_type = "precipitation"
 
+                # Build the alerts section for the email body.
+                if alerts_data == "Not available" or not alerts_data:
+                    alerts_html = (
+                        '<tr>'
+                        '<td style="padding-bottom: 3px; padding-left: 5px;" colspan="2">No active alerts.</td>'
+                        '</tr>'
+                    )
+                else:
+                    alert_rows = []
+                    for _i, _alert in enumerate(alerts_data[:5], start=1):
+                        _title = _alert.get('title', 'Not provided.').strip()
+                        _description = _alert.get('description', 'Not provided.').strip().replace('\n', ' ')
+                        alert_rows.append(
+                            f'<tr>'
+                            f'<td style="padding-bottom: 3px; padding-left: 5px; vertical-align: top;">Alert {_i}:</td>'
+                            f'<td>{_title} &mdash; {_description}</td>'
+                            f'</tr>'
+                        )
+                    alerts_html = '\n                        '.join(alert_rows)
+
                 new_email_body = f'''
                     <table>
                         <tr style="padding-bottom: 3px;">
@@ -775,7 +797,7 @@ class Plugin(indigo.PluginBase):
                             <td>Chance of {precip_type}: {precip_probability}{dev.pluginProps.get('percentageUnits', '')}</td>
                         </tr>
                         <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Total Precip</td> 
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Total Precip:</td> 
                             <td>{precip_total if isinstance(precip_total, str) else f"{precip_total:.2f}"}{dev.pluginProps.get('rainAmountUnits', '')}</td>
                         </tr>
                         <tr>
@@ -795,9 +817,13 @@ class Plugin(indigo.PluginBase):
                             </td><td>{f"{uv_category} - {action_category} ({uv_index})" if action_category else uv_category}</td>
                         </tr>
                         <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td> 
+                            <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td>
                             <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td>
                         </tr>
+                        <tr style="padding-bottom: 3px;">
+                            <td colspan="2" style="border-bottom: solid 1px;">Alerts:</td>
+                        </tr>
+                        {alerts_html}
                         <tr style="padding-bottom: 3px;">
                             <td colspan="2" style="border-bottom: solid 1px;">{forecast_day_name} Forecast:</td></tr>
                         <tr>

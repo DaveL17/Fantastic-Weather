@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.6
+- Adds active weather alerts to the forecast summary email, placed between Visibility and the daily forecast.
+  - Displays an "Alerts" heading; lists each alert as "Alert N: [title] — [description]" with the label top-aligned.
+  - Shows "No active alerts." when no alerts are present.
+
 ### v2025.2.5
 - Guards UV index bisect lookup against non-numeric values returned by the API.
 - Strips whitespace from substituted forecast email address before sending.
