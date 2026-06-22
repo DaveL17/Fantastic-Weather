@@ -1,5 +1,8 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.7
+- Wraps forecast email send in a try/except; logs a warning and returns early on failure (e.g. no network connection) so the email-sent state and timestamp are not marked as successful.
+
 ### v2025.2.6
 - Adds active weather alerts to the forecast summary email, placed between Visibility and the daily forecast.
   - Displays an "Alerts" heading; lists each alert as "Alert N: [title] — [description]" with the label top-aligned.

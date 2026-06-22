@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.6"
+__version__   = "2025.2.7"
 
 
 # =============================================================================
@@ -841,16 +841,20 @@ class Plugin(indigo.PluginBase):
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
                 address = self.substitute(self.pluginPrefs['updaterEmail']).strip()  # supports substitutions
                 if plugin.isEnabled():
-                    plugin.executeAction(
-                        "sendEmail",
-                        deviceId=int(self.pluginPrefs['EmailDevice']),
-                        props={
-                            "emailTo": address,
-                            "emailSubject": "Daily Weather Summary",
-                            'emailFormat': 'html',
-                            "emailMessage": new_email_body,
-                        },
-                    )
+                    try:
+                        plugin.executeAction(
+                            "sendEmail",
+                            deviceId=int(self.pluginPrefs['EmailDevice']),
+                            props={
+                                "emailTo": address,
+                                "emailSubject": "Daily Weather Summary",
+                                'emailFormat': 'html',
+                                "emailMessage": new_email_body,
+                            },
+                        )
+                    except Exception as err:
+                        self.logger.warning(f"Unable to send forecast email: {err}")
+                        return
                     dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
 
                     # Set email sent date
