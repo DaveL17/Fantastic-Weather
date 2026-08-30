@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.9"
+__version__   = "2025.2.10"
 
 
 # =============================================================================
@@ -811,11 +811,10 @@ class Plugin(indigo.PluginBase):
                     _border = "none" if _idx == 0 else "1px solid #2c2c2e"
                     stat_rows.append(
                         "<tr>"
-                        f'<td style="padding:10px 16px;border-top:{_border};font-size:12px;'
-                        f'color:#8e8e93 !important;font-family:{font};">{_label}</td>'
-                        f'<td style="padding:10px 16px;border-top:{_border};font-size:14px;'
-                        f'font-weight:500;color:#f2f2f7 !important;text-align:right;'
-                        f'font-family:{font};">{_value}</td>'
+                        f'<td style="padding:10px 16px;border-top:{_border};font-family:{font};">'
+                        f'<div style="font-size:12px;color:#8e8e93 !important;margin-bottom:2px;">{_label}</div>'
+                        f'<div style="font-size:14px;font-weight:500;color:#f2f2f7 !important;">{_value}</div>'
+                        "</td>"
                         "</tr>"
                     )
                 stat_rows_html = "".join(stat_rows)
@@ -870,7 +869,7 @@ class Plugin(indigo.PluginBase):
 
   <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
     <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
-      <tr><td colspan="2" style="{card_title_style}">Current Conditions</td></tr>
+      <tr><td style="{card_title_style}">Current Conditions</td></tr>
       {stat_rows_html}
     </table>
   </div>

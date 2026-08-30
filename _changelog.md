@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.10
+- Changes the "Current Conditions" card in the forecast summary email from a two-column 
+  label/value layout to a single-column row (label on the first line, value on the second), 
+  matching the 39 LMT "Upcoming Events" card style.
+
 ### v2025.2.9
 - Fixes bug where the "Send Weather Emails" menu item raised a `KeyError` and silently failed 
   (no log output) when a device's location hadn't yet been fetched into `masterWeatherDict` in 
