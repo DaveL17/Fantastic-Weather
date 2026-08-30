@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.8"
+__version__   = "2025.2.9"
 
 
 # =============================================================================
@@ -673,6 +673,14 @@ class Plugin(indigo.PluginBase):
         """
         try:
             location       = (dev.pluginProps['latitude'], dev.pluginProps['longitude'])
+
+            # A manual/forced send can arrive before this device's location has been fetched
+            # in the current poll cycle (masterWeatherDict is cleared at the start of each
+            # cycle in refresh_weather_data()). get_weather_data() is a no-op if the location
+            # is already present, so this only fetches when actually needed.
+            if location not in self.masterWeatherDict:
+                self.get_weather_data(dev)
+
             forecast_day   = self.masterWeatherDict[location]['daily']['data'][0]
             summary_wanted = dev.pluginProps.get('weatherSummaryEmail', '')
             summary_sent   = dev.states.get('weatherSummaryEmailSent', False)
@@ -927,7 +935,7 @@ class Plugin(indigo.PluginBase):
                     dev.updateStateOnServer('weatherSummaryEmailTimestamp', timestamp)
 
         except (KeyError, IndexError):
-            self.logger.debug(f"Unable to compile forecast data for {dev.name}.", exc_info=True)
+            self.logger.warning(f"Unable to compile forecast data for {dev.name}.", exc_info=True)
             dev.updateStateOnServer('weatherSummaryEmailSent', value=True, uiValue="Err")
 
         except Exception:  # noqa

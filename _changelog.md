@@ -1,5 +1,12 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.9
+- Fixes bug where the "Send Weather Emails" menu item raised a `KeyError` and silently failed 
+  (no log output) when a device's location hadn't yet been fetched into `masterWeatherDict` in 
+  the current poll cycle. `email_forecast()` now fetches the location's data on demand if needed.
+- Raises the forecast-data-compile failure log from debug to warning so future failures are 
+  visible in the Events log instead of silently swallowed.
+
 ### v2025.2.8
 - Restyles the forecast summary email as dark-themed cards (Current Conditions, Alerts with a count badge, 
   daily and long-range forecast), forcing dark rendering via inline colors and color-scheme meta tags.
