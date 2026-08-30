@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.7"
+__version__   = "2025.2.8"
 
 
 # =============================================================================
@@ -755,87 +755,151 @@ class Plugin(indigo.PluginBase):
                 if not precip_type or precip_type.lower() in ("not available", "none"):
                     precip_type = "precipitation"
 
-                # Build the alerts section for the email body.
+                # Dark Card style guide tokens (see ~/.claude/STYLE_GUIDE.md).
+                font = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
+                card_title_style = (
+                    f"padding:12px 16px;background-color:#2c2c2e !important;"
+                    f"border-bottom:1px solid #3a3a3c;font-family:{font};"
+                    f"font-size:15px;font-weight:600;color:#f2f2f7 !important;"
+                )
+                text_row_style = (
+                    f"padding:10px 16px;font-size:14px;line-height:1.45;"
+                    f"color:#f2f2f7 !important;font-family:{font};"
+                )
+
+                # Build the stat rows for the "Current Conditions" card.
+                stats = [
+                    ("High", f"{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}"),
+                    ("Low", f"{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}"),
+                    ("Humidity", f"{humidity}%"),
+                    (
+                        "Precip",
+                        f"Chance of {precip_type}: "
+                        f"{precip_probability}{dev.pluginProps.get('percentageUnits', '')}",
+                    ),
+                    (
+                        "Total Precip",
+                        f"{precip_total if isinstance(precip_total, str) else f'{precip_total:.2f}'}"
+                        f"{dev.pluginProps.get('rainAmountUnits', '')}",
+                    ),
+                    (
+                        "Winds",
+                        f"Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} "
+                        f"&mdash; gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}",
+                    ),
+                    ("Clouds", f"{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}"),
+                    ("Pressure", f"{pressure}{dev.pluginProps.get('pressureUnits', '')}"),
+                    (
+                        "UV",
+                        f"{uv_category} - {action_category} ({uv_index})" if action_category else str(uv_category),
+                    ),
+                    (
+                        "Visibility",
+                        f"{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}",
+                    ),
+                ]
+                stat_rows = []
+                for _idx, (_label, _value) in enumerate(stats):
+                    _border = "none" if _idx == 0 else "1px solid #2c2c2e"
+                    stat_rows.append(
+                        "<tr>"
+                        f'<td style="padding:10px 16px;border-top:{_border};font-size:12px;'
+                        f'color:#8e8e93 !important;font-family:{font};">{_label}</td>'
+                        f'<td style="padding:10px 16px;border-top:{_border};font-size:14px;'
+                        f'font-weight:500;color:#f2f2f7 !important;text-align:right;'
+                        f'font-family:{font};">{_value}</td>'
+                        "</tr>"
+                    )
+                stat_rows_html = "".join(stat_rows)
+
+                # Build the alerts section and badge for the "Alerts" card.
                 if alerts_data == "Not available" or not alerts_data:
+                    alert_count = 0
                     alerts_html = (
-                        '<tr>'
-                        '<td style="padding-bottom: 3px; padding-left: 5px;" colspan="2">No active alerts.</td>'
-                        '</tr>'
+                        "<tr>"
+                        f'<td colspan="2" style="padding:10px 16px;font-size:14px;font-style:italic;'
+                        f'color:#98989d !important;font-family:{font};">No active alerts.</td>'
+                        "</tr>"
                     )
                 else:
+                    alert_count = len(alerts_data)
                     alert_rows = []
-                    for _i, _alert in enumerate(alerts_data[:5], start=1):
+                    for _alert in alerts_data[:5]:
                         _title = _alert.get('title', 'Not provided.').strip()
                         _description = _alert.get('description', 'Not provided.').strip().replace('\n', ' ')
                         alert_rows.append(
-                            f'<tr>'
-                            f'<td style="padding-bottom: 3px; padding-left: 5px; vertical-align: top;">Alert {_i}:</td>'
-                            f'<td>{_title} &mdash; {_description}</td>'
-                            f'</tr>'
+                            "<tr>"
+                            f'<td colspan="2" style="padding:10px 16px;border-top:1px solid #2c2c2e;'
+                            f'border-left:3px solid #ff9f0a;background-color:#2a2114 !important;'
+                            f'font-family:{font};">'
+                            f'<div style="font-size:14px;font-weight:600;color:#f2f2f7 !important;">{_title}</div>'
+                            f'<div style="font-size:12px;line-height:1.45;color:#98989d !important;'
+                            f'margin-top:2px;">{_description}</div>'
+                            "</td>"
+                            "</tr>"
                         )
-                    alerts_html = '\n                        '.join(alert_rows)
+                    alerts_html = "".join(alert_rows)
 
-                new_email_body = f'''
-                    <table>
-                        <tr style="padding-bottom: 3px;">
-                            <td colspan="2" style="border-bottom: solid 1px;">{dev.name}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">High: </td>       
-                            <td>{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Low: </td>        
-                            <td>{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Humidity: </td>   
-                            <td>{humidity}%</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Precip: </td>     
-                            <td>Chance of {precip_type}: {precip_probability}{dev.pluginProps.get('percentageUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Total Precip:</td> 
-                            <td>{precip_total if isinstance(precip_total, str) else f"{precip_total:.2f}"}{dev.pluginProps.get('rainAmountUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Winds: </td>      
-                            <td>Out of the {wind_name} at {wind_speed} {dev.pluginProps.get('windUnits', '')} -- gusting to {wind_gust} {dev.pluginProps.get('windUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Clouds: </td>     
-                            <td>{cloud_cover}{dev.pluginProps.get('percentageUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Pressure: </td>   
-                            <td>{pressure}{dev.pluginProps.get('pressureUnits', '')}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">UV: 
-                            </td><td>{f"{uv_category} - {action_category} ({uv_index})" if action_category else uv_category}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 3px; padding-left: 5px;">Visibility: </td>
-                            <td>{round(float(visibility) * 4) / 4:0.2f}{dev.pluginProps.get('distanceUnits', '')}</td>
-                        </tr>
-                        <tr style="padding-bottom: 3px;">
-                            <td colspan="2" style="border-bottom: solid 1px;">Alerts:</td>
-                        </tr>
-                        {alerts_html}
-                        <tr style="padding-bottom: 3px;">
-                            <td colspan="2" style="border-bottom: solid 1px;">{forecast_day_name} Forecast:</td></tr>
-                        <tr>
-                            <td colspan="2" style="padding-bottom: 3px; padding-left: 5px;">{summary}</td>
-                        </tr>
-                        <tr style="padding-bottom: 3px;">
-                            <td colspan="2" style="border-bottom: solid 1px;">Long Range Forecast:</td></tr>
-                        <tr>
-                            <td colspan="2" style="padding-bottom: 3px; padding-left: 5px;">{long_range_forecast}</td>
-                        </tr>
-                    </table>
-                '''
+                badge_style = (
+                    "background-color:#3a1414 !important;color:#ff453a !important;"
+                    if alert_count
+                    else "background-color:#123420 !important;color:#30d158 !important;"
+                )
+
+                new_email_body = f'''<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+</head>
+<body style="margin:0;padding:0;background-color:#000000 !important;">
+<div style="max-width:640px;margin:0 auto;">
+  <div style="padding:24px 20px 4px;font-family:{font};">
+    <div style="font-size:22px;font-weight:700;color:#f2f2f7 !important;">Daily Weather Summary</div>
+    <div style="font-size:14px;color:#98989d !important;margin-top:4px;">{dev.name} &middot; {forecast_day_name}</div>
+  </div>
+
+  <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
+    <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      <tr><td colspan="2" style="{card_title_style}">Current Conditions</td></tr>
+      {stat_rows_html}
+    </table>
+  </div>
+
+  <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
+    <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      <tr>
+        <td style="{card_title_style}">Alerts</td>
+        <td style="{card_title_style}text-align:right;">
+          <span style="display:inline-block;min-width:20px;padding:2px 9px;border-radius:12px;
+            font-size:12px;font-weight:700;font-family:{font};{badge_style}">{alert_count}</span>
+        </td>
+      </tr>
+      {alerts_html}
+    </table>
+  </div>
+
+  <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
+    <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      <tr><td colspan="2" style="{card_title_style}">{forecast_day_name} Forecast</td></tr>
+      <tr><td colspan="2" style="{text_row_style}">{summary}</td></tr>
+    </table>
+  </div>
+
+  <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
+    <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+      <tr><td colspan="2" style="{card_title_style}">Long Range Forecast</td></tr>
+      <tr><td colspan="2" style="{text_row_style}">{long_range_forecast}</td></tr>
+    </table>
+  </div>
+
+  <div style="padding:8px 20px 28px;text-align:center;font-size:11px;color:#636366 !important;
+    font-family:{font};">Fantastic Weather Plugin</div>
+</div>
+</body>
+</html>
+'''
 
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
