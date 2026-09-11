@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.11
+- Simplifies the forecast summary email header: replaces the "Daily Weather Summary" heading and 
+  "Fantastic Daily [day]" subheading with a single heading showing the day name, and renames the 
+  "[day] Forecast" card title to "Today's Forecast".
+
 ### v2025.2.10
 - Changes the "Current Conditions" card in the forecast summary email from a two-column 
   label/value layout to a single-column row (label on the first line, value on the second), 

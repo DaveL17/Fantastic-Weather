@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.10"
+__version__   = "2025.2.11"
 
 
 # =============================================================================
@@ -863,8 +863,7 @@ class Plugin(indigo.PluginBase):
 <body style="margin:0;padding:0;background-color:#000000 !important;">
 <div style="max-width:640px;margin:0 auto;">
   <div style="padding:24px 20px 4px;font-family:{font};">
-    <div style="font-size:22px;font-weight:700;color:#f2f2f7 !important;">Daily Weather Summary</div>
-    <div style="font-size:14px;color:#98989d !important;margin-top:4px;">{dev.name} &middot; {forecast_day_name}</div>
+    <div style="font-size:22px;font-weight:700;color:#f2f2f7 !important;">{forecast_day_name}</div>
   </div>
 
   <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
@@ -889,7 +888,7 @@ class Plugin(indigo.PluginBase):
 
   <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
     <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
-      <tr><td colspan="2" style="{card_title_style}">{forecast_day_name} Forecast</td></tr>
+      <tr><td colspan="2" style="{card_title_style}">Today's Forecast</td></tr>
       <tr><td colspan="2" style="{text_row_style}">{summary}</td></tr>
     </table>
   </div>
