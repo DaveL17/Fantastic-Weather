@@ -1,5 +1,9 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.12
+- Changes the forecast summary email footer text from "Fantastic Weather Plugin" to 
+  "Fantastic Weather for Indigo".
+
 ### v2025.2.11
 - Simplifies the forecast summary email header: replaces the "Daily Weather Summary" heading and 
   "Fantastic Daily [day]" subheading with a single heading showing the day name, and renames the 

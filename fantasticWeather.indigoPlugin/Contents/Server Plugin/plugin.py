@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.11"
+__version__   = "2025.2.12"
 
 
 # =============================================================================
@@ -901,7 +901,7 @@ class Plugin(indigo.PluginBase):
   </div>
 
   <div style="padding:8px 20px 28px;text-align:center;font-size:11px;color:#636366 !important;
-    font-family:{font};">Fantastic Weather Plugin</div>
+    font-family:{font};">Fantastic Weather for Indigo</div>
 </div>
 </body>
 </html>
