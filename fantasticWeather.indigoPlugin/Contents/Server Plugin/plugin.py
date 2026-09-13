@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.12"
+__version__   = "2025.2.13"
 
 
 # =============================================================================
@@ -717,8 +717,6 @@ class Plugin(indigo.PluginBase):
             # If an email summary is wanted but not yet sent, and we have reached the desired time of day.
             if summary_wanted and not summary_sent and dt.datetime.now().hour >= summary_time.hour or force:
                 cloud_cover         = int(self.nested_lookup(forecast_day, keys=('cloudCover',)) * 100)
-                forecast_time       = self.nested_lookup(forecast_day, keys=('time',))
-                forecast_day_name   = time.strftime('%A', time.localtime(float(forecast_time)))
                 humidity            = int(self.nested_lookup(forecast_day, keys=('humidity',)) * 100)
                 long_range_forecast = self.masterWeatherDict[location]['daily'].get('summary', 'Not available.')
                 precip_intensity    = self.nested_lookup(forecast_day, keys=('precipIntensity',))
@@ -775,7 +773,7 @@ class Plugin(indigo.PluginBase):
                     f"color:#f2f2f7 !important;font-family:{font};"
                 )
 
-                # Build the stat rows for the "Current Conditions" card.
+                # Build the stat rows for the "Today" card.
                 stats = [
                     ("High", f"{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}"),
                     ("Low", f"{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}"),
@@ -862,13 +860,10 @@ class Plugin(indigo.PluginBase):
 </head>
 <body style="margin:0;padding:0;background-color:#000000 !important;">
 <div style="max-width:640px;margin:0 auto;">
-  <div style="padding:24px 20px 4px;font-family:{font};">
-    <div style="font-size:22px;font-weight:700;color:#f2f2f7 !important;">{forecast_day_name}</div>
-  </div>
-
   <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
     <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
-      <tr><td style="{card_title_style}">Current Conditions</td></tr>
+      <tr><td colspan="2" style="{card_title_style}">Today</td></tr>
+      <tr><td colspan="2" style="{text_row_style}">{summary}</td></tr>
       {stat_rows_html}
     </table>
   </div>
@@ -883,13 +878,6 @@ class Plugin(indigo.PluginBase):
         </td>
       </tr>
       {alerts_html}
-    </table>
-  </div>
-
-  <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
-    <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
-      <tr><td colspan="2" style="{card_title_style}">Today's Forecast</td></tr>
-      <tr><td colspan="2" style="{text_row_style}">{summary}</td></tr>
     </table>
   </div>
 

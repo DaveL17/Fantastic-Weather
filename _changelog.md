@@ -1,5 +1,10 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.13
+- Removes the day-name heading above the forecast summary email cards, renames the "Current 
+  Conditions" card to "Today", and moves the forecast summary text into the "Today" card, above 
+  the high/low temperature and other stat rows.
+
 ### v2025.2.12
 - Changes the forecast summary email footer text from "Fantastic Weather Plugin" to 
   "Fantastic Weather for Indigo".
