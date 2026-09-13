@@ -1,6 +1,6 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
-### v2025.2.13
+### v2025.2.13 [released]
 - Removes the day-name heading above the forecast summary email cards, renames the "Current 
   Conditions" card to "Today", and moves the forecast summary text into the "Today" card, above 
   the high/low temperature and other stat rows.
@@ -16,8 +16,7 @@
 
 ### v2025.2.10
 - Changes the "Current Conditions" card in the forecast summary email from a two-column 
-  label/value layout to a single-column row (label on the first line, value on the second), 
-  matching the 39 LMT "Upcoming Events" card style.
+  label/value layout to a single-column row (label on the first line, value on the second).
 
 ### v2025.2.9
 - Fixes bug where the "Send Weather Emails" menu item raised a `KeyError` and silently failed 
