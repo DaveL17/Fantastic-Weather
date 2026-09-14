@@ -2,7 +2,7 @@
 # ![shield](https://img.shields.io/github/release/DaveL17/Fantastic-Weather.svg) ![indigo-version](https://img.shields.io/badge/Indigo-2022.1+-blueviolet.svg) ![python-version](https://img.shields.io/badge/Python-3.10-darkgreen.svg)
 
 The Fantastic Weather plugin allows users to create weather devices for Indigo by  providing a bridge between the Dark 
-Sky API service and Indigo.
+Sky API service and Indigo. Changes may still be made to the plugin from time to time, but use the plugin at your own risk.
 
 > [!Warning]
 > **Dark Sky has been acquired by Apple and the API is no longer supported. Support of the Fantastic Weather Plugin is 
