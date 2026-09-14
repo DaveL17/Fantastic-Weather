@@ -1,5 +1,11 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.14
+- Restores the spacer div above the forecast summary email "Today" card that was dropped in 
+  v2025.2.13, fixing the card crashing into the email subject line.
+- Adds an optional "Site Name" field to the Daily Forecast device configuration; when set, its 
+  value is displayed at the top of the forecast summary email.
+
 ### v2025.2.13 [released]
 - Removes the day-name heading above the forecast summary email cards, renames the "Current 
   Conditions" card to "Today", and moves the forecast summary text into the "Today" card, above 

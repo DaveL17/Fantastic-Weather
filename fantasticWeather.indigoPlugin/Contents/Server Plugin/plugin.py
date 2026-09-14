@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.13"
+__version__   = "2025.2.14"
 
 
 # =============================================================================
@@ -763,6 +763,7 @@ class Plugin(indigo.PluginBase):
 
                 # Dark Card style guide tokens (see ~/.claude/STYLE_GUIDE.md).
                 font = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
+                site_name = dev.pluginProps.get('forecast_site_name', '')
                 card_title_style = (
                     f"padding:12px 16px;background-color:#2c2c2e !important;"
                     f"border-bottom:1px solid #3a3a3c;font-family:{font};"
@@ -860,6 +861,8 @@ class Plugin(indigo.PluginBase):
 </head>
 <body style="margin:0;padding:0;background-color:#000000 !important;">
 <div style="max-width:640px;margin:0 auto;">
+  <div style="padding:24px 20px 4px;font-family:{font};font-size:14px;color:#98989d !important;">{site_name}</div>
+
   <div style="margin:16px 20px;border-radius:14px;overflow:hidden;background-color:#1c1c1e !important;">
     <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
       <tr><td colspan="2" style="{card_title_style}">Today</td></tr>

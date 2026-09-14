@@ -141,6 +141,11 @@
                 <Label>Daily Information</Label>
             </Field>
 
+            <Field id="forecast_site_name" type="textfield" defaultValue=""
+                   tooltip="Optional. Enter a site name to display at the top of the daily forecast summary email.">
+                <Label>Site Name:</Label>
+            </Field>
+
             <Field id="latitude" type="textfield" defaultValue="0"
                    tooltip="Please enter the desired latitude information for this device. It must follow the format of the examples below.">
                 <Label>Latitude:</Label>
