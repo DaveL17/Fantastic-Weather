@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.14"
+__version__   = "2025.2.15"
 
 
 # =============================================================================
@@ -564,6 +564,26 @@ class Plugin(indigo.PluginBase):
             except ValueError:
                 error_msg_dict['callCounter'] = "The call counter can only contain integers."
 
+        # Test forecast email settings, but only if forecast emails are enabled.
+        if values_dict.get('updaterEmailsEnabled', False):
+            updater_email_config = values_dict.get('updaterEmail', '').strip()
+            email_device_config = values_dict.get('EmailDevice', '')
+
+            if len(updater_email_config) == 0:
+                error_msg_dict['updaterEmail'] = (
+                    "Please enter an email address to receive forecast emails, or disable forecast emails."
+                )
+            elif '@' not in updater_email_config and '%%' not in updater_email_config:
+                error_msg_dict['updaterEmail'] = "Please enter a valid email address."
+
+            try:
+                if not email_device_config or int(email_device_config) not in indigo.devices:
+                    error_msg_dict['EmailDevice'] = (
+                        "Please select a valid Email+ device to send forecast emails."
+                    )
+            except ValueError:
+                error_msg_dict['EmailDevice'] = "Please select a valid Email+ device to send forecast emails."
+
         if len(error_msg_dict) > 0:
             error_msg_dict['showAlertText'] = (
                 "Configuration Errors\n\nThere are one or more settings that need to be corrected. "
@@ -901,11 +921,32 @@ class Plugin(indigo.PluginBase):
                 # Send the message
                 plugin = indigo.server.getPlugin("com.indigodomo.email")
                 address = self.substitute(self.pluginPrefs['updaterEmail']).strip()  # supports substitutions
+
+                if not address:
+                    self.logger.warning(
+                        "Unable to send forecast email: no recipient address is configured. Enter an "
+                        "email address on the plugin's Configure dialog."
+                    )
+                    return
+
+                email_device_id = self.pluginPrefs.get('EmailDevice', '')
+                try:
+                    email_device_valid = bool(email_device_id) and int(email_device_id) in indigo.devices
+                except ValueError:
+                    email_device_valid = False
+
+                if not email_device_valid:
+                    self.logger.warning(
+                        "Unable to send forecast email: no valid Email+ device is configured. Select an "
+                        "Email+ device on the plugin's Configure dialog."
+                    )
+                    return
+
                 if plugin.isEnabled():
                     try:
                         plugin.executeAction(
                             "sendEmail",
-                            deviceId=int(self.pluginPrefs['EmailDevice']),
+                            deviceId=int(email_device_id),
                             props={
                                 "emailTo": address,
                                 "emailSubject": "Daily Weather Summary",
@@ -913,8 +954,8 @@ class Plugin(indigo.PluginBase):
                                 "emailMessage": new_email_body,
                             },
                         )
-                    except Exception as err:
-                        self.logger.warning(f"Unable to send forecast email: {err}")
+                    except Exception:  # noqa
+                        self.logger.warning("Unable to send forecast email.", exc_info=True)
                         return
                     dev.updateStateOnServer('weatherSummaryEmailSent', value=True)
 

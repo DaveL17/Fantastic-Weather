@@ -1,5 +1,14 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.15
+- Fixes a bug where a forecast email send failure logged a masked "unable to convert python 
+  exception" warning instead of the real error; the underlying exception is now logged with 
+  its full traceback like the rest of the plugin's error handlers.
+- Adds validation for the Daily Forecast email settings: the Configure dialog now requires a 
+  recipient address and a valid Email+ device when forecast emails are enabled, and 
+  email_forecast() now checks for a missing/invalid Email+ device or empty recipient at send 
+  time and logs a clear, specific warning instead of relying on the exception path.
+
 ### v2025.2.14
 - Restores the spacer div above the forecast summary email "Today" card that was dropped in 
   v2025.2.13, fixing the card crashing into the email subject line.
