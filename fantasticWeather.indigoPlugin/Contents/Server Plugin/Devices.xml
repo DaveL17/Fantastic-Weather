@@ -4462,7 +4462,7 @@ plugin updates within the plugin settings dialog.</Label>
             <SupportURL>https://github.com/DaveL17/Fantastic-Weather/wiki/devices</SupportURL>
 
             <Field id="space00" type="label" fontSize="small">
-                <Label>The image downloader only supports gif, jpg, jpeg, and png extensions. There is no limit to the number of downloader devices you can have.</Label>
+                <Label>The image downloader only supports GIF, JPG, JPEG, and PG extensions. There is no limit to the number of downloader devices you can have.</Label>
             </Field>
 
             <Field id="space01" type="label"/>
