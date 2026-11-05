@@ -1,5 +1,11 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.16
+- Adds `temperatureHighTime` and `temperatureLowTime` states for each day of the Daily Forecast device, showing the
+  time of day the forecast high and low occur in the location's timezone.
+- Adds those times to the High and Low rows of the forecast summary email. The low is the overnight low (6:01 pm to
+  6:00 am), so the email adds "tomorrow" when its time falls on the following day.
+
 ### v2025.2.15
 - Fixes a bug where a forecast email send failure logged a masked "unable to convert python 
   exception" warning instead of the real error; the underlying exception is now logged with 

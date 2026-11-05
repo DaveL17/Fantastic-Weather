@@ -966,6 +966,58 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Separator</ValueType>
             </State>
 
+            <State id="d01_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 1</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 2</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 3</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 4</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 5</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 6</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 7</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_temperatureHighTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (High) Time - Day 8</TriggerLabel>
+                <ControlPageLabel>Temperature (High) Time - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
             <State id="d01_temperatureLow">
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Temperature (Low) - Day 1</TriggerLabel>
@@ -1012,6 +1064,58 @@ plugin updates within the plugin settings dialog.</Label>
                 <ValueType>Float</ValueType>
                 <TriggerLabel>Temperature (Low) - Day 8</TriggerLabel>
                 <ControlPageLabel>Temperature (Low) - Day 8</ControlPageLabel>
+            </State>
+
+            <State id="separator">
+                <ValueType>Separator</ValueType>
+            </State>
+
+            <State id="d01_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 1</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 1</ControlPageLabel>
+            </State>
+
+            <State id="d02_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 2</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 2</ControlPageLabel>
+            </State>
+
+            <State id="d03_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 3</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 3</ControlPageLabel>
+            </State>
+
+            <State id="d04_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 4</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 4</ControlPageLabel>
+            </State>
+
+            <State id="d05_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 5</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 5</ControlPageLabel>
+            </State>
+
+            <State id="d06_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 6</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 6</ControlPageLabel>
+            </State>
+
+            <State id="d07_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 7</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 7</ControlPageLabel>
+            </State>
+
+            <State id="d08_temperatureLowTime">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Temperature (Low) Time - Day 8</TriggerLabel>
+                <ControlPageLabel>Temperature (Low) Time - Day 8</ControlPageLabel>
             </State>
 
             <State id="separator">

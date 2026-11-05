@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.15"
+__version__   = "2025.2.16"
 
 
 # =============================================================================
@@ -745,7 +745,9 @@ class Plugin(indigo.PluginBase):
                 pressure            = int(round(self.nested_lookup(forecast_day, keys=('pressure',))))
                 summary             = self.nested_lookup(forecast_day, keys=('summary',))
                 temperature_high    = int(round(self.nested_lookup(forecast_day, keys=('temperatureHigh',))))
+                temperature_high_time = self.nested_lookup(forecast_day, keys=('temperatureHighTime',))
                 temperature_low     = int(round(self.nested_lookup(forecast_day, keys=('temperatureLow',))))
+                temperature_low_time = self.nested_lookup(forecast_day, keys=('temperatureLowTime',))
                 uv_index            = self.nested_lookup(forecast_day, keys=('uvIndex',))
                 visibility          = self.nested_lookup(forecast_day, keys=('visibility',))
                 weather_data        = self.masterWeatherDict[location]
@@ -781,6 +783,19 @@ class Plugin(indigo.PluginBase):
                 if not precip_type or precip_type.lower() in ("not available", "none"):
                     precip_type = "precipitation"
 
+                # When the high and low occur, in the location timezone. The API's low is the overnight
+                # low (6:01 pm to 6:00 am), so say so when its time falls on the following day.
+                timezone  = pytz.timezone(zone=weather_data['timezone'])
+                high_time = self.format_forecast_time(temperature_high_time, timezone)
+                low_time  = self.format_forecast_time(temperature_low_time, timezone)
+                high_when = "" if high_time == "--" else f" at {high_time}"
+                low_when  = "" if low_time == "--" else f" at {low_time}"
+                if low_when and (
+                    self.format_forecast_time(temperature_low_time, timezone, '%Y-%m-%d')
+                    != self.format_forecast_time(self.nested_lookup(forecast_day, keys=('time',)), timezone, '%Y-%m-%d')
+                ):
+                    low_when += " tomorrow"
+
                 # Dark Card style guide tokens (see ~/.claude/STYLE_GUIDE.md).
                 font = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
                 site_name = dev.pluginProps.get('forecast_site_name', '')
@@ -796,8 +811,8 @@ class Plugin(indigo.PluginBase):
 
                 # Build the stat rows for the "Today" card.
                 stats = [
-                    ("High", f"{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}"),
-                    ("Low", f"{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}"),
+                    ("High", f"{temperature_high}{dev.pluginProps.get('temperatureUnits', '')}{high_when}"),
+                    ("Low", f"{temperature_low}{dev.pluginProps.get('temperatureUnits', '')}{low_when}"),
                     ("Humidity", f"{humidity}%"),
                     (
                         "Precip",
@@ -999,6 +1014,27 @@ class Plugin(indigo.PluginBase):
             reply_str = "--"
 
         return reply, reply_str
+
+    # =============================================================================
+    def format_forecast_time(self, epoch: str | float, timezone: pytz.tzinfo.BaseTzInfo, time_format: str | None = None) -> str:  # noqa
+        """
+        Format a forecast epoch in the location timezone
+
+        Uses the time format from the plugin preferences unless another format is provided. Returns
+        "--" if the API didn't provide a usable value, so that one missing time doesn't prevent the
+        device's other states from updating.
+
+        :param str or float epoch: UNIX timestamp from the API.
+        :param pytz.tzinfo.BaseTzInfo timezone: timezone of the forecast location.
+        :param str time_format: optional strftime format to use instead of the plugin preference.
+        :return str: the formatted value.
+        """
+        try:
+            aware_time = dt.datetime.fromtimestamp(int(epoch), tz=pytz.utc)
+        except (ValueError, TypeError):
+            return "--"
+
+        return timezone.normalize(aware_time).strftime(time_format or self.inst_attr['time_format'])
 
     # =============================================================================
     def generator_time(self, filter: str = "", values_dict: indigo.Dict | None = None, type_id: str = "", target_id: int = 0) -> list[tuple[str, str]]:  # noqa
@@ -2006,7 +2042,13 @@ class Plugin(indigo.PluginBase):
                 pressure           = self.nested_lookup(obj=observation, keys=('pressure',))
                 summary            = self.nested_lookup(obj=observation, keys=('summary',))
                 temperature_high   = self.nested_lookup(obj=observation, keys=('temperatureHigh',))
+                temperature_high_time = (
+                    self.nested_lookup(obj=observation, keys=('temperatureHighTime',))
+                )
                 temperature_low    = self.nested_lookup(obj=observation, keys=('temperatureLow',))
+                temperature_low_time = (
+                    self.nested_lookup(obj=observation, keys=('temperatureLowTime',))
+                )
                 uv_index           = self.nested_lookup(obj=observation, keys=('uvIndex',))
                 visibility         = self.nested_lookup(obj=observation, keys=('visibility',))
                 wind_bearing       = self.nested_lookup(obj=observation, keys=('windBearing',))
@@ -2158,6 +2200,15 @@ class Plugin(indigo.PluginBase):
                     if forecast_counter == 1:
                         today_high = round(temperature_high)
 
+                    # =========================== Temperature High Time ===========================
+                    # Like the forecast date above, this is always in the location timezone. The
+                    # API's daytime high window runs from 6:01 am to 6:00 pm.
+                    daily_forecast_states_list.append(
+                        {'key': f"d{fore_counter_text}_temperatureHighTime",
+                         'value': self.format_forecast_time(temperature_high_time, timezone)
+                         }
+                    )
+
                     # ============================== Temperature Low ==============================
                     temperature_low, temperature_low_ui = (
                         self.fix_corrupted_data(val=temperature_low)
@@ -2172,6 +2223,15 @@ class Plugin(indigo.PluginBase):
 
                     if forecast_counter == 1:
                         today_low = round(temperature_low)
+
+                    # ============================ Temperature Low Time ===========================
+                    # Always in the location timezone. The API's overnight low window runs from
+                    # 6:01 pm to 6:00 am, so this time often falls on the morning of the next day.
+                    daily_forecast_states_list.append(
+                        {'key': f"d{fore_counter_text}_temperatureLowTime",
+                         'value': self.format_forecast_time(temperature_low_time, timezone)
+                         }
+                    )
 
                     # ================================= UV Index ==================================
                     uv_index, uv_index_ui = self.fix_corrupted_data(val=uv_index)
