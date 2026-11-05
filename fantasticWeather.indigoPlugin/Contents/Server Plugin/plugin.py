@@ -66,7 +66,7 @@ __copyright__ = Dave.__copyright__
 __license__   = Dave.__license__
 __build__     = Dave.__build__
 __title__     = "Fantastically Useful Weather Utility"
-__version__   = "2025.2.16"
+__version__   = "2025.2.17"
 
 
 # =============================================================================
@@ -641,11 +641,12 @@ class Plugin(indigo.PluginBase):
         """
         Launch a web browser to register for API
 
-        Launch a web browser session with the values_dict parm containing the target URL.
+        Launch a web browser session using the URL from the plugin defaults. The URL isn't read from
+        values_dict because existing installs may have saved a value that's no longer valid.
 
         :param indigo.Dict values_dict:
         """
-        self.browserOpen(values_dict['launchParameters'])
+        self.browserOpen(kDefaultPluginPrefs['launchParameters'])
 
     # =============================================================================
     def dump_the_json(self, values_dict: indigo.Dict | None = None) -> None:  # noqa

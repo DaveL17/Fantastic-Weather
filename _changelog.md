@@ -1,5 +1,13 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
+### v2025.2.17
+- Fixes the "Sign Up For a Key at Pirate Weather" button, which could open the old Dark Sky site. It now always opens
+  the Pirate Weather sign-up page, and the hidden `launchParameters` field it used is removed.
+- Renames "API Calls Today" to "API Calls This Month" in the plugin configuration dialog, because Pirate Weather
+  reports the number of calls for the month.
+- Updates the Dark Sky references in the plugin configuration dialog to Pirate Weather, including the Daily Limit
+  tooltip's description of Dark Sky's plan limits.
+
 ### v2025.2.16
 - Adds `temperatureHighTime` and `temperatureLowTime` states for each day of the Daily Forecast device, showing the
   time of day the forecast high and low occur in the location's timezone.

@@ -2,7 +2,7 @@ kDefaultPluginPrefs = {
     'alertLogging': False,           # Write severe weather alerts to the log?
     'apiKey': "apiKey",              # DS requires an api key.
     'callCounter': "999",            # DS call limit.
-    'dailyCallCounter': "0",         # Number of API calls today.
+    'dailyCallCounter': "0",         # Number of API calls this month.
     'dailyCallDay': "1970-01-01",    # API call counter date.
     'dailyCallLimitReached': False,  # Has the daily call limit been reached?
     'dailyIconNames': "",            # Hidden trap of icon names used by the API.

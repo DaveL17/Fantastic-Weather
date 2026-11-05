@@ -15,10 +15,6 @@
 
 <!--Hidden Controls-->
 
-    <Field id="launchParameters" type="textfield" defaultValue="https://darksky.net/dev" hidden="True">
-        <Label/>
-    </Field>
-
     <Field id="iconNamesLabel" type="label" fontSize="mini" hidden="True">
         <Label>The following three fields are for development purposes and will ultimately be hidden (or deleted). They are used to capture the possible icon names from the API.</Label>
     </Field>
@@ -44,7 +40,7 @@
 	<Field id="simpleSeparator0" type="separator"/>
 
     <Field id="space01" type="label" fontSize="small">
-        <Label>The plugin requires an API key to retrieve data from Dark Sky. Click the button below to sign up for an API key (clicking the button will launch a web browser on the Indigo server machine):</Label>
+        <Label>The plugin requires an API key to retrieve data from Pirate Weather. Click the button below to sign up for an API key (clicking the button will launch a web browser on the Indigo server machine):</Label>
     </Field>
 
     <Field id="launchDS" type="button">
@@ -53,11 +49,11 @@
         <CallbackMethod>pirate_weather_site</CallbackMethod>
     </Field>
 
-    <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Dark Sky API Key (required).">
+    <Field id="apiKey" type="textfield" defaultValue="apiKey" tooltip="Please enter the Pirate Weather API Key (required).">
         <Label>API key:</Label>
     </Field>
 
-    <Field id="callCounter" type="textfield" defaultValue="999" tooltip="Please enter the maximum number of Dark Sky calls for your plan. The base developer plan is 500 downloads per day.">
+    <Field id="callCounter" type="textfield" defaultValue="999" tooltip="Please enter the maximum number of Pirate Weather calls per day. Pirate Weather's quotas are monthly, so check the limit for your plan.">
         <Label>Daily Limit:</Label>
     </Field>
 
@@ -69,12 +65,12 @@
         <Label>Next Scheduled Poll:</Label>
     </Field>
 
-    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of API calls today so far. This value is reset each day at midnight (UTC).">
-        <Label>API Calls Today:</Label>
+    <Field id="dailyCallCounter" type="textfield" defaultValue="0" readonly= "True" tooltip="The number of calls your API key has made this month, as reported by Pirate Weather.">
+        <Label>API Calls This Month:</Label>
     </Field>
 
     <Field id="downloadInterval" type="menu" defaultValue="900"
-           tooltip="Please select the desired frequency for data downloads. Controls how often the plugin will reach out to Dark Sky, and the daily limit for the number of downloads.">
+           tooltip="Please select the desired frequency for data downloads. Controls how often the plugin will reach out to Pirate Weather, and the daily limit for the number of downloads.">
         <Label>Call Interval:</Label>
         <List>
             <Option value="120">2 Minutes</Option>
