@@ -1,6 +1,6 @@
 #### Reminder: Support for the Dark Sky Weather API and this plugin have ended.
 
-### v2025.2.17
+### v2025.2.17 [released]
 - Fixes the "Sign Up For a Key at Pirate Weather" button, which could open the old Dark Sky site. It now always opens
   the Pirate Weather sign-up page, and the hidden `launchParameters` field it used is removed.
 - Renames "API Calls Today" to "API Calls This Month" in the plugin configuration dialog, because Pirate Weather
